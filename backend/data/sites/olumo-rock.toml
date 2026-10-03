@@ -1,0 +1,21 @@
+# Per-site config. Adding a site means adding a file like this, not code.
+[site]
+id = "olumo-rock"
+name = "Olumo Rock"
+city = "Abeokuta"
+state = "Ogun"
+
+[site.location]
+# Fill in verified coordinates.
+lat = 0.0
+lon = 0.0
+
+[[routes]]
+id = "lagos-abeokuta-road"
+label = "Lagos to Abeokuta, by road"
+mode = "road"
+rain_sensitivity = "medium"   # to be verified against sources
+
+[sources]
+# Add URLs only after checking each source's terms of use.
+urls = []
