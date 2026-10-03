@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "DisruptionEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/EventType"
+        },
+        "status": {
+          "$ref": "#/$defs/EventStatus"
+        },
+        "affects": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Affects",
+          "type": "array"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "status",
+        "affects",
+        "source_id"
+      ],
+      "title": "DisruptionEvent",
+      "type": "object"
+    },
+    "EventStatus": {
+      "enum": [
+        "threatened",
+        "confirmed",
+        "ended"
+      ],
+      "title": "EventStatus",
+      "type": "string"
+    },
+    "EventType": {
+      "enum": [
+        "strike",
+        "flight_suspension",
+        "heavy_rain",
+        "road_closure",
+        "other"
+      ],
+      "title": "EventType",
+      "type": "string"
+    },
+    "WeatherEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "area": {
+          "title": "Area",
+          "type": "string"
+        },
+        "rain_probability": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Rain Probability",
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "area",
+        "rain_probability"
+      ],
+      "title": "WeatherEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A few KB of weather and news. Roads are not re-collected here.",
+  "properties": {
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "weather": {
+      "items": {
+        "$ref": "#/$defs/WeatherEntry"
+      },
+      "title": "Weather",
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/DisruptionEvent"
+      },
+      "title": "Events",
+      "type": "array"
+    }
+  },
+  "required": [
+    "generated_at"
+  ],
+  "title": "Delta",
+  "type": "object"
+}

@@ -5,14 +5,14 @@ Backend only. Tick items as they are done. Each phase should leave something run
 ## Phase 0: Scaffold
 - [x] Directory structure and `pyproject.toml`
 - [x] Settings, `/health` endpoint, CLI stub
-- [ ] Create venv, install deps (`uv sync --extra dev`), confirm `pytest` and `ruff` run
+- [x] Create venv, install deps (`uv sync --extra dev`), confirm `pytest` and `ruff` run
 - [ ] Set up CI (lint + tests)
 
 ## Phase 1: Contracts (schemas)
-- [ ] Pydantic models: source, pack records (road note, site facts, contacts), delta (weather, events), itinerary, verdict, reports
-- [ ] Export JSON Schema for the app and on-device model teams
-- [ ] Sample pack and delta fixtures in `tests/fixtures/`
-- [ ] Schema validation tests
+- [x] Pydantic models: source, pack records (road note, site facts, contacts), delta (weather, events), itinerary, verdict, reports
+- [x] Export JSON Schema for the app and on-device model teams
+- [x] Sample pack and delta fixtures in `tests/fixtures/`
+- [x] Schema validation tests
 
 ## Phase 2: Collect
 - [ ] Verify terms of use for each candidate source

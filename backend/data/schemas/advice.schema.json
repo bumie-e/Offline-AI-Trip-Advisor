@@ -1,0 +1,50 @@
+{
+  "$defs": {
+    "Severity": {
+      "enum": [
+        "none",
+        "elevated",
+        "high"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Structured model output, also produced on-device. Checked by guardrails.",
+  "properties": {
+    "changed": {
+      "title": "Changed",
+      "type": "boolean"
+    },
+    "severity": {
+      "$ref": "#/$defs/Severity"
+    },
+    "advice": {
+      "title": "Advice",
+      "type": "string"
+    },
+    "alternatives": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Alternatives",
+      "type": "array"
+    },
+    "cited_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Cited Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "changed",
+    "severity",
+    "advice",
+    "cited_ids"
+  ],
+  "title": "Advice",
+  "type": "object"
+}

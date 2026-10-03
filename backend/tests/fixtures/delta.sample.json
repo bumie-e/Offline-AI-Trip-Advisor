@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-10-03T08:00:00Z",
+  "weather": [{ "date": "2026-10-14", "area": "Abeokuta", "rain_probability": 0.8 }],
+  "events": [
+    {
+      "type": "strike",
+      "status": "threatened",
+      "affects": ["flights"],
+      "start": "2026-10-20",
+      "source_id": "news-014"
+    }
+  ]
+}

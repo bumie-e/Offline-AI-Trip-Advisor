@@ -1,0 +1,27 @@
+{
+  "site_id": "olumo-rock",
+  "version": "0.0.1-sample",
+  "generated_at": "2026-10-03T08:00:00Z",
+  "records": [
+    {
+      "id": "road-note-001",
+      "type": "road_note",
+      "route": "Lagos to Abeokuta, by road",
+      "summary": "Illustrative sample. Not real data.",
+      "rain_sensitivity": "medium",
+      "source": { "publisher": "example", "url": "https://example.com/", "published": "2026-09-01" },
+      "confidence": "medium",
+      "last_verified": "2026-09-20"
+    },
+    {
+      "id": "contact-001",
+      "type": "contact",
+      "role": "guide",
+      "name": "Sample Guide",
+      "summary": "Sample contact.",
+      "source": { "publisher": "example", "url": "https://example.com/" },
+      "confidence": "low",
+      "last_verified": "2026-09-20"
+    }
+  ]
+}

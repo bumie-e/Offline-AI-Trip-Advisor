@@ -1,0 +1,87 @@
+{
+  "$defs": {
+    "TravelMode": {
+      "enum": [
+        "road",
+        "train",
+        "flight",
+        "walk"
+      ],
+      "title": "TravelMode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Stage 2, 'Plan my visit'.",
+  "properties": {
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "start_city": {
+      "title": "Start City",
+      "type": "string"
+    },
+    "arrival_airport": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Arrival Airport"
+    },
+    "start_date": {
+      "format": "date",
+      "title": "Start Date",
+      "type": "string"
+    },
+    "end_date": {
+      "format": "date",
+      "title": "End Date",
+      "type": "string"
+    },
+    "group_size": {
+      "maximum": 50,
+      "minimum": 1,
+      "title": "Group Size",
+      "type": "integer"
+    },
+    "budget_ngn": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Budget Ngn"
+    },
+    "mode": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TravelMode"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "site_id",
+    "start_city",
+    "start_date",
+    "end_date",
+    "group_size"
+  ],
+  "title": "TripRequest",
+  "type": "object"
+}
