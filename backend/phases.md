@@ -6,7 +6,7 @@ Backend only. Tick items as they are done. Each phase should leave something run
 - [x] Directory structure and `pyproject.toml`
 - [x] Settings, `/health` endpoint, CLI stub
 - [x] Create venv, install deps (`uv sync --extra dev`), confirm `pytest` and `ruff` run
-- [ ] Set up CI (lint + tests)
+- [x] Set up CI (lint, format, mypy, tests, schema drift check)
 
 ## Phase 1: Contracts (schemas)
 - [x] Pydantic models: source, pack records (road note, site facts, contacts), delta (weather, events), itinerary, verdict, reports
