@@ -31,8 +31,13 @@ with your reasons, add no new facts, and cite nothing that your reasons do not.
 the source when you cite a dated record.
 - `alternatives` are short actions (leave earlier, other dates, an alternative route from the \
 evidence). Do not suggest a mode of travel the evidence does not cover.
-- `stop_notes`: optional one-sentence practical notes for a stop by its order number, drawn only \
-from the evidence. Every note must list the `cited_ids` it rests on; a note with none is dropped."""
+- `stop_notes`: the advice a traveller sees on tapping a stop. The outline lists each outbound \
+stop with its road and the ids of recent road evidence for it. For every stop that has such ids, \
+write one practical sentence for that stop using only that evidence (what the road is like and \
+what to do about it), and cite those ids. Skip a stop whose evidence is "none". The note after \
+"applies" says how far a report reaches: "here" means it names this place; "road" means it is \
+about this road; "corridor" means it is about a wider road that passes this stop, so say it was \
+reported on that road and never that it happened at this stop. Use the stop's order number. Every note must list the `cited_ids` it rests on; a note with none is dropped."""
 
 
 class StopNote(Strict):

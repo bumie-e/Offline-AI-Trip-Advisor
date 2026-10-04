@@ -1,0 +1,229 @@
+{
+  "site_id": "olumo-rock",
+  "collected_at": "2026-10-04T10:14:02.478786Z",
+  "images": [
+    {
+      "id": "img-olumo-rock-c20e59451f",
+      "summary": "Olumo Rock, Abeokuta",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Olumo_Rock,_Abeokuta.jpg",
+        "published": "2018-08-15"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/olumo-rock/img-olumo-rock-c20e59451f.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 316,
+      "size_bytes": 147121,
+      "credit": "Photo: Adedayo Adesilola, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-ef71f2c02e",
+      "summary": "Olumo Rock in Abeokuta",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Olumo_Rock_in_Abeokuta.jpg",
+        "published": "2022-08-04"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/olumo-rock/img-olumo-rock-ef71f2c02e.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 237813,
+      "credit": "Photo: AdeolaStudio, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-4afdd4edac",
+      "summary": "New Olumo Rock, Abeokuta",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:New_Olumo_Rock,_Abeokuta.jpg",
+        "published": "2019-09-17"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/olumo-rock/img-olumo-rock-4afdd4edac.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 169854,
+      "credit": "Photo: 'Yemi King, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-43a0db620e",
+      "summary": "Olumo Rock Abk.2",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Olumo_Rock_Abk.2.jpg",
+        "published": "2018-03-28"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/olumo-rock/img-olumo-rock-43a0db620e.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 310482,
+      "credit": "Photo: F.Samuel95, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-d669b5b7ba",
+      "summary": "Olumo Rock Cervices",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Olumo_Rock_Cervices.jpg",
+        "published": "2026-04-15"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/olumo-rock/img-olumo-rock-d669b5b7ba.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 1067,
+      "size_bytes": 164122,
+      "credit": "Photo: Vwrho, CC BY 4.0, via Wikimedia Commons",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0"
+    },
+    {
+      "id": "img-olumo-rock-0ed3dd30ff",
+      "summary": "Top view of the Olumo Rock",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Top_view_of_the_Olumo_Rock.jpg",
+        "published": "2025-06-12"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/olumo-rock/img-olumo-rock-0ed3dd30ff.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 1571,
+      "size_bytes": 303620,
+      "credit": "Photo: Darlington Obouyoma, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-c309bbcfe3",
+      "summary": "(Photo-walk Nigeria) Abeokuta-ijebu expressway, Abeokuta Ogun State",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:(Photo-walk_Nigeria)_Abeokuta-ijebu_expressway,_Abeokuta_Ogun_State.jpg",
+        "published": "2021-04-25"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/olumo-rock/img-olumo-rock-c309bbcfe3.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 102796,
+      "credit": "Photo: Yemi festus, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-b18f15d3d2",
+      "summary": "Newly constructed Ikereku road, Abeokuta 06",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Newly_constructed_Ikereku_road,_Abeokuta_06.jpg",
+        "published": "2019-09-25"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/olumo-rock/img-olumo-rock-b18f15d3d2.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 530,
+      "size_bytes": 130043,
+      "credit": "Photo: Agbebiyi Adekunle (Tadek Photography), CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-48f404317c",
+      "summary": "Newly constructed Ikereku road, Abeokuta 01",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Newly_constructed_Ikereku_road,_Abeokuta_01.jpg",
+        "published": "2019-09-25"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/olumo-rock/img-olumo-rock-48f404317c.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 571,
+      "size_bytes": 161639,
+      "credit": "Photo: Agbebiyi Adekunle (Tadek Photography), CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-olumo-rock-03e10625e4",
+      "summary": "Newly constructed Ikereku road, Abeokuta 02",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Newly_constructed_Ikereku_road,_Abeokuta_02.jpg",
+        "published": "2019-09-25"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/olumo-rock/img-olumo-rock-03e10625e4.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 571,
+      "size_bytes": 150017,
+      "credit": "Photo: Agbebiyi Adekunle (Tadek Photography), CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  ],
+  "judge": "claude-sonnet-5-5",
+  "judged": {
+    "img-olumo-rock-c20e59451f": "Wide view of Olumo Rock with its boulders, elevator tower and red-roofed entrance buildings; a few people in the foreground are small and their faces aren't clearly visible.",
+    "img-olumo-rock-ef71f2c02e": "A large granite rock outcrop with stone walls, railings and boulders in the foreground, consistent with a heritage rock site; no prominent people or readable contact details.",
+    "img-olumo-rock-4afdd4edac": "Large granite boulders of a rocky hill with the tourist complex's elevator tower and trees under a blue sky, consistent with Olumo Rock.",
+    "img-olumo-rock-43a0db620e": "Large granite boulders and rock faces of Olumo Rock with a railed walkway; a few small distant visitors stand along the fence.",
+    "img-olumo-rock-d669b5b7ba": "Large granite boulders with a narrow crevice between them, moss and a climbing vine, and small plaques on the rocks, consistent with the rock formations at Olumo Rock.",
+    "img-olumo-rock-0ed3dd30ff": "Aerial view of Olumo Rock with its \"OLÚMO\" sign, the elevator towers, and the visitor complex and car park below; no people are prominent.",
+    "img-olumo-rock-c309bbcfe3": "A long elevated concrete flyover with pillars stands over a wide road with lane markings, a pickup truck and a motorcycle; people in the frame are small or partial.",
+    "img-olumo-rock-b18f15d3d2": "A wide multi-lane road with curbs, a motorcyclist and a car, with buildings and roadside shacks alongside; the people are small and their faces are not clearly visible.",
+    "img-olumo-rock-48f404317c": "A wide divided road with lane markings, a median and some motorbikes and cars, with roadside buildings; the people are small and their faces can't be seen.",
+    "img-olumo-rock-03e10625e4": "A newly paved dual carriageway with lane markings and striped curbs curves through a town, with a few cars and a motorcyclist and only small distant people."
+  }
+}

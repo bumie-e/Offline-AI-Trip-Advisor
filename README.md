@@ -62,7 +62,8 @@ Public travel sources describe Olumo Rock as being in Abeokuta, which has no air
 | Collect | Pulls blogs, news, tour-operator pages, forums, and airline and union notices (Bright Data) |
 | Structure | An LLM converts text into records with source, date, and confidence |
 | Add context | Adds the weather forecast for the traveler's dates and recent disruption news |
-| Generate | Produces the itinerary, per-stop advice, photos, and the overall verdict |
+| Images | Collects freely licensed photos of the site and its roads from Wikimedia Commons; a vision model checks each one |
+| Generate | Produces the itinerary, the road and advice for each stop, and the overall verdict |
 
 ### 2. Pack plus delta
 
@@ -127,6 +128,8 @@ Example model output:
 - Olumo Rock itinerary generated from collected sources
 - Verdict banner with reasons, sources, and data age
 - Download for offline use
+- Stop screen: tap a stop to see the road there, one photo with its credit, and advice backed by cited sources
+- Photos of the site and its roads, stored for offline use, with the licence credit shown
 - Delta update with a visible "what changed" banner
 - On-device re-plan after a date change, using the last update
 - Queued road and site status reports
@@ -151,6 +154,7 @@ Example model output:
 | Audio | ElevenLabs, pre-generated and cached | Planned |
 | On-device model | Small instruction-tuned model, runtime to be chosen after a device test | **TBD** |
 | Weather | Open-Meteo forecast API (no key) | Built |
+| Photos | Wikimedia Commons (free licences only), checked by a vision model | Built |
 
 The on-device model is the riskiest part of the build. It should be tested on a real phone early, measuring load time, memory, and speed, with a fallback to rules plus template text if it can't run acceptably.
 
@@ -177,6 +181,8 @@ No impact results are claimed. This is a prototype.
 - **Collected news is noisy.** It can be false, duplicated, delayed, or biased toward places that get media coverage.
 - **Coverage is tiny:** one site and one corridor at first, so generalization is unproven.
 - **Small models are weak** in Pidgin and local languages, and may miss things. Advice is generated in English first.
+- **Few photos of the actual roads.** Commons has little. A road photo is often a representative road in the same region, so the API labels it as an example (`shows_this_stop: false`), and many stops have no photo.
+- **Stop detail covers the way there only.** The way back has no road, photo or advice per stop, and the on-device update does not yet refresh a stop's road or advice when new news arrives.
 - **Not every phone can run the model.** Devices that can't should fall back to rules and template text.
 - **Economic benefit is a theory.** It needs a pilot to test.
 - **Security-related advice is sensitive.** It must show sources and dates, avoid verdicts, and avoid stigmatizing communities.
@@ -185,7 +191,7 @@ No impact results are claimed. This is a prototype.
 
 - This is advisory information, not navigation or a safety guarantee. Visitors should use a local guide for remote sites.
 - Check the terms of use of every source before collecting, and use collected content to extract facts, not to republish it.
-- Use only images you have rights to, such as openly licensed material or your own.
+- Photos come only from Wikimedia Commons under CC0, public domain, CC BY or CC BY-SA licences, never NC or ND. The author, licence and link are kept for every photo, and the app must show the credit beside it. Maps, logos, paintings and photos of people are excluded, and a vision model checks each photo. Hand-check the photos against their Commons pages before relying on them (still open).
 - Take care with sacred and culturally sensitive sites, and involve community members.
 - Location reports and trip plans are personal data. Collect the minimum and protect it.
 - Link to official sources for visa and entry rules instead of summarizing them.
@@ -225,9 +231,11 @@ cp .env.example .env        # then fill in the keys below (never commit .env)
 
 ```bash
 uv run trip-advisor collect all       # routes, stops, guide text, recent road news
+uv run trip-advisor refresh-segments all  # per-road kilometre ranges, only for routes collected before this existed
 uv run trip-advisor structure all     # LLM turns documents into sourced records
+uv run trip-advisor collect-images all    # photos from Wikimedia Commons (the vision check needs LLM_API_KEY)
 uv run trip-advisor delta all         # weather forecast + disruption news (a few KB)
-uv run trip-advisor build-pack all    # versioned offline pack in data/packs/
+uv run trip-advisor build-pack all    # versioned offline pack in data/packs/ (includes the image records)
 uv run alembic upgrade head           # create the database tables (needs DATABASE_URL)
 ```
 
@@ -244,7 +252,7 @@ npx vercel login
 npx vercel --prod
 ```
 
-Set `DATABASE_URL` and `LLM_API_KEY` as environment variables on the Vercel project first. The deployed API serves the files in `data/packs/`, `data/deltas/` and `data/sites/`, so rebuild and redeploy after refreshing data.
+Set `DATABASE_URL` and `LLM_API_KEY` as environment variables on the Vercel project first. The deployed API serves the files in `data/packs/`, `data/deltas/`, `data/images/` (about 2 MB per site) and `data/sites/`, so rebuild and redeploy after refreshing data.
 
 **Checks** (the same ones CI runs): `uv run ruff check . && uv run ruff format --check . && uv run mypy src && uv run pytest -q`
 
@@ -262,8 +270,9 @@ BASE=https://offline-ai-trip-advisor.vercel.app
 |---|---|---|
 | 1. Browse | Online | `GET /places` |
 | 2. Plan and download | Online, ideally Wi-Fi | `POST /pack/{site_id}` |
-| 3. Refresh | Any signal | `GET /delta/{site_id}` |
-| 4. Report | Whenever there is a signal | `POST /reports/road`, `/site-status`, `/ratings` |
+| 3. Fetch photos | Wi-Fi, right after the download | `GET /images/{site_id}/{file}` |
+| 4. Refresh | Any signal | `GET /delta/{site_id}` |
+| 5. Report | Whenever there is a signal | `POST /reports/road`, `/site-status`, `/ratings` |
 
 ### 1. List places
 
@@ -294,9 +303,9 @@ The response (a `TripPack`) has five parts:
 
 | Field | What it holds |
 |---|---|
-| `pack` | Records for the site: road notes, site facts, costs, each with source, date and confidence |
+| `pack` | Records for the site: road notes, site facts, costs and image records, each with source, date and confidence. An image record holds the caption, a ready-to-show credit, the licence, the size and the `path` of the file; the file itself is fetched separately (step 3) |
 | `delta` | The weather forecast and disruption news **the advice was written from** |
-| `itinerary` | `verdict` (`go`, `go_with_changes`, `not_advised`), a `summary`, `verdict_reasons` (each with `severity`, `alternatives` and `cited_ids`), `stops` and `return_leg` |
+| `itinerary` | `verdict` (`go`, `go_with_changes`, `not_advised`), a `summary`, `verdict_reasons` (each with `severity`, `alternatives` and `cited_ids`), `stops` and `return_leg`. Each outbound stop also carries what the stop screen shows (see below) |
 | `routes` | The routes behind the itinerary: origin and destination, each route's distance, free-flow time and named roads, and the towns, fuel, hospital and police stops along them. Each route has a `cite_id` (for example `route-olumo-rock-primary`) that matches the IDs cited by `stops`. Road shapes are left out (the app gives no turn-by-turn navigation). `null` if no routes were collected |
 | `advice_source` | `model` if the language model wrote the text, `rules` if the rule-based fallback did |
 
@@ -306,7 +315,44 @@ Notes:
 - The **first call for a trip takes about 10-20 seconds** because the model writes the advice. Show a progress state. The same request is then answered from a cache in about 2 seconds.
 - Add `?ai=false` for the rule-based text only (fast, no model).
 - `POST /itinerary` takes the same body and returns only the `itinerary` part.
-- The request is not stored, apart from the cached itinerary for identical requests.
+- The request is not stored, apart from the cached itinerary for identical requests. A cached itinerary is reused only while the pack, the delta and the routes are all unchanged. If any of them is refreshed, the advice is written again.
+
+#### The stop screen
+
+Each outbound stop in `itinerary.stops` has four extra, optional fields, so the app can show a list of stops and a detail view for each:
+
+| Field | What it holds |
+|---|---|
+| `comment` | One line for the list of stops |
+| `image` | One photo for the stop: `path` (relative to the base URL), `caption`, a ready-to-show `credit`, `license`, size, and `shows_this_stop` |
+| `road` | The road at this stop: `name`, `km_from_start`, `km_since_previous_stop`, a one-sentence `condition`, `has_recent_report`, `scope`, `confidence`, `report_age_days` and `evidence_ids` |
+| `advice` | The model's advice for this stop. It is written only where there is recent road evidence, and it cites that evidence |
+
+An abbreviated example (Olumo Rock, stop 1):
+
+```json
+{
+  "order": 1,
+  "title": "Leave Murtala Muhammed Airport",
+  "road": {
+    "name": "A5 Lagos-Abeokuta Expressway",
+    "km_from_start": 0.0,
+    "condition": "Reports indicate students blocked the Lagos\u2013Abeokuta Expressway, causing gridlock.",
+    "has_recent_report": true,
+    "scope": "road",
+    "confidence": "low",
+    "report_age_days": 68,
+    "evidence_ids": ["road-note-olumo-rock-72901a5a55", "road-note-olumo-rock-c3cdcfcadb"]
+  },
+  "image": { "path": "/images/olumo-rock/img-olumo-rock-b18f15d3d2.jpg", "shows_this_stop": false, "...": "..." }
+}
+```
+
+How the app should word two of these:
+- **`scope`** says how far a road report reaches: `here` (it names this place), `road` (it is about this road) or `corridor` (it is about a wider road that passes the stop, so it is not necessarily true at this exact spot). Word `road` and `corridor` reports as being about the road, not about the stop.
+- **`shows_this_stop: false`** means the photo is an example of a road in the area, not this exact place. Label it as an example.
+
+A stop with no recent report says so in `condition` (`has_recent_report: false`). Only the outbound stops carry this detail; `return_leg` does not.
 
 To check whether a pack changed without downloading the advice again, use `GET /pack/{site_id}`. It returns the plain pack with its version as an `ETag`:
 
@@ -315,7 +361,21 @@ curl -i $BASE/pack/olumo-rock                                    # note the ETag
 curl -i -H 'If-None-Match: "2026.10.04+f5a27d61"' $BASE/pack/olumo-rock   # 304 if unchanged
 ```
 
-### 3. Refresh the delta
+### 3. Fetch the photos
+
+The trip pack carries the photo records and the stop `image` objects, but not the image files. Download the files once, on Wi-Fi, right after the pack, and store them on the device.
+
+```bash
+curl $BASE/images/olumo-rock                                             # the list: same records as in the pack
+curl -O $BASE/images/olumo-rock/img-olumo-rock-d669b5b7ba.jpg           # one file (use the record's `path`)
+```
+
+- Each site has 8 to 10 photos, up to 800 px wide and under 350 KB each (roughly 2 MB per site).
+- A file name contains a hash of the content, so a URL never changes. Files are served with `Cache-Control: immutable` and an `ETag`; a repeat request with `If-None-Match` returns 304.
+- Only files listed for the site can be fetched. Anything else is a 404.
+- **Show the `credit` text next to every photo.** The licences (CC BY, CC BY-SA) require it. Example: `Photo: Vwrho, CC BY 4.0, via Wikimedia Commons`.
+
+### 4. Refresh the delta
 
 ```bash
 curl $BASE/delta/olumo-rock
@@ -323,7 +383,7 @@ curl $BASE/delta/olumo-rock
 
 A few KB. Compare `generated_at` with the delta you hold; if it is newer, hand it to the on-device model together with the stored pack and itinerary. Each event has a `type`, `status` (`threatened`, `confirmed`, `ended`), what it `affects`, and a `source` with publisher, link and date.
 
-### 4. Send queued reports
+### 5. Send queued reports
 
 Reports are written on the device with a UUID and a timestamp, queued while offline, and sent in batches of up to 50 when a signal appears.
 
@@ -360,7 +420,7 @@ On road and site-status reports `lat`, `lon` and `note` are optional (ratings ha
 
 | Status | Meaning | What the app should do |
 |---|---|---|
-| 404 | Unknown place, or no pack built yet | Check `GET /places` |
+| 404 | Unknown place, no pack built yet, or no such image | Check `GET /places` and the image list |
 | 422 | Invalid body (end before start, trip over 14 days, bad value) | Fix the request |
 | 429 | Too many requests from this connection (`Retry-After` header) | Wait and retry later |
 | 503 | Reports or the database are unavailable | Keep the queue and retry later |

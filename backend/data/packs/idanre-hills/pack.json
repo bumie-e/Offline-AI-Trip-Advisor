@@ -1,8 +1,176 @@
 {
   "site_id": "idanre-hills",
-  "version": "2026.10.04+a47445a1",
-  "generated_at": "2026-10-04T08:05:47.290041Z",
+  "version": "2026.10.04+505a364f",
+  "generated_at": "2026-10-04T10:27:05.907203Z",
   "records": [
+    {
+      "id": "img-idanre-hills-7216c92430",
+      "summary": "IDANRE HILLS AKURE opihj",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:IDANRE_HILLS_AKURE_opihj.jpg",
+        "published": "2024-04-04"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/idanre-hills/img-idanre-hills-7216c92430.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 298218,
+      "credit": "Photo: Sasu photography, CC0, via Wikimedia Commons",
+      "license": "CC0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+    },
+    {
+      "id": "img-idanre-hills-4e3a2ebcab",
+      "summary": "IDANRE HILLS LANDSCAPE dzvsnmsbhzkdb",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:IDANRE_HILLS_LANDSCAPE_dzvsnmsbhzkdb.jpg",
+        "published": "2024-04-04"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/idanre-hills/img-idanre-hills-4e3a2ebcab.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 273103,
+      "credit": "Photo: Sasu photography, CC0, via Wikimedia Commons",
+      "license": "CC0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+    },
+    {
+      "id": "img-idanre-hills-99e61c7241",
+      "summary": "IDANRE HILLS LANDSCAPE rahjwkw s",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:IDANRE_HILLS_LANDSCAPE_rahjwkw_s.jpg",
+        "published": "2024-04-04"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/idanre-hills/img-idanre-hills-99e61c7241.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 345752,
+      "credit": "Photo: Sasu photography, CC0, via Wikimedia Commons",
+      "license": "CC0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+    },
+    {
+      "id": "img-idanre-hills-38b8f8e514",
+      "summary": "IDANRE HILLS LANDSCAPE tayiwiwvscsvs",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:IDANRE_HILLS_LANDSCAPE_tayiwiwvscsvs.jpg",
+        "published": "2024-04-04"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/idanre-hills/img-idanre-hills-38b8f8e514.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 346608,
+      "credit": "Photo: Sasu photography, CC0, via Wikimedia Commons",
+      "license": "CC0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+    },
+    {
+      "id": "img-idanre-hills-eab82b4204",
+      "summary": "Idanre Hills (Oke Idanre)",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Idanre_Hills_(Oke_Idanre).jpg",
+        "published": "2017-05-18"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/idanre-hills/img-idanre-hills-eab82b4204.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 558,
+      "size_bytes": 216154,
+      "credit": "Photo: Victor Akinfala, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-idanre-hills-0ed95b070b",
+      "summary": "Ondo Road, Off Akure junction, Ondo state",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Ondo_Road,_Off_Akure_junction,_Ondo_state.jpg",
+        "published": "2023-08-29"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/idanre-hills/img-idanre-hills-0ed95b070b.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 96477,
+      "credit": "Photo: Yemi festus, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-idanre-hills-1e5841249f",
+      "summary": "Idanre Ancient hill Ondo State (16)",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Idanre_Ancient_hill_Ondo_State_(16).jpg",
+        "published": "2019-04-04"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/idanre-hills/img-idanre-hills-1e5841249f.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 530,
+      "size_bytes": 209443,
+      "credit": "Photo: Agbebiyi Adekunle (Tadek Photography), CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-idanre-hills-55443509f6",
+      "summary": "Ipele-Idoani Road, Idoani, Ondo State",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Ipele-Idoani_Road,_Idoani,_Ondo_State.jpg",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/idanre-hills/img-idanre-hills-55443509f6.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 300083,
+      "credit": "Photo: Favouridowu, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
     {
       "id": "road-note-idanre-hills-66d8126f7b",
       "summary": "Reports suggest a downpour triggered gridlock and stranding of motorists on the Lagos-Ore-Benin Expressway.",

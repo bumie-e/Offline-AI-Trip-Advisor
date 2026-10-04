@@ -43,8 +43,26 @@ class Contact(_Record):
     is_sample: bool = True  # samples until real contacts are secured
 
 
+class ImageRecord(_Record):
+    """A photo of the site or of a road on the way. The file itself is fetched from `path`.
+
+    `summary` is the caption. Free licences still require credit, so `credit` is ready to show.
+    """
+
+    type: Literal["image"] = "image"
+    kind: Literal["site", "road"]
+    path: str  # e.g. /images/olumo-rock/img-olumo-rock-ab12cd34ef.jpg
+    mime: str
+    width: int = Field(ge=1)
+    height: int = Field(ge=1)
+    size_bytes: int = Field(ge=1)
+    credit: str  # "Photo: <author>, CC BY-SA 4.0, via Wikimedia Commons"
+    license: str
+    license_url: str | None = None
+
+
 PackRecord = Annotated[
-    RoadNote | SiteFact | CostNote | Contact,
+    RoadNote | SiteFact | CostNote | Contact | ImageRecord,
     Field(discriminator="type"),
 ]
 

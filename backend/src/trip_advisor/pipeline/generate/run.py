@@ -30,25 +30,33 @@ log = logging.getLogger(__name__)
 
 
 def _outline(outbound: list[Stop], back: list[Stop]) -> str:
-    rows = [f"{s.order}. {s.title}" for s in outbound]
+    """Each stop, with the road it is on and the ids of the reports the model may cite for it."""
+
+    def row(s: Stop) -> str:
+        if s.road is None:
+            return f"{s.order}. {s.title}"
+        road = s.road.name or "road not named"
+        evidence = ", ".join(s.road.evidence_ids) if s.road.evidence_ids else "none"
+        scope = f" (applies: {s.road.scope})" if s.road.scope else ""
+        return f"{s.order}. {s.title} | road: {road} | recent road evidence: {evidence}{scope}"
+
     return (
         "Outbound:\n"
-        + "\n".join(rows)
+        + "\n".join(row(s) for s in outbound)
         + "\nReturn:\n"
         + "\n".join(f"{s.order}. {s.title}" for s in back)
     )
 
 
 def _apply_notes(stops: list[Stop], notes: list[StopNote]) -> list[Stop]:
+    """The model's note for a stop becomes its `advice`. The data-driven `notes` stay as they are."""
     by_order = {n.order: n for n in notes}
     out = []
     for s in stops:
         n = by_order.get(s.order)
         if n:
             ids = [i for i in n.cited_ids if i not in s.cited_ids]
-            s = s.model_copy(
-                update={"notes": f"{s.notes} {n.note}".strip(), "cited_ids": [*s.cited_ids, *ids]}
-            )
+            s = s.model_copy(update={"advice": n.note, "cited_ids": [*s.cited_ids, *ids]})
         out.append(s)
     return out
 
@@ -159,6 +167,7 @@ def load_input(
     raw_dir: Path = raw_store.RAW_DIR,
     structured_dir: Path = Path("data/structured"),
     deltas_dir: Path = Path("data/deltas"),
+    images_dir: Path = Path("data/images"),
 ) -> GenInput:
     """Read the saved outputs of the collect, structure and context phases."""
     notes: list[str] = []
@@ -177,6 +186,10 @@ def load_input(
         records = StructuredSite.model_validate_json(structured.read_text()).records
     else:
         notes.append(f"no records for {site.id}: run `structure {site.id}`")
+    from trip_advisor.pipeline.collect.images import load_manifest
+
+    if manifest := load_manifest(site.id, images_dir):  # the pack carries them; here read direct
+        records = [*records, *manifest.images]
 
     delta_file = deltas_dir / f"{site.id}.json"
     if delta_file.exists():

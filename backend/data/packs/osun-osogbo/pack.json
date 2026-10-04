@@ -1,8 +1,197 @@
 {
   "site_id": "osun-osogbo",
-  "version": "2026.10.04+86a016b4",
-  "generated_at": "2026-10-04T08:05:47.167013Z",
+  "version": "2026.10.04+194006dd",
+  "generated_at": "2026-10-04T10:27:05.912451Z",
   "records": [
+    {
+      "id": "img-osun-osogbo-9ab84d0f47",
+      "summary": "The Osun Osogbo sacred grove 02",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:The_Osun_Osogbo_sacred_grove_02.jpg",
+        "published": "2024-06-26"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/osun-osogbo/img-osun-osogbo-9ab84d0f47.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 331013,
+      "credit": "Photo: ExploreWithTunde, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-988f5b9525",
+      "summary": "The Osun Osogbo sacred grove 03",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:The_Osun_Osogbo_sacred_grove_03.jpg",
+        "published": "2024-06-26"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/osun-osogbo/img-osun-osogbo-988f5b9525.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 103436,
+      "credit": "Photo: ExploreWithTunde, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-4b5536de86",
+      "summary": "Lagos Ibadan expressway",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Lagos_Ibadan_expressway.jpg",
+        "published": "2010-01-03"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/osun-osogbo/img-osun-osogbo-4b5536de86.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 90417,
+      "credit": "Photo: Eukoha, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-f95789e274",
+      "summary": "The Osun Osogbo sacred grove 01",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:The_Osun_Osogbo_sacred_grove_01.jpg",
+        "published": "2024-06-27"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/osun-osogbo/img-osun-osogbo-f95789e274.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 450,
+      "size_bytes": 263405,
+      "credit": "Photo: ExploreWithTunde, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-716b7f5746",
+      "summary": "OSUN OSOGBO BUSY ROAD",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:OSUN_OSOGBO_BUSY_ROAD.jpg",
+        "published": "2022-09-24"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/osun-osogbo/img-osun-osogbo-716b7f5746.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 242784,
+      "credit": "Photo: Troyayodeji, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-73ad1343a7",
+      "summary": "Suspension Bridge at Osun Sacred Grove in Osogbo, Nigeria",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Suspension_Bridge_at_Osun_Sacred_Grove_in_Osogbo,_Nigeria.jpg",
+        "published": "2018-08-16"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/osun-osogbo/img-osun-osogbo-73ad1343a7.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 1137,
+      "size_bytes": 191008,
+      "credit": "Photo: 4toscenethesis, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-acb5f7f682",
+      "summary": "Challenge Expressway Ibadan",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Challenge_Expressway_Ibadan.jpg",
+        "published": "2016-09-07"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/osun-osogbo/img-osun-osogbo-acb5f7f682.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 114917,
+      "credit": "Photo: Muyiwa71, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-dd6a38cfaa",
+      "summary": "OsunOsogbo Shrine Sunset over the Osun River",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:OsunOsogbo_Shrine_Sunset_over_the_Osun_River.jpg",
+        "published": "2016-01-13"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "site",
+      "path": "/images/osun-osogbo/img-osun-osogbo-dd6a38cfaa.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 271735,
+      "credit": "Photo: Inyang Effiong, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
+    {
+      "id": "img-osun-osogbo-c95f3c16b1",
+      "summary": "Ibadan Ojoo Expressway",
+      "source": {
+        "publisher": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Ibadan_Ojoo_Expressway_.jpg",
+        "published": "2012-07-07"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "image",
+      "kind": "road",
+      "path": "/images/osun-osogbo/img-osun-osogbo-c95f3c16b1.jpg",
+      "mime": "image/jpeg",
+      "width": 800,
+      "height": 600,
+      "size_bytes": 118665,
+      "credit": "Photo: Muyiwa71, CC BY-SA 4.0, via Wikimedia Commons",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+    },
     {
       "id": "site-fact-osun-osogbo-f4fd7ddbca",
       "summary": "Genesis Art Gallery is open from 8 AM to 5 PM.",

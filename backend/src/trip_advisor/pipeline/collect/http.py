@@ -19,6 +19,8 @@ MIN_INTERVAL: dict[str, float] = {
     "fmino.gov.ng": 1.0,
     "en.wikivoyage.org": 1.0,
     "api.brightdata.com": 0.5,
+    "commons.wikimedia.org": 1.0,
+    "upload.wikimedia.org": 1.0,
 }
 
 
