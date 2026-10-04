@@ -32,3 +32,8 @@ match_terms = ["Ore", "Ondo", "Akure"]
 name = "Akure-Idanre road"
 queries = ['"Akure-Idanre" road', 'Idanre road']
 match_terms = ["Idanre"]
+
+[images]
+# Wikimedia Commons searches. Road photos must name the road in the file title.
+site = ["Idanre Hills"]
+roads = ["Akure Idanre road", "Akure road", "Ondo road"]

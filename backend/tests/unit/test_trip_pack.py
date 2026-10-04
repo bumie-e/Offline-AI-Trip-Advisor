@@ -1,3 +1,4 @@
+import json
 import shutil
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -207,3 +208,154 @@ def test_yesterdays_calls_do_not_count_against_today(data, db):
         s.commit()
     r = make_client(data, db, CountingWriter(), cap=1).post("/pack/olumo-rock", json=BODY).json()
     assert r["advice_source"] == "model"
+
+
+def resolvable_ids(trip: TripPack) -> set[str]:
+    """Every ID a device can look up inside the download."""
+    ids = {r.id for r in trip.pack.records}
+    ids |= {f"weather-{w.date.isoformat()}" for w in trip.delta.weather}
+    ids |= {e.source_id for e in trip.delta.events}
+    ids |= {r.cite_id for r in trip.routes.routes} if trip.routes else set()
+    return ids
+
+
+def cited_ids(trip: TripPack) -> set[str]:
+    it = trip.itinerary
+    return {i for a in it.verdict_reasons for i in a.cited_ids} | {
+        i for s in [*it.stops, *it.return_leg] for i in s.cited_ids
+    }
+
+
+def test_download_includes_routes_and_every_citation_resolves_inside_it(data, db):
+    trip = TripPack.model_validate(
+        make_client(data, db, CountingWriter()).post("/pack/olumo-rock", json=BODY).json()
+    )
+    assert trip.routes and trip.routes.routes
+    primary = next(r for r in trip.routes.routes if r.kind == "primary")
+    assert (
+        primary.cite_id == "route-olumo-rock-primary" and primary.roads and primary.distance_km > 0
+    )
+    assert trip.routes.origin.name and trip.routes.destination.name
+    assert any(s.kind == "fuel" for s in trip.routes.stops)
+    assert any(c.startswith("route-") for c in cited_ids(trip))  # the stops do cite a route
+    assert cited_ids(trip) <= resolvable_ids(trip)  # ...and the device can look it up
+
+
+def test_routes_are_in_both_model_and_rule_downloads(data, db):
+    client = make_client(data, db, CountingWriter())
+    for url in ("/pack/olumo-rock", "/pack/olumo-rock?ai=false"):
+        body = {**BODY, "group_size": 7 if "ai=false" in url else 2}
+        trip = TripPack.model_validate(client.post(url, json=body).json())
+        assert trip.routes is not None
+        assert cited_ids(trip) <= resolvable_ids(trip)
+
+
+def test_route_shapes_are_left_out_of_the_download(data, db):
+    raw = make_client(data, db, None).post("/pack/olumo-rock", json=BODY).json()
+    assert "geometry" not in json.dumps(raw["routes"])
+
+
+def test_routes_are_null_when_none_were_collected(data, db):
+    (data / "packs" / "olumo-rock" / "routes.json").unlink()
+    raw = make_client(data, db, None).post("/pack/olumo-rock", json=BODY).json()
+    assert raw["routes"] is None and raw["itinerary"]["stops"]
+
+
+# --- the cache must notice when the routes behind the itinerary change ---------------------
+
+
+def edit_routes(data: Path, change) -> None:
+    file = data / "packs" / "olumo-rock" / "routes.json"
+    raw = json.loads(file.read_text())
+    change(raw)
+    file.write_text(json.dumps(raw))
+
+
+def lengthen_primary(raw: dict) -> None:
+    primary = next(r for r in raw["routes"] if r["kind"] == "primary")
+    primary["distance_km"], primary["duration_min"] = 321.0, 400.0
+    primary["roads"] = ["Brand New Expressway"]
+
+
+def drive_note(trip: TripPack) -> str:
+    return trip.itinerary.stops[0].notes
+
+
+def test_changed_routes_do_not_reuse_a_cached_itinerary(data, db):
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    first = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+    assert w.calls == 1 and "321 km" not in drive_note(first)
+
+    edit_routes(data, lengthen_primary)
+    second = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+
+    assert w.calls == 2  # the cached itinerary described the old route
+    assert "321 km" in drive_note(second) and "Brand New Expressway" in drive_note(second)
+    assert cited_ids(second) <= resolvable_ids(second)
+
+
+def test_removed_routes_do_not_reuse_a_cached_itinerary_that_cites_them(data, db):
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    first = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+    assert any(c.startswith("route-") for c in cited_ids(first))  # the cached stops cite a route
+
+    (data / "packs" / "olumo-rock" / "routes.json").unlink()
+    second = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+
+    assert w.calls == 2 and second.routes is None
+    assert not any(c.startswith("route-") for c in cited_ids(second))
+    assert cited_ids(second) <= resolvable_ids(second)  # no citation to a route that is not there
+
+
+def test_restoring_the_original_routes_finds_the_original_cache_entry_again(data, db):
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    original = (data / "packs" / "olumo-rock" / "routes.json").read_text()
+    first = client.post("/pack/olumo-rock", json=BODY).json()
+
+    edit_routes(data, lengthen_primary)
+    client.post("/pack/olumo-rock", json=BODY)
+    assert w.calls == 2
+
+    (data / "packs" / "olumo-rock" / "routes.json").write_text(original)
+    again = client.post("/pack/olumo-rock", json=BODY).json()
+    assert w.calls == 2 and again["itinerary"] == first["itinerary"]  # no new model call
+
+
+def test_recollecting_identical_routes_keeps_the_cache(data, db):
+    """Only the collection timestamp differs, which does not change the itinerary."""
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    client.post("/pack/olumo-rock", json=BODY)
+    edit_routes(data, lambda raw: raw.update(collected_at="2026-10-05T10:00:00Z"))
+    client.post("/pack/olumo-rock", json=BODY)
+    assert w.calls == 1
+
+
+def test_cache_key_covers_route_content_and_its_absence():
+    from trip_advisor.pack.routes import to_pack_routes
+    from trip_advisor.pipeline.collect.models import SiteRoutes
+    from trip_advisor.schemas.delta import Delta
+    from trip_advisor.schemas.itinerary import TripRequest
+    from trip_advisor.schemas.pack import Pack
+    from trip_advisor.services.trips import cache_key
+
+    request = TripRequest.model_validate(BODY)
+    pack = Pack.model_validate_json((REPO / "data/packs/olumo-rock/pack.json").read_text())
+    delta = Delta(generated_at=NOW)
+    site_routes = SiteRoutes.model_validate_json(
+        (REPO / "data/packs/olumo-rock/routes.json").read_text()
+    )
+    base = to_pack_routes(site_routes)
+    longer = base.model_copy(update={"routes": [
+        base.routes[0].model_copy(update={"distance_km": base.routes[0].distance_km + 1}),
+        *base.routes[1:],
+    ]})  # fmt: skip
+
+    def key(routes):
+        return cache_key(request, pack, delta, "m", NOW, routes)
+
+    assert len({key(base), key(longer), key(None)}) == 3
+    assert key(base) == key(base.model_copy(deep=True))

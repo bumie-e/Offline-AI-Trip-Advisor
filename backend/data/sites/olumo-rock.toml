@@ -34,3 +34,8 @@ match_terms = ["Abeokuta"]
 name = "Lagos-Ibadan Expressway"
 queries = ['"Lagos-Ibadan" expressway']
 match_terms = ["Lagos-Ibadan", "Lagos–Ibadan", "Lagos/Ibadan"]
+
+[images]
+# Wikimedia Commons searches. Road photos must name the road in the file title.
+site = ["Olumo Rock"]
+roads = ["Abeokuta road", "Abeokuta expressway", "Lagos Abeokuta"]

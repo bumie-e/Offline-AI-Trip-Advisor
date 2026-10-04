@@ -4,7 +4,7 @@ from typing import Any
 
 from .geo import resample
 from .http import Fetcher
-from .models import Place, RouteOption
+from .models import Place, RoadSegment, RouteOption
 
 OSRM = "https://router.project-osrm.org/route/v1/driving"
 MIN_ROAD_KM = 3.0
@@ -23,6 +23,46 @@ def _roads(route: dict[str, Any]) -> list[str]:
     return [label for label, km in totals.items() if km >= MIN_ROAD_KM]
 
 
+MIN_SEGMENT_KM = 1.5  # shorter bits (slip roads, junctions) are folded into the road before them
+
+
+def _segments(route: dict[str, Any]) -> list[RoadSegment]:
+    """Consecutive stretches of one named road, with kilometre ranges along the route."""
+    runs: list[list[Any]] = []  # [label, from_km, to_km]
+    km = 0.0
+    for leg in route["legs"]:
+        for step in leg["steps"]:
+            name, ref = step.get("name", ""), step.get("ref", "")
+            label = " ".join(p for p in (ref, name) if p).strip()
+            end = km + step["distance"] / 1000
+            if not label and runs:
+                runs[-1][2] = end  # an unnamed bit belongs to the road it sits on
+            elif label and runs and runs[-1][0] == label:
+                runs[-1][2] = end
+            elif label:
+                runs.append([label, km, end])
+            km = end
+    merged: list[list[Any]] = []
+    for run in runs:
+        if merged and (run[2] - run[1] < MIN_SEGMENT_KM or merged[-1][0] == run[0]):
+            merged[-1][2] = run[2]
+        else:
+            merged.append(run)
+    return [RoadSegment(name=n, from_km=round(a, 1), to_km=round(b, 1)) for n, a, b in merged]
+
+
+def road_at(route: RouteOption, km: float) -> str | None:
+    """The named road at this distance along the route, or None when segments are not known."""
+    for seg in route.segments:
+        if seg.from_km <= km <= seg.to_km:
+            return seg.name
+    if route.segments:  # past the last or before the first: the nearest one
+        return min(
+            route.segments, key=lambda sg: min(abs(sg.from_km - km), abs(sg.to_km - km))
+        ).name
+    return None
+
+
 def parse_routes(payload: dict[str, Any], *, label: str) -> list[RouteOption]:
     options = []
     for i, route in enumerate(payload.get("routes", [])):
@@ -34,6 +74,7 @@ def parse_routes(payload: dict[str, Any], *, label: str) -> list[RouteOption]:
                 distance_km=round(route["distance"] / 1000, 1),
                 duration_min=round(route["duration"] / 60),
                 roads=_roads(route),
+                segments=_segments(route),
                 geometry=resample(
                     [(lat, lon) for lon, lat in route["geometry"]["coordinates"]], STORE_SPACING_KM
                 ),

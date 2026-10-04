@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from pathlib import Path
@@ -11,7 +12,7 @@ from trip_advisor.pipeline.collect.freshness import cutoff
 from trip_advisor.pipeline.collect.models import SiteRoutes
 from trip_advisor.pipeline.structure.models import StructuredSite
 from trip_advisor.schemas.common import Confidence
-from trip_advisor.schemas.pack import Pack, PackRecord, RoadNote
+from trip_advisor.schemas.pack import ImageRecord, Pack, PackRecord, RoadNote
 
 PACKS_DIR = Path("data/packs")
 MAX_PACK_BYTES = 100_000  # downloaded once on Wi-Fi, but still stored on a phone
@@ -52,11 +53,16 @@ def version_for(records: list[PackRecord], today: date) -> str:
 
 
 def build_pack(
-    structured: StructuredSite, *, today: date | None = None, now: datetime | None = None
+    structured: StructuredSite,
+    *,
+    today: date | None = None,
+    now: datetime | None = None,
+    images: Sequence[ImageRecord] = (),
 ) -> tuple[Pack, BuildReport]:
+    """Images are small records (the files are fetched separately), so they ride in the pack."""
     now = now or datetime.now(UTC)
     today = today or now.date()
-    fresh = [r for r in structured.records if not _stale(r, today)]
+    fresh = [r for r in [*structured.records, *images] if not _stale(r, today)]
     ranked = sorted(fresh, key=_priority)
 
     def pack_of(records: list[PackRecord]) -> Pack:
@@ -75,7 +81,7 @@ def build_pack(
         version=pack.version,
         size_bytes=len(pack.model_dump_json().encode()),
         kept=len(kept),
-        dropped_stale=len(structured.records) - len(fresh),
+        dropped_stale=len(structured.records) + len(images) - len(fresh),
         dropped_for_size=len(fresh) - len(kept),
     )
 

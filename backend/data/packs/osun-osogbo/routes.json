@@ -26,7 +26,39 @@
         "F118-1",
         "F205 Gbongan - Osogbo Road"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 123.2
+        },
+        {
+          "name": "A122 Ile-Ife Expressway",
+          "from_km": 123.2,
+          "to_km": 171.7
+        },
+        {
+          "name": "F118-1",
+          "from_km": 171.7,
+          "to_km": 200.6
+        },
+        {
+          "name": "F205 Gbongan - Osogbo Road",
+          "from_km": 200.6,
+          "to_km": 217.7
+        }
+      ]
     },
     {
       "id": "via-ife",
@@ -42,7 +74,44 @@
         "F205",
         "F205 Gbongan - Osogbo Road"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 123.2
+        },
+        {
+          "name": "A122 Ile-Ife Expressway",
+          "from_km": 123.2,
+          "to_km": 186.2
+        },
+        {
+          "name": "F207 Ile-Ife Expressway",
+          "from_km": 186.2,
+          "to_km": 202.7
+        },
+        {
+          "name": "F205",
+          "from_km": 202.7,
+          "to_km": 230.6
+        },
+        {
+          "name": "F205 Gbongan - Osogbo Road",
+          "from_km": 230.6,
+          "to_km": 247.7
+        }
+      ]
     }
   ],
   "stops": [

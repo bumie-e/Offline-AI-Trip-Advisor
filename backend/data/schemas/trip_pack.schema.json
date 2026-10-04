@@ -299,6 +299,105 @@
       "title": "EventType",
       "type": "string"
     },
+    "ImageRecord": {
+      "additionalProperties": false,
+      "description": "A photo of the site or of a road on the way. The file itself is fetched from `path`.\n\n`summary` is the caption. Free licences still require credit, so `credit` is ready to show.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "image",
+          "default": "image",
+          "title": "Type",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "site",
+            "road"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "mime": {
+          "title": "Mime",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 1,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 1,
+          "title": "Height",
+          "type": "integer"
+        },
+        "size_bytes": {
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "credit": {
+          "title": "Credit",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "license_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Url"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "kind",
+        "path",
+        "mime",
+        "width",
+        "height",
+        "size_bytes",
+        "credit",
+        "license"
+      ],
+      "title": "ImageRecord",
+      "type": "object"
+    },
     "Itinerary": {
       "additionalProperties": false,
       "properties": {
@@ -378,6 +477,7 @@
               "mapping": {
                 "contact": "#/$defs/Contact",
                 "cost_note": "#/$defs/CostNote",
+                "image": "#/$defs/ImageRecord",
                 "road_note": "#/$defs/RoadNote",
                 "site_fact": "#/$defs/SiteFact"
               },
@@ -395,6 +495,9 @@
               },
               {
                 "$ref": "#/$defs/Contact"
+              },
+              {
+                "$ref": "#/$defs/ImageRecord"
               }
             ]
           },
@@ -409,6 +512,159 @@
         "records"
       ],
       "title": "Pack",
+      "type": "object"
+    },
+    "PackPlace": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "lat",
+        "lon"
+      ],
+      "title": "PackPlace",
+      "type": "object"
+    },
+    "PackRoute": {
+      "additionalProperties": false,
+      "properties": {
+        "cite_id": {
+          "title": "Cite Id",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "primary",
+            "alternative",
+            "variant"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "distance_km": {
+          "title": "Distance Km",
+          "type": "number"
+        },
+        "duration_min": {
+          "title": "Duration Min",
+          "type": "number"
+        },
+        "roads": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roads",
+          "type": "array"
+        }
+      },
+      "required": [
+        "cite_id",
+        "id",
+        "kind",
+        "label",
+        "distance_km",
+        "duration_min",
+        "roads"
+      ],
+      "title": "PackRoute",
+      "type": "object"
+    },
+    "PackRoutes": {
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "$ref": "#/$defs/PackPlace"
+        },
+        "destination": {
+          "$ref": "#/$defs/PackPlace"
+        },
+        "routes": {
+          "items": {
+            "$ref": "#/$defs/PackRoute"
+          },
+          "title": "Routes",
+          "type": "array"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/$defs/PackStop"
+          },
+          "title": "Stops",
+          "type": "array"
+        },
+        "collected_at": {
+          "format": "date-time",
+          "title": "Collected At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "collected_at"
+      ],
+      "title": "PackRoutes",
+      "type": "object"
+    },
+    "PackStop": {
+      "additionalProperties": false,
+      "description": "A town, fuel station, hospital or police station beside a route.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        },
+        "km_from_start": {
+          "title": "Km From Start",
+          "type": "number"
+        },
+        "route_id": {
+          "title": "Route Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "lat",
+        "lon",
+        "km_from_start",
+        "route_id"
+      ],
+      "title": "PackStop",
       "type": "object"
     },
     "RoadNote": {
@@ -603,6 +859,38 @@
           },
           "title": "Cited Ids",
           "type": "array"
+        },
+        "comment": {
+          "default": "",
+          "title": "Comment",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StopImage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "road": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StopRoad"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "advice": {
+          "default": "",
+          "title": "Advice",
+          "type": "string"
         }
       },
       "required": [
@@ -610,6 +898,159 @@
         "title"
       ],
       "title": "Stop",
+      "type": "object"
+    },
+    "StopImage": {
+      "additionalProperties": false,
+      "description": "The one photo shown for a stop. The file is fetched from `path`.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "caption": {
+          "title": "Caption",
+          "type": "string"
+        },
+        "credit": {
+          "title": "Credit",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 1,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 1,
+          "title": "Height",
+          "type": "integer"
+        },
+        "shows_this_stop": {
+          "default": true,
+          "title": "Shows This Stop",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "caption",
+        "credit",
+        "license",
+        "width",
+        "height"
+      ],
+      "title": "StopImage",
+      "type": "object"
+    },
+    "StopRoad": {
+      "additionalProperties": false,
+      "description": "What a traveller sees on tapping a stop: the nature of the road there.",
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "km_from_start": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Km From Start"
+        },
+        "km_since_previous_stop": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Km Since Previous Stop"
+        },
+        "condition": {
+          "default": "",
+          "title": "Condition",
+          "type": "string"
+        },
+        "has_recent_report": {
+          "default": false,
+          "title": "Has Recent Report",
+          "type": "boolean"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "enum": [
+                "here",
+                "road",
+                "corridor"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Confidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "report_age_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Report Age Days"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "title": "StopRoad",
       "type": "object"
     },
     "TravelMode": {
@@ -745,6 +1186,17 @@
     },
     "itinerary": {
       "$ref": "#/$defs/Itinerary"
+    },
+    "routes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PackRoutes"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "advice_source": {
       "enum": [

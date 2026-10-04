@@ -22,7 +22,39 @@
       "roads": [
         "A5 Lagos-Abeokuta Expressway"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 1.4
+        },
+        {
+          "name": "A5 Agege Motor Road",
+          "from_km": 1.4,
+          "to_km": 4.0
+        },
+        {
+          "name": "A5 Lagos-Abeokuta Expressway",
+          "from_km": 4.0,
+          "to_km": 81.3
+        },
+        {
+          "name": "A5",
+          "from_km": 81.3,
+          "to_km": 83.4
+        },
+        {
+          "name": "Logbara-Magapon Road",
+          "from_km": 83.4,
+          "to_km": 85.0
+        },
+        {
+          "name": "Ikija Road",
+          "from_km": 85.0,
+          "to_km": 86.5
+        }
+      ]
     },
     {
       "id": "alt-1",
@@ -35,7 +67,34 @@
         "E1 Lagos-Ibadan Expressway",
         "F102 Abeokuta-Sagamu Expressway"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 50.2
+        },
+        {
+          "name": "F102 Abeokuta-Sagamu Expressway",
+          "from_km": 50.2,
+          "to_km": 95.5
+        },
+        {
+          "name": "Ikija Road",
+          "from_km": 95.5,
+          "to_km": 97.0
+        }
+      ]
     },
     {
       "id": "via-sagamu",
@@ -49,7 +108,49 @@
         "A121-1 Abeokuta-Sagamu Expressway",
         "F102 Abeokuta-Sagamu Expressway"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 48.5
+        },
+        {
+          "name": "A121-1 Abeokuta-Sagamu Expressway",
+          "from_km": 48.5,
+          "to_km": 54.0
+        },
+        {
+          "name": "A121-1 Benin-Sagamu Expressway",
+          "from_km": 54.0,
+          "to_km": 60.3
+        },
+        {
+          "name": "A121-1 Abeokuta-Sagamu Expressway",
+          "from_km": 60.3,
+          "to_km": 67.4
+        },
+        {
+          "name": "F102 Abeokuta-Sagamu Expressway",
+          "from_km": 67.4,
+          "to_km": 112.7
+        },
+        {
+          "name": "Ikija Road",
+          "from_km": 112.7,
+          "to_km": 114.3
+        }
+      ]
     },
     {
       "id": "via-ibadan",
@@ -64,7 +165,49 @@
         "A1",
         "F102 Abeokuta-Sagamu Expressway"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 113.8
+        },
+        {
+          "name": "A1",
+          "from_km": 113.8,
+          "to_km": 122.7
+        },
+        {
+          "name": "Challenge Road",
+          "from_km": 122.7,
+          "to_km": 124.8
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 124.8,
+          "to_km": 187.3
+        },
+        {
+          "name": "F102 Abeokuta-Sagamu Expressway",
+          "from_km": 187.3,
+          "to_km": 233.5
+        },
+        {
+          "name": "Ikija Road",
+          "from_km": 233.5,
+          "to_km": 235.0
+        }
+      ]
     }
   ],
   "stops": [
