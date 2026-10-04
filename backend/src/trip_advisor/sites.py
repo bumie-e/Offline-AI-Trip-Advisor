@@ -37,6 +37,14 @@ class Corridor(Strict):
     primary: bool = False
 
 
+class ImageQueries(Strict):
+    """Wikimedia Commons search terms. Every word of a term must appear in a file's title or
+    description, so keep them specific."""
+
+    site: list[str] = Field(default_factory=list)  # the heritage site itself
+    roads: list[str] = Field(default_factory=list)  # roads or towns on the way
+
+
 def needs_geocoding(site: "SiteConfig") -> bool:
     points = [site.origin, site.destination, *(v for var in site.variants for v in var.via)]
     return not all(p.pinned for p in points)
@@ -52,6 +60,7 @@ class SiteConfig(Strict):
     variants: list[Variant] = Field(default_factory=list)
     corridors: list[Corridor]
     wikivoyage_pages: list[str] = Field(default_factory=list)
+    images: ImageQueries = Field(default_factory=ImageQueries)
 
 
 def load_site(site_id: str, sites_dir: Path = SITES_DIR) -> SiteConfig:

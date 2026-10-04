@@ -39,6 +39,15 @@
       "title": "Advice",
       "type": "object"
     },
+    "Confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
     "Severity": {
       "enum": [
         "none",
@@ -95,6 +104,38 @@
           },
           "title": "Cited Ids",
           "type": "array"
+        },
+        "comment": {
+          "default": "",
+          "title": "Comment",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StopImage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "road": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StopRoad"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "advice": {
+          "default": "",
+          "title": "Advice",
+          "type": "string"
         }
       },
       "required": [
@@ -102,6 +143,159 @@
         "title"
       ],
       "title": "Stop",
+      "type": "object"
+    },
+    "StopImage": {
+      "additionalProperties": false,
+      "description": "The one photo shown for a stop. The file is fetched from `path`.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "caption": {
+          "title": "Caption",
+          "type": "string"
+        },
+        "credit": {
+          "title": "Credit",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 1,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 1,
+          "title": "Height",
+          "type": "integer"
+        },
+        "shows_this_stop": {
+          "default": true,
+          "title": "Shows This Stop",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "caption",
+        "credit",
+        "license",
+        "width",
+        "height"
+      ],
+      "title": "StopImage",
+      "type": "object"
+    },
+    "StopRoad": {
+      "additionalProperties": false,
+      "description": "What a traveller sees on tapping a stop: the nature of the road there.",
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "km_from_start": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Km From Start"
+        },
+        "km_since_previous_stop": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Km Since Previous Stop"
+        },
+        "condition": {
+          "default": "",
+          "title": "Condition",
+          "type": "string"
+        },
+        "has_recent_report": {
+          "default": false,
+          "title": "Has Recent Report",
+          "type": "boolean"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "enum": [
+                "here",
+                "road",
+                "corridor"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Confidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "report_age_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Report Age Days"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "title": "StopRoad",
       "type": "object"
     },
     "TravelMode": {

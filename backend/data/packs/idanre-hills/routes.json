@@ -27,7 +27,44 @@
         "F209",
         "F209 Ore - Ondo"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 48.5
+        },
+        {
+          "name": "A121-1 Abeokuta-Sagamu Expressway",
+          "from_km": 48.5,
+          "to_km": 54.0
+        },
+        {
+          "name": "A121-1 Benin-Sagamu Expressway",
+          "from_km": 54.0,
+          "to_km": 199.2
+        },
+        {
+          "name": "F209",
+          "from_km": 199.2,
+          "to_km": 231.8
+        },
+        {
+          "name": "F209 Ore - Ondo",
+          "from_km": 231.8,
+          "to_km": 268.1
+        }
+      ]
     },
     {
       "id": "via-ife",
@@ -44,7 +81,49 @@
         "F207",
         "F209"
       ],
-      "geometry": []
+      "geometry": [],
+      "segments": [
+        {
+          "name": "Airport Road",
+          "from_km": 0.2,
+          "to_km": 2.6
+        },
+        {
+          "name": "Obafemi Awolowo Way",
+          "from_km": 2.6,
+          "to_km": 7.7
+        },
+        {
+          "name": "E1 Lagos-Ibadan Expressway",
+          "from_km": 7.7,
+          "to_km": 113.8
+        },
+        {
+          "name": "A1",
+          "from_km": 113.8,
+          "to_km": 124.1
+        },
+        {
+          "name": "A122 Ile-Ife Expressway",
+          "from_km": 124.1,
+          "to_km": 187.2
+        },
+        {
+          "name": "F207 Ile-Ife Expressway",
+          "from_km": 187.2,
+          "to_km": 200.8
+        },
+        {
+          "name": "F207",
+          "from_km": 200.8,
+          "to_km": 259.8
+        },
+        {
+          "name": "F209",
+          "from_km": 259.8,
+          "to_km": 293.8
+        }
+      ]
     }
   ],
   "stops": [

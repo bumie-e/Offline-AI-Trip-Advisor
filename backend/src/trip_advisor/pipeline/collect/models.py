@@ -38,6 +38,14 @@ class Place(Strict):
     matched: str = ""  # what OpenStreetMap resolved the query to, for eyeballing
 
 
+class RoadSegment(Strict):
+    """A stretch of one named road, in kilometres from the start of the route."""
+
+    name: str  # "E1 Lagos-Ibadan Expressway"
+    from_km: float
+    to_km: float
+
+
 class RouteOption(Strict):
     id: str  # "primary", "alt-1", or a configured variant id
     kind: Literal["primary", "alternative", "variant"]
@@ -46,6 +54,7 @@ class RouteOption(Strict):
     duration_min: float  # free-flow estimate, no traffic or road condition
     roads: list[str]  # named roads over 3 km, in travel order
     geometry: list[tuple[float, float]]  # (lat, lon), simplified
+    segments: list[RoadSegment] = Field(default_factory=list)  # which road, where on the route
 
 
 class Stop(Strict):
