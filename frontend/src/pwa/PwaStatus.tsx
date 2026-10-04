@@ -18,7 +18,7 @@ export function PwaStatus() {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 mx-auto flex max-w-md items-center gap-3 rounded-xl bg-stone-900 px-4 py-3 text-sm text-white shadow-lg"
+      className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-20 mx-auto flex max-w-md items-center gap-3 rounded-2xl bg-forest-950 px-4 py-3 text-sm text-white shadow-raised"
     >
       <p className="flex-1">
         {needRefresh ? 'A new version of the app is available.' : 'The app is ready to work offline.'}
@@ -27,12 +27,16 @@ export function PwaStatus() {
         <button
           type="button"
           onClick={() => void updateServiceWorker()}
-          className="rounded-lg bg-white px-3 py-1.5 font-medium text-stone-900"
+          className="rounded-lg bg-white px-3 py-1.5 font-semibold text-forest-900 transition hover:bg-sand-100"
         >
           Update
         </button>
       )}
-      <button type="button" onClick={close} className="px-2 py-1.5 text-stone-300">
+      <button
+        type="button"
+        onClick={close}
+        className="rounded-lg px-2 py-1.5 text-forest-200 transition hover:text-white"
+      >
         Close
       </button>
     </div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import { ItineraryView } from '../components/ItineraryView'
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, OfflineReadyIcon } from '../components/icons'
+import { OfflineBadge } from '../components/OfflineBadge'
 import { Spinner } from '../components/Spinner'
 import { findSavedTrip, saveTrip, type SavedTrip } from '../db/db'
 import { planPath, tripPath, type PlanState, type ResultState } from '../lib/navigation'
@@ -26,10 +28,10 @@ export function ResultPage() {
 
   if (!tripPack) {
     return (
-      <section className="space-y-4">
-        <h1 className="text-2xl font-semibold text-stone-900">No plan to show</h1>
+      <section className="card mt-4 space-y-3 p-6 text-center">
+        <h1 className="font-display text-2xl font-semibold text-stone-900">No plan to show</h1>
         <p className="text-stone-600">This plan is no longer available. Plan the trip again.</p>
-        <Link to={planPath(siteId)} className="font-medium text-green-800 underline">
+        <Link to={planPath(siteId)} className="btn-primary mt-2">
           Plan a visit
         </Link>
       </section>
@@ -55,67 +57,76 @@ export function ResultPage() {
   const changeState: PlanState = { request: tripPack.itinerary.request }
 
   return (
-    <section className="space-y-5">
-      <header className="rounded-3xl bg-gradient-to-br from-green-800 to-green-950 px-5 pt-3 pb-6 text-white shadow-md">
+    <ItineraryView
+      tripPack={tripPack}
+      title={siteName || 'Your trip plan'}
+      nav={
         <Link
           to={planPath(siteId)}
           state={changeState}
-          className="-ml-2 inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-medium text-green-100 active:bg-white/10"
+          className="-ml-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium text-forest-100 transition-colors hover:bg-white/10 active:bg-white/15"
         >
-          <span aria-hidden>←</span> Change details
+          <ArrowLeftIcon className="size-4" /> Change details
         </Link>
-        <p className="mt-3 text-xs font-semibold tracking-widest text-green-200 uppercase">
-          Heritage trip plan
-        </p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">{siteName || 'Your trip plan'}</h1>
-      </header>
-
-      <ItineraryView tripPack={tripPack}>
-        {saved ? (
-          <div
-            role="status"
-            className="flex items-start gap-3 rounded-2xl border-2 border-green-600 bg-green-50 p-4 text-green-900"
+      }
+      status={
+        saved ? (
+          <OfflineBadge tone="dark" label="Saved for offline" />
+        ) : (
+          <button
+            type="button"
+            onClick={() => void onSave()}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest-900 transition hover:bg-sand-100 active:scale-[0.98] disabled:opacity-70"
           >
-            <span
-              aria-hidden
-              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-green-700 text-lg font-bold text-white"
+            {saving ? <Spinner className="size-3" /> : <OfflineReadyIcon className="size-3.5" strokeWidth={2.2} />}
+            Save for offline
+          </button>
+        )
+      }
+    >
+      {saved ? (
+        <div role="status" className="card flex items-start gap-3.5 border-forest-300 bg-forest-50 p-5">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-forest-700 text-white">
+            <CheckIcon className="size-5" strokeWidth={2.4} />
+          </span>
+          <div>
+            <p className="text-lg font-semibold text-forest-900">Saved for offline</p>
+            <p className="mt-0.5 text-sm leading-relaxed text-forest-800">
+              This trip is on your phone now. You can open it from My trips without a connection.
+            </p>
+            <Link
+              to={tripPath(saved.id)}
+              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-forest-800 underline-offset-2 hover:underline"
             >
-              ✓
+              Open in My trips <ArrowRightIcon className="size-4" />
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="card space-y-4 p-5">
+          <div className="flex items-start gap-3.5">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-sand-100 text-forest-800">
+              <OfflineReadyIcon className="size-5" />
             </span>
             <div>
-              <p className="text-lg font-bold">Saved for offline</p>
-              <p className="mt-0.5 text-sm">
-                This trip is on your phone now. You can open it from My trips without a connection.
+              <p className="text-lg font-semibold text-stone-900">Take this plan with you</p>
+              <p className="mt-0.5 text-sm leading-relaxed text-stone-600">
+                Save it to this phone before you go. It opens from My trips, even with no signal.
               </p>
-              <Link to={tripPath(saved.id)} className="mt-2 inline-block text-sm font-semibold underline">
-                Open in My trips →
-              </Link>
             </div>
           </div>
-        ) : (
-          <div className="space-y-2">
-            <button
-              type="button"
-              onClick={() => void onSave()}
-              disabled={saving}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-green-800 py-4 text-lg font-bold text-white shadow-lg active:bg-green-900 disabled:opacity-70"
-            >
-              {saving && <Spinner className="size-4" />}
-              {saving ? 'Saving…' : 'Save for offline'}
-            </button>
-            {!saving && (
-              <p className="text-center text-xs text-stone-500">
-                Keeps this plan on your phone, so it works with no signal.
-              </p>
-            )}
-            {saveError && (
-              <p role="alert" className="text-sm text-red-800">
-                {saveError}
-              </p>
-            )}
-          </div>
-        )}
-      </ItineraryView>
-    </section>
+          <button type="button" onClick={() => void onSave()} disabled={saving} className="btn-primary w-full">
+            {saving && <Spinner className="size-4" />}
+            {saving ? 'Saving…' : 'Save for offline'}
+          </button>
+          {saveError && (
+            <p role="alert" className="text-sm text-red-800">
+              {saveError}
+            </p>
+          )}
+        </div>
+      )}
+    </ItineraryView>
   )
 }

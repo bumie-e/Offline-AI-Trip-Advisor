@@ -3,6 +3,19 @@ import { useLocation, useNavigate, useParams } from 'react-router'
 import { downloadTripPack, getPlace } from '../api/client'
 import type { PlaceSummary, TravelMode, TripRequest } from '../api/types'
 import { BackButton } from '../components/BackButton'
+import {
+  AlertIcon,
+  ArrowRightIcon,
+  CarIcon,
+  CloudOffIcon,
+  MinusIcon,
+  OfflineReadyIcon,
+  PinIcon,
+  PlaneIcon,
+  PlusIcon,
+  RainIcon,
+  RoadIcon,
+} from '../components/icons'
 import { Spinner } from '../components/Spinner'
 import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { friendlyError } from '../lib/errors'
@@ -118,160 +131,252 @@ export function PlanPage() {
 
   if (generating) {
     return (
-      <div className="flex min-h-[60dvh] flex-col items-center justify-center gap-4 text-center" role="status">
-        <Spinner className="size-10 text-green-700" />
-        <div className="space-y-1">
-          <p className="text-lg font-semibold text-stone-900">Building your trip plan…</p>
-          <p className="text-sm text-stone-600">
+      <div className="flex min-h-[65dvh] flex-col items-center justify-center px-2 text-center" role="status">
+        <div className="card w-full max-w-sm p-7">
+          <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-forest-50 text-forest-700">
+            <Spinner className="size-8" />
+          </span>
+          <p className="mt-5 font-display text-2xl font-semibold text-stone-900">Building your trip plan…</p>
+          <p className="mt-2 text-sm leading-relaxed text-stone-600">
             Checking routes, weather and news for {siteName}. This can take up to a minute.
           </p>
+          <ul className="mt-5 space-y-2 border-t border-stone-100 pt-5 text-left text-sm text-stone-700">
+            {CHECKS.map(({ Icon, label }) => (
+              <li key={label} className="flex items-center gap-2.5">
+                <Icon className="size-4 text-forest-600" /> {label}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     )
   }
 
+  const groupSize = Number(values.groupSize)
+  const stepGroup = (delta: number) => {
+    const current = Number.isInteger(groupSize) ? groupSize : 1
+    set('groupSize', String(Math.min(50, Math.max(1, current + delta))))
+  }
+
   return (
-    <section className="space-y-5">
+    <section className="space-y-6">
       <div>
         <BackButton fallback="/" />
-        <h1 className="mt-2 text-2xl font-semibold text-stone-900">Plan your visit</h1>
-        <p className="text-stone-600">
+        <p className="eyebrow mt-3 text-clay-600">Plan your visit</p>
+        <h1 className="mt-1 font-display text-[2rem] leading-tight font-semibold tracking-tight text-stone-900">
           {siteName}
-          {place && `, ${place.city}, ${place.state} State`}
-        </p>
+        </h1>
+        {place && (
+          <p className="mt-1 flex items-center gap-1.5 text-stone-600">
+            <PinIcon className="size-4 text-stone-400" />
+            {place.city}, {place.state} State, Nigeria
+          </p>
+        )}
       </div>
 
       {!online && (
-        <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          You are offline. You need a connection to generate a new plan. Saved trips are still
-          available in My trips.
-        </p>
+        <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+          <CloudOffIcon className="mt-0.5 size-5 shrink-0 text-amber-700" />
+          <p>
+            <span className="font-semibold">You are offline.</span> You need a connection to generate
+            a new plan. Saved trips are still available in My trips.
+          </p>
+        </div>
       )}
 
       <form onSubmit={onSubmit} noValidate className="space-y-4">
-        <Field label="Starting city">
-          <input
-            type="text"
-            value={values.startCity}
-            onChange={(e) => set('startCity', e.target.value)}
-            autoComplete="address-level2"
-            className={INPUT}
-            required
-          />
-        </Field>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Start date">
+        <FormCard title="When and where">
+          <Field label="Starting city">
             <input
-              type="date"
-              value={values.startDate}
-              min={todayIso()}
-              onChange={(e) => {
-                const startDate = e.target.value
-                setValues((v) => ({
-                  ...v,
-                  startDate,
-                  endDate: v.endDate < startDate ? startDate : v.endDate,
-                }))
-              }}
-              className={INPUT}
+              type="text"
+              value={values.startCity}
+              onChange={(e) => set('startCity', e.target.value)}
+              autoComplete="address-level2"
+              className="field-input"
               required
             />
           </Field>
-          <Field label="End date">
-            <input
-              type="date"
-              value={values.endDate}
-              min={values.startDate}
-              onChange={(e) => set('endDate', e.target.value)}
-              className={INPUT}
-              required
-            />
-          </Field>
-        </div>
 
-        <Field label="Group size">
-          <input
-            type="number"
-            inputMode="numeric"
-            min={1}
-            max={50}
-            value={values.groupSize}
-            onChange={(e) => set('groupSize', e.target.value)}
-            className={INPUT}
-            required
-          />
-        </Field>
-
-        <fieldset>
-          <legend className={LABEL}>Getting there</legend>
-          <div className="mt-1.5 grid grid-cols-2 gap-2">
-            {MODES.map((m) => (
-              <label
-                key={m.value}
-                className="flex cursor-pointer items-center justify-center rounded-xl border border-stone-300 bg-white py-3 font-medium text-stone-700 has-checked:border-green-700 has-checked:bg-green-50 has-checked:text-green-900 has-focus-visible:ring-2 has-focus-visible:ring-green-600"
-              >
-                <input
-                  type="radio"
-                  name="mode"
-                  value={m.value}
-                  checked={values.mode === m.value}
-                  onChange={() => set('mode', m.value)}
-                  className="sr-only"
-                />
-                {m.label}
-              </label>
-            ))}
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Start date">
+              <input
+                type="date"
+                value={values.startDate}
+                min={todayIso()}
+                onChange={(e) => {
+                  const startDate = e.target.value
+                  setValues((v) => ({
+                    ...v,
+                    startDate,
+                    endDate: v.endDate < startDate ? startDate : v.endDate,
+                  }))
+                }}
+                className="field-input min-h-12"
+                required
+              />
+            </Field>
+            <Field label="End date">
+              <input
+                type="date"
+                value={values.endDate}
+                min={values.startDate}
+                onChange={(e) => set('endDate', e.target.value)}
+                className="field-input min-h-12"
+                required
+              />
+            </Field>
           </div>
-        </fieldset>
+        </FormCard>
 
-        <Field label="Arrival airport" hint="Optional, e.g. Lagos (LOS)">
-          <input
-            type="text"
-            value={values.arrivalAirport}
-            onChange={(e) => set('arrivalAirport', e.target.value)}
-            className={INPUT}
-          />
-        </Field>
+        <FormCard title="Who and how">
+          <div>
+            <label htmlFor="group-size" className="field-label">
+              Group size
+            </label>
+            <div className="mt-1.5 flex items-stretch overflow-hidden rounded-xl border border-stone-300 bg-white focus-within:border-forest-600 focus-within:ring-4 focus-within:ring-forest-600/15">
+              <button
+                type="button"
+                onClick={() => stepGroup(-1)}
+                disabled={groupSize <= 1}
+                aria-label="Fewer travellers"
+                className="flex w-14 items-center justify-center text-forest-800 transition hover:bg-sand-50 active:bg-sand-100 disabled:text-stone-300"
+              >
+                <MinusIcon className="size-5" />
+              </button>
+              <input
+                id="group-size"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={50}
+                value={values.groupSize}
+                onChange={(e) => set('groupSize', e.target.value)}
+                className="w-full border-x border-stone-200 py-3 text-center text-lg font-semibold text-stone-900 focus:outline-none [&::-webkit-inner-spin-button]:appearance-none"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => stepGroup(1)}
+                disabled={groupSize >= 50}
+                aria-label="More travellers"
+                className="flex w-14 items-center justify-center text-forest-800 transition hover:bg-sand-50 active:bg-sand-100 disabled:text-stone-300"
+              >
+                <PlusIcon className="size-5" />
+              </button>
+            </div>
+          </div>
 
-        <Field label="Budget in naira (₦)" hint="Optional">
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            step={1000}
-            value={values.budget}
-            onChange={(e) => set('budget', e.target.value)}
-            className={INPUT}
-          />
-        </Field>
+          <fieldset>
+            <legend className="field-label">Getting there</legend>
+            <div className="mt-1.5 grid grid-cols-2 gap-2.5">
+              {MODES.map((m) => {
+                const Icon = m.value === 'flight' ? PlaneIcon : CarIcon
+                return (
+                  <label
+                    key={m.value}
+                    className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-stone-300 bg-white py-3.5 font-medium text-stone-700 transition hover:border-stone-400 has-checked:border-forest-700 has-checked:bg-forest-50 has-checked:text-forest-900 has-checked:ring-1 has-checked:ring-forest-700 has-focus-visible:ring-4 has-focus-visible:ring-forest-600/20"
+                  >
+                    <input
+                      type="radio"
+                      name="mode"
+                      value={m.value}
+                      checked={values.mode === m.value}
+                      onChange={() => set('mode', m.value)}
+                      className="sr-only"
+                    />
+                    <Icon className="size-5" />
+                    {m.label}
+                  </label>
+                )
+              })}
+            </div>
+          </fieldset>
+        </FormCard>
+
+        <FormCard title="Optional details" tag="Optional">
+          <Field label="Arrival airport" hint="e.g. Lagos (LOS)">
+            <input
+              type="text"
+              value={values.arrivalAirport}
+              onChange={(e) => set('arrivalAirport', e.target.value)}
+              placeholder="If you are flying in"
+              className="field-input"
+            />
+          </Field>
+
+          <Field label="Budget" hint="in naira">
+            <div className="relative">
+              <span className="pointer-events-none absolute inset-y-0 left-3.5 mt-1.5 flex items-center text-stone-500">
+                ₦
+              </span>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                step={1000}
+                value={values.budget}
+                onChange={(e) => set('budget', e.target.value)}
+                placeholder="Total for the group"
+                className="field-input pl-8"
+              />
+            </div>
+          </Field>
+        </FormCard>
 
         {error && (
-          <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
-            {error}
-          </p>
+          <div role="alert" className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+            <AlertIcon className="mt-0.5 size-5 shrink-0 text-red-700" />
+            <p>{error}</p>
+          </div>
         )}
 
-        <button
-          type="submit"
-          disabled={!online}
-          className="w-full rounded-xl bg-green-800 py-3.5 text-base font-semibold text-white shadow-sm active:bg-green-900 disabled:bg-stone-300 disabled:text-stone-600"
-        >
-          {online ? 'Get my trip plan' : 'Connect to generate a plan'}
-        </button>
+        <div className="space-y-3 pt-1">
+          <button type="submit" disabled={!online} className="btn-primary w-full py-4 text-[17px]">
+            {online ? (
+              <>
+                Generate trip plan <ArrowRightIcon className="size-5" />
+              </>
+            ) : (
+              <>
+                <CloudOffIcon className="size-5" /> Connect to generate a plan
+              </>
+            )}
+          </button>
+          <p className="flex items-center justify-center gap-1.5 text-center text-xs text-stone-500">
+            <OfflineReadyIcon className="size-3.5" />
+            You can save the plan to your phone for offline use.
+          </p>
+        </div>
       </form>
     </section>
   )
 }
 
-const LABEL = 'block text-sm font-medium text-stone-700'
-const INPUT =
-  'mt-1.5 block w-full rounded-xl border border-stone-300 bg-white px-3 py-3 text-base text-stone-900 focus:border-green-700 focus:ring-2 focus:ring-green-600/30 focus:outline-none'
+const CHECKS = [
+  { Icon: RoadIcon, label: 'Route and road reports' },
+  { Icon: RainIcon, label: 'Weather forecast for your dates' },
+  { Icon: AlertIcon, label: 'Strikes and travel disruptions' },
+]
+
+function FormCard({ title, tag, children }: { title: string; tag?: string; children: ReactNode }) {
+  return (
+    <fieldset className="card space-y-4 p-4">
+      <legend className="sr-only">{title}</legend>
+      <p aria-hidden className="flex items-center gap-2 text-sm font-semibold text-stone-900">
+        {title}
+        {tag && (
+          <span className="rounded-full bg-sand-100 px-2 py-0.5 text-[11px] font-medium text-stone-500">{tag}</span>
+        )}
+      </p>
+      {children}
+    </fieldset>
+  )
+}
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className={LABEL}>
+      <span className="field-label">
         {label}
         {hint && <span className="font-normal text-stone-400"> · {hint}</span>}
       </span>
