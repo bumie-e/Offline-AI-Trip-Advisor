@@ -119,7 +119,7 @@ Example model output:
 - The model may cite only IDs it was given. Output citing anything else is rejected and replaced by a template sentence.
 - Every advice line shows its sources and their age.
 - Wording is advisory ("reports suggest"), never a safe/unsafe verdict.
-- *Open decision:* an optional rule check beside the model (for example, heavy rain on a rain-sensitive segment forces a flag, and the more cautious result is shown). Not yet decided.
+- A rule check runs beside the model. Heavy rain on a rain-sensitive road forces a flag, an active strike or flight suspension forces a flag, and the more cautious of rules and model is shown. The server applies it when generating the itinerary; the on-device version is still to be decided.
 
 ## Features
 
@@ -150,7 +150,7 @@ Example model output:
 | App shell | Lovable, as a mobile-first PWA with a service worker and IndexedDB | Planned |
 | Audio | ElevenLabs, pre-generated and cached | Planned |
 | On-device model | Small instruction-tuned model, runtime to be chosen after a device test | **TBD** |
-| Weather | Public forecast API | **TBD** |
+| Weather | Open-Meteo forecast API (no key) | Built |
 
 The on-device model is the riskiest part of the build. It should be tested on a real phone early, measuring load time, memory, and speed, with a fallback to rules plus template text if it can't run acceptably.
 
