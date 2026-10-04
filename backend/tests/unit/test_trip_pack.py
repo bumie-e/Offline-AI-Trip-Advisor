@@ -259,3 +259,103 @@ def test_routes_are_null_when_none_were_collected(data, db):
     (data / "packs" / "olumo-rock" / "routes.json").unlink()
     raw = make_client(data, db, None).post("/pack/olumo-rock", json=BODY).json()
     assert raw["routes"] is None and raw["itinerary"]["stops"]
+
+
+# --- the cache must notice when the routes behind the itinerary change ---------------------
+
+
+def edit_routes(data: Path, change) -> None:
+    file = data / "packs" / "olumo-rock" / "routes.json"
+    raw = json.loads(file.read_text())
+    change(raw)
+    file.write_text(json.dumps(raw))
+
+
+def lengthen_primary(raw: dict) -> None:
+    primary = next(r for r in raw["routes"] if r["kind"] == "primary")
+    primary["distance_km"], primary["duration_min"] = 321.0, 400.0
+    primary["roads"] = ["Brand New Expressway"]
+
+
+def drive_note(trip: TripPack) -> str:
+    return trip.itinerary.stops[0].notes
+
+
+def test_changed_routes_do_not_reuse_a_cached_itinerary(data, db):
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    first = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+    assert w.calls == 1 and "321 km" not in drive_note(first)
+
+    edit_routes(data, lengthen_primary)
+    second = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+
+    assert w.calls == 2  # the cached itinerary described the old route
+    assert "321 km" in drive_note(second) and "Brand New Expressway" in drive_note(second)
+    assert cited_ids(second) <= resolvable_ids(second)
+
+
+def test_removed_routes_do_not_reuse_a_cached_itinerary_that_cites_them(data, db):
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    first = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+    assert any(c.startswith("route-") for c in cited_ids(first))  # the cached stops cite a route
+
+    (data / "packs" / "olumo-rock" / "routes.json").unlink()
+    second = TripPack.model_validate(client.post("/pack/olumo-rock", json=BODY).json())
+
+    assert w.calls == 2 and second.routes is None
+    assert not any(c.startswith("route-") for c in cited_ids(second))
+    assert cited_ids(second) <= resolvable_ids(second)  # no citation to a route that is not there
+
+
+def test_restoring_the_original_routes_finds_the_original_cache_entry_again(data, db):
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    original = (data / "packs" / "olumo-rock" / "routes.json").read_text()
+    first = client.post("/pack/olumo-rock", json=BODY).json()
+
+    edit_routes(data, lengthen_primary)
+    client.post("/pack/olumo-rock", json=BODY)
+    assert w.calls == 2
+
+    (data / "packs" / "olumo-rock" / "routes.json").write_text(original)
+    again = client.post("/pack/olumo-rock", json=BODY).json()
+    assert w.calls == 2 and again["itinerary"] == first["itinerary"]  # no new model call
+
+
+def test_recollecting_identical_routes_keeps_the_cache(data, db):
+    """Only the collection timestamp differs, which does not change the itinerary."""
+    w = CountingWriter()
+    client = make_client(data, db, w)
+    client.post("/pack/olumo-rock", json=BODY)
+    edit_routes(data, lambda raw: raw.update(collected_at="2026-10-05T10:00:00Z"))
+    client.post("/pack/olumo-rock", json=BODY)
+    assert w.calls == 1
+
+
+def test_cache_key_covers_route_content_and_its_absence():
+    from trip_advisor.pack.routes import to_pack_routes
+    from trip_advisor.pipeline.collect.models import SiteRoutes
+    from trip_advisor.schemas.delta import Delta
+    from trip_advisor.schemas.itinerary import TripRequest
+    from trip_advisor.schemas.pack import Pack
+    from trip_advisor.services.trips import cache_key
+
+    request = TripRequest.model_validate(BODY)
+    pack = Pack.model_validate_json((REPO / "data/packs/olumo-rock/pack.json").read_text())
+    delta = Delta(generated_at=NOW)
+    site_routes = SiteRoutes.model_validate_json(
+        (REPO / "data/packs/olumo-rock/routes.json").read_text()
+    )
+    base = to_pack_routes(site_routes)
+    longer = base.model_copy(update={"routes": [
+        base.routes[0].model_copy(update={"distance_km": base.routes[0].distance_km + 1}),
+        *base.routes[1:],
+    ]})  # fmt: skip
+
+    def key(routes):
+        return cache_key(request, pack, delta, "m", NOW, routes)
+
+    assert len({key(base), key(longer), key(None)}) == 3
+    assert key(base) == key(base.model_copy(deep=True))
