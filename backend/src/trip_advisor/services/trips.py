@@ -17,6 +17,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from trip_advisor.db.models import ItineraryCacheRow
+from trip_advisor.pack.routes import to_pack_routes
 from trip_advisor.pipeline.generate.run import generate_with_meta, load_serving_input
 from trip_advisor.pipeline.generate.writer import ItineraryWriter
 from trip_advisor.schemas.delta import Delta
@@ -136,4 +137,7 @@ def build_trip(
     if itinerary is None:
         itinerary, _ = generate_with_meta(inp, None, now=now)
     source: Literal["model", "rules"] = "model" if used_model else "rules"
-    return TripPack(pack=pack, delta=inp.delta, itinerary=itinerary, advice_source=source)
+    routes = to_pack_routes(inp.routes) if inp.routes else None
+    return TripPack(
+        pack=pack, delta=inp.delta, itinerary=itinerary, routes=routes, advice_source=source
+    )

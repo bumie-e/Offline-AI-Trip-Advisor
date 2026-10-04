@@ -1,3 +1,4 @@
+import json
 import shutil
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -207,3 +208,54 @@ def test_yesterdays_calls_do_not_count_against_today(data, db):
         s.commit()
     r = make_client(data, db, CountingWriter(), cap=1).post("/pack/olumo-rock", json=BODY).json()
     assert r["advice_source"] == "model"
+
+
+def resolvable_ids(trip: TripPack) -> set[str]:
+    """Every ID a device can look up inside the download."""
+    ids = {r.id for r in trip.pack.records}
+    ids |= {f"weather-{w.date.isoformat()}" for w in trip.delta.weather}
+    ids |= {e.source_id for e in trip.delta.events}
+    ids |= {r.cite_id for r in trip.routes.routes} if trip.routes else set()
+    return ids
+
+
+def cited_ids(trip: TripPack) -> set[str]:
+    it = trip.itinerary
+    return {i for a in it.verdict_reasons for i in a.cited_ids} | {
+        i for s in [*it.stops, *it.return_leg] for i in s.cited_ids
+    }
+
+
+def test_download_includes_routes_and_every_citation_resolves_inside_it(data, db):
+    trip = TripPack.model_validate(
+        make_client(data, db, CountingWriter()).post("/pack/olumo-rock", json=BODY).json()
+    )
+    assert trip.routes and trip.routes.routes
+    primary = next(r for r in trip.routes.routes if r.kind == "primary")
+    assert (
+        primary.cite_id == "route-olumo-rock-primary" and primary.roads and primary.distance_km > 0
+    )
+    assert trip.routes.origin.name and trip.routes.destination.name
+    assert any(s.kind == "fuel" for s in trip.routes.stops)
+    assert any(c.startswith("route-") for c in cited_ids(trip))  # the stops do cite a route
+    assert cited_ids(trip) <= resolvable_ids(trip)  # ...and the device can look it up
+
+
+def test_routes_are_in_both_model_and_rule_downloads(data, db):
+    client = make_client(data, db, CountingWriter())
+    for url in ("/pack/olumo-rock", "/pack/olumo-rock?ai=false"):
+        body = {**BODY, "group_size": 7 if "ai=false" in url else 2}
+        trip = TripPack.model_validate(client.post(url, json=body).json())
+        assert trip.routes is not None
+        assert cited_ids(trip) <= resolvable_ids(trip)
+
+
+def test_route_shapes_are_left_out_of_the_download(data, db):
+    raw = make_client(data, db, None).post("/pack/olumo-rock", json=BODY).json()
+    assert "geometry" not in json.dumps(raw["routes"])
+
+
+def test_routes_are_null_when_none_were_collected(data, db):
+    (data / "packs" / "olumo-rock" / "routes.json").unlink()
+    raw = make_client(data, db, None).post("/pack/olumo-rock", json=BODY).json()
+    assert raw["routes"] is None and raw["itinerary"]["stops"]
