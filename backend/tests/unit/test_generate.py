@@ -165,7 +165,7 @@ def test_model_prose_used_when_valid_and_not_weaker_than_rules():
     out = written(Verdict.NOT_ADVISED, Severity.HIGH, ["weather-2026-10-14"])
     it = generate_itinerary(inp([note()], [rain(0.9)]), FakeWriter(out), now=NOW)
     assert it.verdict_reasons[0].advice.startswith("Reports suggest rain")
-    assert it.stops[0].notes.endswith("Leave before 7am.")
+    assert it.stops[0].advice == "Leave before 7am."  # the model's note is the stop's advice
 
 
 def test_model_cannot_relax_the_verdict():
@@ -244,7 +244,7 @@ def test_model_stop_note_with_unsourced_number_is_dropped_but_itinerary_kept():
     out.stop_notes = [StopNote(order=1, note="There is a 99% chance of rain.")]
     seen = []
     it = generate_itinerary(inp([note()], [rain(0.9)]), FakeWriter(out), now=NOW, violations=seen)
-    assert "99%" not in it.stops[0].notes
+    assert "99%" not in it.stops[0].advice and it.stops[0].advice == ""
     assert seen[0].where == "stop 1"
 
 
@@ -254,4 +254,4 @@ def test_valid_stop_note_with_citation_is_kept():
         StopNote(order=1, note="Rain is 90% likely.", cited_ids=["weather-2026-10-14"])
     ]
     it = generate_itinerary(inp([note()], [rain(0.9)]), FakeWriter(out), now=NOW)
-    assert "weather-2026-10-14" in it.stops[0].cited_ids and "90%" in it.stops[0].notes
+    assert "weather-2026-10-14" in it.stops[0].cited_ids and "90%" in it.stops[0].advice

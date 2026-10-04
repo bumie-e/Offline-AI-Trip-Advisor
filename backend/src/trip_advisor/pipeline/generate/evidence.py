@@ -7,7 +7,7 @@ from trip_advisor.guardrails.catalog import Catalog, Fact
 from trip_advisor.pipeline.collect.models import RouteOption, SiteRoutes
 from trip_advisor.schemas.delta import Delta
 from trip_advisor.schemas.itinerary import TripRequest
-from trip_advisor.schemas.pack import PackRecord, RoadNote, SiteFact
+from trip_advisor.schemas.pack import ImageRecord, PackRecord, RoadNote, SiteFact
 from trip_advisor.sites import SiteConfig
 
 
@@ -39,6 +39,10 @@ class GenInput:
         if not self.routes or not self.routes.routes:
             return None
         return next((r for r in self.routes.routes if r.kind == "primary"), self.routes.routes[0])
+
+    @property
+    def images(self) -> list[ImageRecord]:
+        return [r for r in self.records if isinstance(r, ImageRecord)]
 
     @property
     def road_notes(self) -> list[RoadNote]:

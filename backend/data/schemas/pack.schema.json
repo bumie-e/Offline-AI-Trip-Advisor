@@ -143,6 +143,105 @@
       "title": "CostNote",
       "type": "object"
     },
+    "ImageRecord": {
+      "additionalProperties": false,
+      "description": "A photo of the site or of a road on the way. The file itself is fetched from `path`.\n\n`summary` is the caption. Free licences still require credit, so `credit` is ready to show.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "image",
+          "default": "image",
+          "title": "Type",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "site",
+            "road"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "mime": {
+          "title": "Mime",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 1,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 1,
+          "title": "Height",
+          "type": "integer"
+        },
+        "size_bytes": {
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "credit": {
+          "title": "Credit",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "license_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Url"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "kind",
+        "path",
+        "mime",
+        "width",
+        "height",
+        "size_bytes",
+        "credit",
+        "license"
+      ],
+      "title": "ImageRecord",
+      "type": "object"
+    },
     "RoadNote": {
       "additionalProperties": false,
       "properties": {
@@ -302,6 +401,7 @@
           "mapping": {
             "contact": "#/$defs/Contact",
             "cost_note": "#/$defs/CostNote",
+            "image": "#/$defs/ImageRecord",
             "road_note": "#/$defs/RoadNote",
             "site_fact": "#/$defs/SiteFact"
           },
@@ -319,6 +419,9 @@
           },
           {
             "$ref": "#/$defs/Contact"
+          },
+          {
+            "$ref": "#/$defs/ImageRecord"
           }
         ]
       },

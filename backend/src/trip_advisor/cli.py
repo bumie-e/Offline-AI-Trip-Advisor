@@ -218,6 +218,86 @@ def generate(
 
 
 @app.command()
+def refresh_segments(site: str = typer.Argument("all", help="Site id, or 'all'")) -> None:
+    """Add per-road kilometre ranges to already collected routes (asks OSRM only)."""
+    from trip_advisor.pipeline.collect import store
+    from trip_advisor.pipeline.collect.http import Fetcher
+    from trip_advisor.pipeline.collect.models import SiteRoutes
+    from trip_advisor.pipeline.collect.segments import backfill_segments
+    from trip_advisor.sites import list_sites, load_site
+
+    fetcher = Fetcher()
+    for site_id in list_sites() if site == "all" else [site]:
+        file = store.site_dir(site_id) / "routes.json"
+        if not file.exists():
+            typer.echo(f"{site_id}: no collected routes, run `collect {site_id}` first", err=True)
+            continue
+        routes, problems = backfill_segments(
+            SiteRoutes.model_validate_json(file.read_text()), load_site(site_id), fetcher
+        )
+        store.save(routes, file)
+        typer.echo(f"{site_id}:")
+        for r in routes.routes:
+            names = " > ".join(f"{s.name} ({s.from_km:.0f}-{s.to_km:.0f} km)" for s in r.segments)
+            typer.echo(f"  {r.id}: {len(r.segments)} segments: {names or 'none'}")
+        for problem in problems:
+            typer.echo(f"  gap: {problem}", err=True)
+
+
+@app.command()
+def collect_images(
+    site: str = typer.Argument("all", help="Site id, or 'all'"),
+    judge: bool = typer.Option(
+        True, help="Have a vision model check each photo (needs LLM_API_KEY)"
+    ),
+) -> None:
+    """Collect freely licensed photos of each site and its roads (Wikimedia Commons)."""
+    from trip_advisor.config import settings
+    from trip_advisor.pipeline.collect.http import Fetcher
+    from trip_advisor.pipeline.collect.images import (
+        IMAGES_DIR,
+        AnthropicJudge,
+        save_collection,
+    )
+    from trip_advisor.pipeline.collect.images import collect_images as collect
+    from trip_advisor.sites import list_sites, load_site
+
+    fetcher = Fetcher()
+    failed = False
+    checker = (  # the stronger model: telling a road from a building beside it takes real vision
+        AnthropicJudge(settings.llm_api_key, settings.generation_model)
+        if judge and settings.llm_api_key
+        else None
+    )
+    if checker is None:
+        typer.echo(
+            "No image judge: road photos will be skipped and site photos left unchecked.", err=True
+        )
+    for site_id in list_sites() if site == "all" else [site]:
+        config = load_site(site_id)
+        manifest, report = collect(config, fetcher, judge=checker)
+        base = IMAGES_DIR / site_id
+        if refused := save_collection(manifest, report, base):
+            typer.echo(
+                f"{site_id}: NOT SAVED, {refused}. Existing images were left as they are.",
+                err=True,
+            )
+            for err in report.errors[:3]:
+                typer.echo(f"  gap: {err}", err=True)
+            failed = True
+            continue
+        kept = ", ".join(f"{n} {k}" for k, n in sorted(report.kept.items())) or "none"
+        typer.echo(f"{site_id}: kept {kept}")
+        for why, n in report.rejected.most_common():
+            typer.echo(f"  rejected {n}: {why}")
+        for err in report.errors:
+            typer.echo(f"  gap: {err}", err=True)
+        typer.echo(f"  hand-check sheet: {base / 'review.md'}")
+    if failed:
+        raise typer.Exit(1)
+
+
+@app.command()
 def build_pack(site: str = typer.Argument("all", help="Site id, or 'all'")) -> None:
     """Build the versioned offline pack (and slim routes) from structured records."""
     from trip_advisor.pack.builder import build_pack as build
@@ -236,7 +316,13 @@ def build_pack(site: str = typer.Argument("all", help="Site id, or 'all'")) -> N
             )
             failed = True
             continue
-        pack, report = build(StructuredSite.model_validate_json(structured_file.read_text()))
+        from trip_advisor.pipeline.collect.images import load_manifest
+
+        manifest = load_manifest(site_id)
+        pack, report = build(
+            StructuredSite.model_validate_json(structured_file.read_text()),
+            images=manifest.images if manifest else (),
+        )
         routes_file = store.site_dir(site_id) / "routes.json"
         routes = (
             SiteRoutes.model_validate_json(routes_file.read_text())

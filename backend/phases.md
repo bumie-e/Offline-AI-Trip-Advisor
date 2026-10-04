@@ -92,17 +92,35 @@ Flow: connectivity regained, app opens, trip dates change, or pre-flight, so the
 - Needs the app team (tracked here as dependencies): on-device runtime chosen after a real-phone test of load time, memory and speed (README: TBD); fallback to rules plus template text if the model can't run acceptably; background fetch and IndexedDB storage of pack and delta; the banner UI
 - Known risk: rain sensitivity is often missing in collected road notes and stored as an assumed `medium`, so the rain-on-sensitive-road rule is weaker than it looks until that data improves
 
-## Phase 9: Audio and assets
-- [ ] Pre-generate audio guide for the site story (ElevenLabs)
-- [ ] Photo manifest with licence info
+## Phase 9: Images (heritage sites and roads)
+Travellers should see the place and the road before they go, and offline. The pack download carries a small record per image; the image files are served separately and cached by the app.
+- [x] Source and rights: Wikimedia Commons only. Accept CC0, public domain, CC BY and CC BY-SA; reject NC/ND licences and files with restrictions; keep the author, licence and link for every image, because the licences require credit to be shown
+- [x] Collect per site, with search terms in the site config: `uv run trip-advisor collect-images all`. Photos only (no maps, logos, paintings or photos of people), at least 800 px wide, downloaded at 800 px and kept under 350 KB. A vision model (Sonnet) checks each photo: it must show its subject, no prominent faces, no readable contact details. Title and licence rules alone let through a building, a drain, a railway station, a windshield view and a festival crowd. Current set: Idanre Hills 8 (6 site, 2 road), Olumo Rock 10 (6, 4), Osun-Osogbo 9 (5, 4; judged by the weaker Haiku model, so worth re-running)
+- [x] Image records in the pack (`type: "image"`): caption, ready-to-show credit, licence, size and path. Packs stay small (7 to 22 KB of the 100 KB cap)
+- [x] Serve the files: `GET /images/{site}` (list) and `GET /images/{site}/{file}` (the file, cached for a year because the name carries a content hash, 304 on a repeat). Only files named in the manifest can be served. Checked against the real data
+- [x] Saving never makes things worse: a run is refused, and existing images are kept, if the judge mostly fails, if any search failed, if several downloads failed, or if it finds nothing while images are stored. Found the hard way: a network drop made one run save an empty manifest and delete the Idanre Hills and Olumo Rock images, which then had to be collected again
+- [ ] Hand-check every collected image against its Commons page before shipping (`data/images/<site>/review.md`). I looked at the road photos myself, not the site photos. The judge trusts what it sees, not where it is: a photo can show a road in Ondo State that is not on the Lagos-Idanre route
+- [x] The stop screen: tap a place, see its stops with a one-line comment each, tap a stop and see the nature of the road, one photo, and the model's advice. Each outbound stop in the itinerary now carries `comment`, `road`, `image` and `advice` (all optional, so older itineraries still load). Checked through the real API for all three sites; every photo path it returns fetches
+  - Road at a stop: the road's name and kilometre range come from OSRM (`uv run trip-advisor refresh-segments` adds them to routes collected earlier), and the condition comes from the newest road report of the last 3 months. Each report says how far it reaches: `here` (names this place), `road` (about this road) or `corridor` (about a wider road that passes the stop). Found by checking: Olumo Rock's student protest was on the expressway, not at the rock, and the advice now says so
+  - One photo per stop, never reused. The destination gets its site photo. A road photo counts as showing a stop only if its caption names the stop's town or shares two words with its road; otherwise it is labelled an example (`shows_this_stop: false`), and examples go to the stops nearest the destination, because that is where they were searched for
+  - Advice: the model writes it per stop, only where there is road evidence, and must cite that evidence. It is a separate field now, not appended to `notes`
+  - Limits: only the outbound stops get this (the way back is unchanged); a stop with no matching report says there is none; with 2 to 4 road photos per site, many stops have no photo (Idanre Hills: 3 of 7); photos of other roads in the region stand in as examples
+- [ ] Stop screen, still open: the on-device update (Phase 8) does not yet refresh a stop's road or advice when new news arrives; the comment is built from data and not written by the model
+- [ ] Road photos: Commons has few photos of the actual routes. The road photos found are representative roads in the right region (for example Ondo State roads for Idanre Hills), not the route itself. Mapillary (street-level photos, CC BY-SA, needs an access token) is the other source
+- [ ] Deploy: the files in `data/images/` go out with the app (about 2 to 3 MB per site); redeploy after collecting
+- Needs the app team: download the images with the pack on Wi-Fi, store them, and show the credit text next to each one
 
-## Phase 10: Evaluation
+## Phase 10: Audio and assets
+- [ ] Pre-generate audio guide for the site story (ElevenLabs)
+- (The photo manifest with licence info moved to Phase 9)
+
+## Phase 11: Evaluation
 - [ ] 10-15 cases in `eval/cases/` (rain on sensitive route, strike overlapping flight, no flag, thin evidence)
 - [ ] `eval/run_eval.py` measuring faithfulness and correctness
 - [ ] Record results per candidate model
 - [ ] Include the Phase 8 reconcile cases (stored plan plus new delta), and measure the small on-device candidates, not only the server model
 
-## Phase 11: Hardening and demo
+## Phase 12: Hardening and demo
 - [ ] End-to-end run: pipeline to pack to delta for the demo trip
 - [ ] Error handling, rate limits, logging
 - [ ] Deploy and document in README "Getting started"

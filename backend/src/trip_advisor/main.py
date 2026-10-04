@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
-from trip_advisor.api.routes import delta, itinerary, pack, places, reports
+from trip_advisor.api.routes import delta, images, itinerary, pack, places, reports
 
 log = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ def create_app() -> FastAPI:
     def health() -> dict[str, str]:
         return {"status": "ok"}
 
-    for module in (places, itinerary, pack, delta, reports):
+    for module in (places, itinerary, pack, delta, reports, images):
         app.include_router(module.router)
     return app
 

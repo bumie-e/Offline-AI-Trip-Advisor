@@ -29,3 +29,8 @@ match_terms = ["Lagos-Ibadan", "Lagos–Ibadan", "Lagos/Ibadan"]
 name = "Ibadan-Ife-Osogbo road"
 queries = ['"Ibadan-Ife" road', '"Ife-Osogbo" road', 'Osogbo road']
 match_terms = ["Osogbo", "Ife", "Ibadan-Ife"]
+
+[images]
+# Wikimedia Commons searches. Road photos must name the road in the file title.
+site = ["Osun-Osogbo Sacred Grove", "Osun Osogbo Grove"]
+roads = ["Lagos Ibadan expressway", "Ibadan expressway", "Osogbo road"]
