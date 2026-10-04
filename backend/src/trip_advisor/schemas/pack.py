@@ -6,6 +6,7 @@ from pydantic import Field
 from .common import Confidence, Sensitivity, Source, Strict
 from .delta import Delta
 from .itinerary import Itinerary
+from .routes import PackRoutes
 
 
 class _Record(Strict):
@@ -67,4 +68,5 @@ class TripPack(Strict):
     pack: Pack
     delta: Delta  # the weather and news the advice was based on
     itinerary: Itinerary  # verdict, summary, reasons and stops
+    routes: PackRoutes | None = None  # what the `route-...` citations in the itinerary point to
     advice_source: Literal["model", "rules"]  # who wrote the advice text

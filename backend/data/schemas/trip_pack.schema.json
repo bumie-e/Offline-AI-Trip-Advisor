@@ -411,6 +411,159 @@
       "title": "Pack",
       "type": "object"
     },
+    "PackPlace": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "lat",
+        "lon"
+      ],
+      "title": "PackPlace",
+      "type": "object"
+    },
+    "PackRoute": {
+      "additionalProperties": false,
+      "properties": {
+        "cite_id": {
+          "title": "Cite Id",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "primary",
+            "alternative",
+            "variant"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "distance_km": {
+          "title": "Distance Km",
+          "type": "number"
+        },
+        "duration_min": {
+          "title": "Duration Min",
+          "type": "number"
+        },
+        "roads": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roads",
+          "type": "array"
+        }
+      },
+      "required": [
+        "cite_id",
+        "id",
+        "kind",
+        "label",
+        "distance_km",
+        "duration_min",
+        "roads"
+      ],
+      "title": "PackRoute",
+      "type": "object"
+    },
+    "PackRoutes": {
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "$ref": "#/$defs/PackPlace"
+        },
+        "destination": {
+          "$ref": "#/$defs/PackPlace"
+        },
+        "routes": {
+          "items": {
+            "$ref": "#/$defs/PackRoute"
+          },
+          "title": "Routes",
+          "type": "array"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/$defs/PackStop"
+          },
+          "title": "Stops",
+          "type": "array"
+        },
+        "collected_at": {
+          "format": "date-time",
+          "title": "Collected At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "collected_at"
+      ],
+      "title": "PackRoutes",
+      "type": "object"
+    },
+    "PackStop": {
+      "additionalProperties": false,
+      "description": "A town, fuel station, hospital or police station beside a route.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        },
+        "km_from_start": {
+          "title": "Km From Start",
+          "type": "number"
+        },
+        "route_id": {
+          "title": "Route Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "lat",
+        "lon",
+        "km_from_start",
+        "route_id"
+      ],
+      "title": "PackStop",
+      "type": "object"
+    },
     "RoadNote": {
       "additionalProperties": false,
       "properties": {
@@ -745,6 +898,17 @@
     },
     "itinerary": {
       "$ref": "#/$defs/Itinerary"
+    },
+    "routes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PackRoutes"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "advice_source": {
       "enum": [

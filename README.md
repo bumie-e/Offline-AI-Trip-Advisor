@@ -290,16 +290,17 @@ curl -X POST $BASE/pack/olumo-rock -H 'content-type: application/json' -d '{
 
 `site_id` in the body must match the one in the URL. Optional fields are `budget_ngn` and `mode` (`road`, `train`, `flight`, `walk`); trips can span at most 14 days.
 
-The response (a `TripPack`) has four parts:
+The response (a `TripPack`) has five parts:
 
 | Field | What it holds |
 |---|---|
 | `pack` | Records for the site: road notes, site facts, costs, each with source, date and confidence |
 | `delta` | The weather forecast and disruption news **the advice was written from** |
 | `itinerary` | `verdict` (`go`, `go_with_changes`, `not_advised`), a `summary`, `verdict_reasons` (each with `severity`, `alternatives` and `cited_ids`), `stops` and `return_leg` |
+| `routes` | The routes behind the itinerary: origin and destination, each route's distance, free-flow time and named roads, and the towns, fuel, hospital and police stops along them. Each route has a `cite_id` (for example `route-olumo-rock-primary`) that matches the IDs cited by `stops`. Road shapes are left out (the app gives no turn-by-turn navigation). `null` if no routes were collected |
 | `advice_source` | `model` if the language model wrote the text, `rules` if the rule-based fallback did |
 
-Keep all four on the device. The on-device model compares any later delta against the stored `delta` to decide whether the advice has changed. Every `cited_ids` entry refers to a record in `pack`, a weather day (`weather-YYYY-MM-DD`), a news item in `delta`, or a route.
+Keep all five on the device. The on-device model compares any later delta against the stored `delta` to decide whether the advice has changed. Every `cited_ids` entry refers to a record in `pack`, a weather day (`weather-YYYY-MM-DD`), a news item in `delta`, or a route in `routes`. Every cited ID resolves inside the download, so the app never needs another request to show what a citation points to.
 
 Notes:
 - The **first call for a trip takes about 10-20 seconds** because the model writes the advice. Show a progress state. The same request is then answered from a cache in about 2 seconds.

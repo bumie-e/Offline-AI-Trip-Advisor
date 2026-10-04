@@ -17,11 +17,13 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from trip_advisor.db.models import ItineraryCacheRow
+from trip_advisor.pack.routes import to_pack_routes
 from trip_advisor.pipeline.generate.run import generate_with_meta, load_serving_input
 from trip_advisor.pipeline.generate.writer import ItineraryWriter
 from trip_advisor.schemas.delta import Delta
 from trip_advisor.schemas.itinerary import Itinerary, TripRequest
 from trip_advisor.schemas.pack import Pack, TripPack
+from trip_advisor.schemas.routes import PackRoutes
 from trip_advisor.sites import list_sites, load_site
 
 log = logging.getLogger(__name__)
@@ -45,12 +47,32 @@ def check_request(request: TripRequest, base: Path) -> None:
         raise TripError(404, f"No pack has been built for {request.site_id!r}")
 
 
-def cache_key(request: TripRequest, pack: Pack, delta: Delta, model: str, today: datetime) -> str:
-    """Everything that shapes the advice. A new pack, delta, model or day gives a new key."""
+def routes_digest(routes: PackRoutes | None) -> str:
+    """A fingerprint of the routes behind the itinerary, including their absence.
+
+    The stops come from these routes (distance, roads, fuel stop) and cite them by ID, while
+    `pack.version` covers only the records. The collection time is left out: collecting the same
+    routes again changes nothing the traveller sees, so it should not discard cached advice.
+    """
+    if routes is None:
+        return "no-routes"
+    return hashlib.sha256(routes.model_dump_json(exclude={"collected_at"}).encode()).hexdigest()
+
+
+def cache_key(
+    request: TripRequest,
+    pack: Pack,
+    delta: Delta,
+    model: str,
+    today: datetime,
+    routes: PackRoutes | None,
+) -> str:
+    """Everything that shapes the advice. A new pack, delta, routes, model or day is a new key."""
     parts = [
         request.model_dump_json(),
         pack.version,
         delta.generated_at.isoformat(),
+        routes_digest(routes),
         model,
         today.date().isoformat(),
     ]
@@ -122,10 +144,11 @@ def build_trip(
     )
     pack = Pack.model_validate_json((base / "packs" / request.site_id / "pack.json").read_text())
 
+    routes = to_pack_routes(inp.routes) if inp.routes else None
     itinerary: Itinerary | None = None
     used_model = False
     if writer is not None:
-        key = cache_key(request, pack, inp.delta, model_name, now)
+        key = cache_key(request, pack, inp.delta, model_name, now, routes)
         gate = _gate(session, key, now, daily_cap)
         if gate.cached is not None:
             itinerary, used_model = gate.cached, True
@@ -136,4 +159,6 @@ def build_trip(
     if itinerary is None:
         itinerary, _ = generate_with_meta(inp, None, now=now)
     source: Literal["model", "rules"] = "model" if used_model else "rules"
-    return TripPack(pack=pack, delta=inp.delta, itinerary=itinerary, advice_source=source)
+    return TripPack(
+        pack=pack, delta=inp.delta, itinerary=itinerary, routes=routes, advice_source=source
+    )
