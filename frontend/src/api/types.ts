@@ -77,8 +77,26 @@ export interface Contact extends RecordBase {
   is_sample?: boolean
 }
 
+/**
+ * A photo of the site or of a road on the way. `summary` is the caption; fetch the file from
+ * `path` (relative to the API base, e.g. `/images/olumo-rock/img-olumo-rock-ab12cd34ef.jpg`).
+ * Licences require `credit` to be shown beside the photo.
+ */
+export interface ImageRecord extends RecordBase {
+  type: 'image'
+  kind: 'site' | 'road'
+  path: string
+  mime: string
+  width: number
+  height: number
+  size_bytes: number
+  credit: string
+  license: string
+  license_url?: string | null
+}
+
 /** Discriminated on `type`. */
-export type PackRecord = RoadNote | SiteFact | CostNote | Contact
+export type PackRecord = RoadNote | SiteFact | CostNote | Contact | ImageRecord
 
 export interface Pack {
   site_id: string
@@ -131,6 +149,34 @@ export interface TripRequest {
   mode?: TravelMode | null
 }
 
+/** The one photo shown for a stop. */
+export interface StopImage {
+  id: string
+  path: string
+  caption: string
+  credit: string
+  license: string
+  width: number
+  height: number
+  /** False when the photo is an example of a road in the area, not this exact spot. */
+  shows_this_stop?: boolean
+}
+
+/** The road at a stop. */
+export interface StopRoad {
+  name?: string | null
+  km_from_start?: number | null
+  km_since_previous_stop?: number | null
+  /** One advisory sentence, or that there is no recent report. */
+  condition?: string
+  has_recent_report?: boolean
+  /** "here": names this place. "road": about this road. "corridor": a wider road past this stop. */
+  scope?: 'here' | 'road' | 'corridor' | null
+  confidence?: Confidence | null
+  report_age_days?: number | null
+  evidence_ids?: string[]
+}
+
 export interface Stop {
   order: number
   title: string
@@ -138,6 +184,13 @@ export interface Stop {
   duration_minutes?: number | null
   notes?: string
   cited_ids?: string[]
+  // The stop screen fields. All optional, so older itineraries still load.
+  /** One line for the list of stops. */
+  comment?: string
+  image?: StopImage | null
+  road?: StopRoad | null
+  /** The model's advice for this stop, only ever backed by cited evidence. */
+  advice?: string
 }
 
 /** One reason behind the verdict. The same shape the on-device model will produce. */
@@ -162,11 +215,51 @@ export interface Itinerary {
 }
 
 /** Response of `POST /pack/{site_id}`: everything the device keeps for a planned trip. */
+// --- Routes (schemas/routes.py) ----------------------------------------------------------
+
+export interface PackRoute {
+  /** The ID stops and advice use to cite this route, `route-<site>-<route>`. */
+  cite_id: string
+  id: string
+  kind: 'primary' | 'alternative' | 'variant'
+  label: string
+  distance_km: number
+  /** Free-flow estimate: no traffic, no road condition. */
+  duration_min: number
+  roads: string[]
+}
+
+export interface PackStop {
+  name: string
+  kind: string
+  lat: number
+  lon: number
+  km_from_start: number
+  route_id: string
+}
+
+export interface PackPlace {
+  name: string
+  lat: number
+  lon: number
+}
+
+/** What the `route-...` citations point to, without map geometry. */
+export interface PackRoutes {
+  origin: PackPlace
+  destination: PackPlace
+  routes?: PackRoute[]
+  stops?: PackStop[]
+  collected_at: IsoDateTime
+}
+
 export interface TripPack {
   pack: Pack
   /** The weather and news the advice was based on. */
   delta: Delta
   itinerary: Itinerary
+  /** Absent in trip packs saved before routes were added. */
+  routes?: PackRoutes | null
   /** Whether the advice text was written by the server's model or by the rule templates. */
   advice_source: AdviceSource
 }

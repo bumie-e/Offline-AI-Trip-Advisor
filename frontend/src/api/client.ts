@@ -1,4 +1,4 @@
-import type { Delta, Pack, PlaceSummary, TripPack, TripRequest } from './types'
+import type { Delta, ImageRecord, Pack, PlaceSummary, TripPack, TripRequest } from './types'
 
 /**
  * Same-origin by default: `/api` is forwarded to the backend by the Vite dev/preview proxy
@@ -106,4 +106,23 @@ export async function downloadTripPack(
 /** `GET /delta/{site_id}`: the latest weather and disruption snapshot (a few KB). */
 export function getDelta(siteId: string, signal?: AbortSignal): Promise<Delta> {
   return getJson(`/delta/${site(siteId)}`, signal)
+}
+
+/** `GET /images/{site_id}`: the site's photo records, the same ones the pack carries. */
+export function getImages(siteId: string, signal?: AbortSignal): Promise<ImageRecord[]> {
+  return getJson(`/images/${site(siteId)}`, signal)
+}
+
+/**
+ * Network URL for an image `path` from an image record or a stop (`/images/{site}/{file}`),
+ * for use as an `<img src>`. Files never change: the name contains a hash of the content.
+ */
+export function imageUrl(path: string): string {
+  return `${BASE_URL}${path}`
+}
+
+/** `GET /images/{site_id}/{filename}` as a Blob, for storing on the device. */
+export async function fetchImage(path: string, signal?: AbortSignal): Promise<Blob> {
+  const res = await request(path, { signal, headers: { Accept: 'image/*' } })
+  return res.blob()
 }

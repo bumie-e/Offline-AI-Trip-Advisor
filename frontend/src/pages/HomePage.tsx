@@ -1,8 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
-import { getPlaces } from '../api/client'
-import type { PlaceSummary } from '../api/types'
+import { getImages, getPlaces } from '../api/client'
+import type { ImageRecord, PlaceSummary } from '../api/types'
 import { APP_NAME } from '../components/AppShell'
+import { Photo } from '../components/Photo'
 import {
   AlertIcon,
   ArrowRightIcon,
@@ -160,35 +161,67 @@ function packInfo(place: PlaceSummary): string {
 function FeaturedCard({ place }: { place: PlaceSummary }) {
   const state: PlanState = { place }
   const info = packInfo(place)
+  const photo = useSitePhoto(place.id)
+
   return (
     <Link
       to={planPath(place.id)}
       state={state}
-      className="group relative block overflow-hidden rounded-2xl bg-forest-900 p-5 text-white shadow-raised transition duration-150 hover:-translate-y-px active:scale-[0.995]"
+      className="group relative block overflow-hidden rounded-2xl bg-forest-900 text-white shadow-raised transition duration-150 hover:-translate-y-px active:scale-[0.995]"
     >
-      <Ridges />
-      <div className="relative">
-        <div className="flex flex-wrap gap-1.5">
-          <span className="rounded-full bg-clay-500 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white">
-            Featured
-          </span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-forest-100 ring-1 ring-white/15">
-            <LandmarkIcon className="size-3.5" /> Heritage site
+      {photo && (
+        <Photo
+          path={photo.path}
+          alt={photo.summary}
+          credit={photo.credit}
+          width={photo.width}
+          height={photo.height}
+          ratio={16 / 9}
+          creditClassName="px-5 text-forest-300"
+        />
+      )}
+      <div className="relative p-5">
+        <Ridges />
+        <div className="relative">
+          <div className="flex flex-wrap gap-1.5">
+            <span className="rounded-full bg-clay-500 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white">
+              Featured
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-forest-100 ring-1 ring-white/15">
+              <LandmarkIcon className="size-3.5" /> Heritage site
+            </span>
+          </div>
+          <p
+            className={`${photo ? 'mt-4' : 'mt-14'} font-display text-[2.4rem] leading-none font-semibold tracking-tight`}
+          >
+            {place.name}
+          </p>
+          <p className="mt-2 flex items-center gap-1.5 text-forest-100">
+            <PinIcon className="size-4" />
+            {place.city}, {place.state} State, Nigeria
+          </p>
+          {info && <p className="mt-1.5 text-xs text-forest-300">{info}</p>}
+          <span className="mt-5 inline-flex items-center gap-2 rounded-xl bg-sand-50 px-5 py-3 text-[15px] font-semibold text-forest-900 transition group-hover:bg-white">
+            Plan your visit
+            <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
-        <p className="mt-14 font-display text-[2.4rem] leading-none font-semibold tracking-tight">{place.name}</p>
-        <p className="mt-2 flex items-center gap-1.5 text-forest-100">
-          <PinIcon className="size-4" />
-          {place.city}, {place.state} State, Nigeria
-        </p>
-        {info && <p className="mt-1.5 text-xs text-forest-300">{info}</p>}
-        <span className="mt-5 inline-flex items-center gap-2 rounded-xl bg-sand-50 px-5 py-3 text-[15px] font-semibold text-forest-900 transition group-hover:bg-white">
-          Plan your visit
-          <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
-        </span>
       </div>
     </Link>
   )
+}
+
+/** The site's first photo of the site itself, from `GET /images/{site_id}`. */
+function useSitePhoto(siteId: string): ImageRecord | undefined {
+  const [photo, setPhoto] = useState<ImageRecord>()
+  useEffect(() => {
+    const controller = new AbortController()
+    getImages(siteId, controller.signal)
+      .then((images) => setPhoto(images.find((i) => i.kind === 'site')))
+      .catch(() => {}) // the card keeps its illustrated look without a photo
+    return () => controller.abort()
+  }, [siteId])
+  return photo
 }
 
 function PlaceRow({ place }: { place: PlaceSummary }) {

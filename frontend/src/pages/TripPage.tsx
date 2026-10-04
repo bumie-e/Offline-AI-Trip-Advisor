@@ -5,12 +5,15 @@ import { CheckIcon } from '../components/icons'
 import { ItineraryView } from '../components/ItineraryView'
 import { OfflineBadge } from '../components/OfflineBadge'
 import { getTrip, type SavedTrip } from '../db/db'
+import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { formatDateTime, siteNameFromId } from '../lib/format'
+import { cacheTripImages } from '../lib/offlineImages'
 
 /** A saved trip, read from IndexedDB, so it opens with no connection. */
 export function TripPage() {
   const { tripId = '' } = useParams()
   const [trip, setTrip] = useState<SavedTrip | null | undefined>(undefined)
+  const online = useOnlineStatus()
 
   useEffect(() => {
     getTrip(tripId)
@@ -20,6 +23,11 @@ export function TripPage() {
         setTrip(null)
       })
   }, [tripId])
+
+  // Trips saved before photos were stored offline: fill in their photos while online.
+  useEffect(() => {
+    if (trip && online) void cacheTripImages(trip.tripPack)
+  }, [trip, online])
 
   if (trip === undefined) {
     return <p className="pt-4 text-stone-500">Loading trip…</p>

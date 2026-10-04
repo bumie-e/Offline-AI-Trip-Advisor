@@ -6,6 +6,7 @@ import { OfflineBadge } from '../components/OfflineBadge'
 import { Spinner } from '../components/Spinner'
 import { findSavedTrip, saveTrip, type SavedTrip } from '../db/db'
 import { planPath, tripPath, type PlanState, type ResultState } from '../lib/navigation'
+import { cacheTripImages } from '../lib/offlineImages'
 
 /** Stages 3 and 4: the generated plan, and the choice to save it for offline use. */
 export function ResultPage() {
@@ -17,6 +18,7 @@ export function ResultPage() {
   const [saved, setSaved] = useState<SavedTrip | null>(null)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [photosMissing, setPhotosMissing] = useState(false)
 
   // Already saved earlier (e.g. after a reload)? Then show it as saved.
   useEffect(() => {
@@ -43,7 +45,11 @@ export function ResultPage() {
     setSaving(true)
     setSaveError(null)
     try {
-      setSaved(await saveTrip(tripPack, { siteName }))
+      const trip = await saveTrip(tripPack, { siteName })
+      // Photos go into the same offline store; one that fails just loads online later.
+      const { failed } = await cacheTripImages(tripPack)
+      setPhotosMissing(failed > 0)
+      setSaved(trip)
     } catch (err) {
       console.error(err)
       setSaveError(
@@ -93,8 +99,14 @@ export function ResultPage() {
           <div>
             <p className="text-lg font-semibold text-forest-900">Saved for offline</p>
             <p className="mt-0.5 text-sm leading-relaxed text-forest-800">
-              This trip is on your phone now. You can open it from My trips without a connection.
+              This trip and its photos are on your phone now. You can open it from My trips without
+              a connection.
             </p>
+            {photosMissing && (
+              <p className="mt-1 text-xs text-forest-700">
+                Some photos could not be saved and will show when you are online.
+              </p>
+            )}
             <Link
               to={tripPath(saved.id)}
               className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-forest-800 underline-offset-2 hover:underline"
@@ -112,7 +124,7 @@ export function ResultPage() {
             <div>
               <p className="text-lg font-semibold text-stone-900">Take this plan with you</p>
               <p className="mt-0.5 text-sm leading-relaxed text-stone-600">
-                Save it to this phone before you go. It opens from My trips, even with no signal.
+                Save it, with its photos, to this phone before you go. It opens from My trips, even with no signal.
               </p>
             </div>
           </div>

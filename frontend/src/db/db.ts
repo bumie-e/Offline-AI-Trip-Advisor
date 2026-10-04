@@ -15,6 +15,13 @@ export interface SavedTrip {
   tripPack: TripPack
 }
 
+/** A photo file kept for offline use, keyed by its API path. Paths never change content. */
+export interface StoredImage {
+  path: string
+  blob: Blob
+  savedAt: string
+}
+
 export interface StoredDelta {
   siteId: string
   fetchedAt: string
@@ -31,23 +38,28 @@ interface TripAdvisorDB extends DBSchema {
     key: string
     value: StoredDelta
   }
+  images: {
+    key: string
+    value: StoredImage
+  }
 }
 
 const DB_NAME = 'trip-advisor'
-const DB_VERSION = 1
+const DB_VERSION = 2
 
 let dbPromise: Promise<IDBPDatabase<TripAdvisorDB>> | undefined
 
 function db(): Promise<IDBPDatabase<TripAdvisorDB>> {
   dbPromise ??= openDB<TripAdvisorDB>(DB_NAME, DB_VERSION, {
     upgrade(database, oldVersion) {
-      // Add a `case` per version bump; never edit an earlier one.
-      switch (oldVersion) {
-        case 0: {
-          const trips = database.createObjectStore('trips', { keyPath: 'id' })
-          trips.createIndex('bySite', 'siteId')
-          database.createObjectStore('deltas', { keyPath: 'siteId' })
-        }
+      // One step per version, applied in order; never edit an earlier step.
+      if (oldVersion < 1) {
+        const trips = database.createObjectStore('trips', { keyPath: 'id' })
+        trips.createIndex('bySite', 'siteId')
+        database.createObjectStore('deltas', { keyPath: 'siteId' })
+      }
+      if (oldVersion < 2) {
+        database.createObjectStore('images', { keyPath: 'path' })
       }
     },
   })
@@ -117,6 +129,20 @@ export async function saveDeltaIfNewer(siteId: string, delta: Delta): Promise<bo
   if (newer) await tx.store.put({ siteId, fetchedAt: new Date().toISOString(), delta })
   await tx.done
   return newer
+}
+
+// --- Images ------------------------------------------------------------------------------
+
+export async function getCachedImage(path: string): Promise<Blob | undefined> {
+  return (await (await db()).get('images', path))?.blob
+}
+
+export async function hasCachedImage(path: string): Promise<boolean> {
+  return (await (await db()).getKey('images', path)) !== undefined
+}
+
+export async function saveImage(path: string, blob: Blob): Promise<void> {
+  await (await db()).put('images', { path, blob, savedAt: new Date().toISOString() })
 }
 
 // --- Storage -----------------------------------------------------------------------------

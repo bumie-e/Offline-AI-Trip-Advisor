@@ -1,12 +1,21 @@
 import type { EventType, IsoDate, PackRecord, TripPack } from '../api/types'
-import { ageLabel, formatDate } from './format'
+import { ageLabel, formatDate, formatDuration } from './format'
 
 /**
  * Turns the IDs in `cited_ids` into something a traveller can read. The ID kinds come from
  * backend/src/trip_advisor/pipeline/generate/evidence.py: pack record IDs, `weather-YYYY-MM-DD`,
- * event `source_id`s and `route-...` IDs (routes are not in the pack, so only their kind is known).
+ * event `source_id`s and `route-...` IDs (described by `tripPack.routes` when the pack has them).
  */
-export type CitationKind = 'road' | 'site' | 'cost' | 'contact' | 'weather' | 'event' | 'route' | 'unknown'
+export type CitationKind =
+  | 'road'
+  | 'site'
+  | 'cost'
+  | 'contact'
+  | 'image'
+  | 'weather'
+  | 'event'
+  | 'route'
+  | 'unknown'
 
 export interface Citation {
   id: string
@@ -35,6 +44,7 @@ const RECORD_KIND: Record<PackRecord['type'], CitationKind> = {
   site_fact: 'site',
   cost_note: 'cost',
   contact: 'contact',
+  image: 'image',
 }
 
 function when(date: IsoDate | null | undefined): string {
@@ -76,6 +86,18 @@ export function citationResolver(tripPack: TripPack): (id: string) => Citation {
       when: when(e.source?.published),
       url: e.source?.url,
       chip: `${EVENT_LABEL[e.type]} · ${e.status}`,
+    })
+  }
+
+  for (const r of tripPack.routes?.routes ?? []) {
+    known.set(r.cite_id, {
+      id: r.cite_id,
+      kind: 'route',
+      label: 'Route data',
+      detail: `${r.label}: ${Math.round(r.distance_km)} km, about ${formatDuration(r.duration_min)} without traffic${
+        r.roads.length ? `, via ${r.roads.slice(0, 3).join(', ')}` : ''
+      }`,
+      when: when(tripPack.routes?.collected_at.slice(0, 10)),
     })
   }
 

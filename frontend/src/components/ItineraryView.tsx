@@ -1,5 +1,5 @@
 import { useMemo, type ComponentType, type ReactNode, type SVGProps } from 'react'
-import type { Advice, Severity, Stop, TravelMode, TripPack } from '../api/types'
+import type { Advice, Severity, Stop, StopRoad, TravelMode, TripPack } from '../api/types'
 import { citationResolver, type Citation, type CitationKind } from '../lib/citations'
 import { formatDateRange, formatDateTime, formatDuration, MODE_LABEL } from '../lib/format'
 import {
@@ -20,6 +20,7 @@ import {
   UsersIcon,
   WalkIcon,
 } from './icons'
+import { Photo } from './Photo'
 import { SourceLine, Sources } from './Sources'
 import { VerdictBanner } from './VerdictBanner'
 
@@ -62,6 +63,7 @@ const KIND_NOUN: Record<CitationKind, [string, string]> = {
   site: ['site fact', 'site facts'],
   cost: ['cost note', 'cost notes'],
   contact: ['contact', 'contacts'],
+  image: ['photo', 'photos'],
   route: ['route', 'routes'],
   unknown: ['other source', 'other sources'],
 }
@@ -101,7 +103,7 @@ export function ItineraryView({
   const allSources = [
     ...new Set(
       [...itinerary.verdict_reasons, ...itinerary.stops, ...(itinerary.return_leg ?? [])].flatMap(
-        (x) => x.cited_ids ?? [],
+        (x) => [...(x.cited_ids ?? []), ...('road' in x ? (x.road?.evidence_ids ?? []) : [])],
       ),
     ),
   ].map(resolve)
@@ -320,6 +322,29 @@ function Leg({ title, stops, resolve }: { title: string; stops: Stop[]; resolve:
                   )}
                 </p>
               )}
+              {stop.comment && <p className="mt-2 text-sm font-medium text-stone-700">{stop.comment}</p>}
+              {stop.image && (
+                <div className="mt-3">
+                  <Photo
+                    path={stop.image.path}
+                    alt={stop.image.caption}
+                    caption={stop.image.caption}
+                    credit={stop.image.credit}
+                    width={stop.image.width}
+                    height={stop.image.height}
+                    ratio={Math.min(2.2, Math.max(4 / 3, stop.image.width / stop.image.height))}
+                    label={stop.image.shows_this_stop === false ? 'Typical road in the area' : undefined}
+                    className="rounded-xl"
+                  />
+                </div>
+              )}
+              {stop.road && <RoadPanel road={stop.road} resolve={resolve} />}
+              {stop.advice && (
+                <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-forest-50 p-3 text-sm text-forest-900">
+                  <SparkIcon className="mt-0.5 size-4 shrink-0 text-forest-700" />
+                  <p className="leading-relaxed">{stop.advice}</p>
+                </div>
+              )}
               {stop.notes && <p className="mt-2 text-sm leading-relaxed text-stone-600">{stop.notes}</p>}
               <Sources ids={stop.cited_ids} resolve={resolve} />
             </li>
@@ -328,6 +353,52 @@ function Leg({ title, stops, resolve }: { title: string; stops: Stop[]; resolve:
       </ol>
     </div>
   )
+}
+
+const SCOPE_LABEL: Record<NonNullable<StopRoad['scope']>, string> = {
+  here: 'Reported at this place',
+  road: 'Reported on this road',
+  corridor: 'Reported on the wider route, so it may not apply at this exact spot',
+}
+
+/** The road at a stop: name, distance, and the latest report with how far it applies. */
+function RoadPanel({ road, resolve }: { road: StopRoad; resolve: (id: string) => Citation }) {
+  const distance = [
+    road.km_from_start != null && `${formatKm(road.km_from_start)} from start`,
+    road.km_since_previous_stop != null && `${formatKm(road.km_since_previous_stop)} since last stop`,
+  ].filter(Boolean)
+  const reportMeta = [
+    road.confidence && `${road.confidence.charAt(0).toUpperCase()}${road.confidence.slice(1)} confidence`,
+    road.report_age_days != null && (road.report_age_days === 1 ? '1 day old' : `${road.report_age_days} days old`),
+  ].filter(Boolean)
+
+  return (
+    <div className="mt-3 rounded-xl border border-stone-200 bg-sand-50/60 p-3 text-sm">
+      <div className="flex items-start gap-2.5">
+        <RoadIcon className="mt-0.5 size-4 shrink-0 text-stone-500" />
+        <div className="min-w-0 flex-1">
+          {road.name && <p className="font-medium text-stone-900">{road.name}</p>}
+          {distance.length > 0 && <p className="text-xs text-stone-500">{distance.join(' · ')}</p>}
+          {road.condition && (
+            <p className="mt-2 leading-relaxed text-stone-700">
+              {road.has_recent_report && road.scope && (
+                <span className="mb-0.5 block text-xs font-medium text-amber-800">{SCOPE_LABEL[road.scope]}</span>
+              )}
+              {road.condition}
+            </p>
+          )}
+          {road.has_recent_report && reportMeta.length > 0 && (
+            <p className="mt-1 text-xs text-stone-500">{reportMeta.join(' · ')}</p>
+          )}
+          <Sources ids={road.evidence_ids} resolve={resolve} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function formatKm(km: number): string {
+  return `${km < 10 ? km.toFixed(1).replace(/\.0$/, '') : Math.round(km)} km`
 }
 
 /** "6 forecast days · 2 news reports · 1 route" */
