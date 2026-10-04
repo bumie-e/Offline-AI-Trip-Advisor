@@ -121,7 +121,7 @@ def test_duplicates_collapse_to_newest():
 
 def test_stale_and_undated_road_notes_flagged_and_downgraded():
     docs = [doc("old", published=date(2026, 3, 1)), doc("none", published=None)]
-    res = run(docs, {"old": [road(route="A")], "none": [road(route="B")]})
+    res = run(docs, {"old": [road(route="Alpha Road")], "none": [road(route="Beta Road")]})
     assert all(r.confidence == Confidence.LOW for r in res.records)
     kinds = {f.kind for f in res.flags}
     assert {FlagKind.STALE, FlagKind.UNDATED, FlagKind.LOW_CONFIDENCE} <= kinds
@@ -159,3 +159,30 @@ def test_undated_guide_fact_not_flagged_but_undated_road_note_is():
     res = run([doc(published=None)], {"d1": [fact, road()]})
     flagged = {f.record_id: f.kind for f in res.flags if f.kind == FlagKind.UNDATED}
     assert len(flagged) == 1 and next(iter(flagged)).startswith("road-note")
+
+
+def test_quote_tolerates_truncated_and_mangled_source_but_not_invented_claims():
+    from trip_advisor.pipeline.structure.validate import quote_in_source
+
+    src = "Kara Bridge has fully reopened after deadly crashes on the Lagos-Ibadan Expressw."
+    assert quote_in_source(
+        "Kara Bridge has fully reopened after deadly crashes on the Lagos-Ibadan Expressway.", src
+    )
+    assert quote_in_source(
+        "flagged off the Osogbo-Akoda road", "flagged off the Osogbo?Akoda road".replace("?", "–")
+    )
+    assert not quote_in_source(
+        "Kara Bridge has been closed indefinitely and all vehicles are banned from using it", src
+    )
+    assert not quote_in_source("short quote", src)  # too short to trust fuzzy matching
+
+
+def test_differently_worded_reports_of_one_event_are_merged():
+    a = road(summary="Construction flagged off on the Osogbo-Iwo-Ibadan road project.",
+             route="Osogbo-Iwo-Ibadan Road")  # fmt: skip
+    b = road(summary="Reports suggest concrete construction is flagged off for the Osogbo/Iwo/Ibadan road.",
+             route="Osogbo/Iwo/Ibadan road")  # fmt: skip
+    c = road(summary="A trailer crash caused a long queue near the Kara bridge.",
+             route="Osogbo-Iwo-Ibadan Road")  # fmt: skip
+    res = run([doc("d1"), doc("d2"), doc("d3")], {"d1": [a], "d2": [b], "d3": [c]})
+    assert len(res.records) == 2

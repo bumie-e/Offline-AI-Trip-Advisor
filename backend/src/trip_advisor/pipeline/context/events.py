@@ -7,7 +7,10 @@ A missed event is a gap in the delta; a wrong one would mislead, so rules stay c
 import re
 from datetime import date, timedelta
 
+from pydantic import ValidationError
+
 from trip_advisor.pipeline.collect.models import RawDocument
+from trip_advisor.schemas.common import Source
 from trip_advisor.schemas.delta import DisruptionEvent, EventStatus, EventType
 
 RECENT_DAYS = 14
@@ -24,6 +27,8 @@ _FLIGHT = ("flight", "airline", "airport", "aviation", "air peace", "arik")
 _SUSPEND = ("suspend", "cancel", "ground", "halt")
 _WATER = ("flood", "heavy rain", "downpour", "rainstorm")
 _FUEL_UNIONS = ("nupeng", "tanker", "petroleum")
+# "Tanker drivers" also strike over other cargo. Those strikes do not touch fuel supply.
+_NOT_FUEL = ("edible oil", "cooking oil", "vegetable oil", "palm oil")
 _ROAD_UNIONS = ("nurtw", "transport workers", "road transport")
 # A story only matters to a Lagos-arriving visitor if it is national or about Lagos.
 _NATIONAL = ("nationwide", "national", "domestic flights", "unions", "lagos", "murtala")
@@ -62,6 +67,18 @@ def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
+def _mentions_place(text: str, places: list[str]) -> bool:
+    """Whole-word match. Short town names (Ore, Ifo) must not match inside 'more' or 'before'."""
+    return any(re.search(rf"\b{re.escape(p.lower())}\b", text) for p in places)
+
+
+def _source(doc: RawDocument) -> Source | None:
+    try:
+        return Source(publisher=doc.publisher, url=doc.url, published=doc.published)  # type: ignore[arg-type]
+    except ValidationError:
+        return None
+
+
 def classify(
     doc: RawDocument, place_terms: list[str], area: str, state: str = ""
 ) -> DisruptionEvent | None:
@@ -70,7 +87,9 @@ def classify(
     status = _status(text)
 
     def event(kind: EventType, affects: list[str]) -> DisruptionEvent:
-        return DisruptionEvent(type=kind, status=status, affects=affects, source_id=sid)
+        return DisruptionEvent(
+            type=kind, status=status, affects=affects, source_id=sid, source=_source(doc)
+        )
 
     if _has(text, _FLIGHT) and _has(text, _SUSPEND + _STRIKE) and _has(text, _NATIONAL):
         kind = EventType.FLIGHT_SUSPENSION if _has(text, _SUSPEND) else EventType.STRIKE
@@ -81,6 +100,8 @@ def classify(
         in_state = bool(state) and _has(text, (state.lower(),))
         if not (nationwide or in_state):
             return None
+        if _has(text, _NOT_FUEL):
+            return None
         if _has(text, _FUEL_UNIONS):
             return event(EventType.STRIKE, ["fuel"])
         if _has(text, _ROAD_UNIONS):
@@ -88,7 +109,7 @@ def classify(
         if nationwide:
             return event(EventType.STRIKE, ["flights", "roads"])
         return event(EventType.STRIKE, [f"state:{_slug(state)}"])
-    if _has(text, _WATER) and any(t.lower() in text for t in place_terms):
+    if _has(text, _WATER) and _mentions_place(text, place_terms):
         return event(EventType.HEAVY_RAIN, [f"road:{_slug(area)}"])
     return None
 

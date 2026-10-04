@@ -1,5 +1,6 @@
 """Itinerary stops from collected routes. No model involved, so it cannot invent places."""
 
+from trip_advisor.pipeline.collect.towns import route_towns
 from trip_advisor.schemas.itinerary import Stop, TravelMode
 
 from .evidence import GenInput, route_id
@@ -14,10 +15,20 @@ def _duration_note(minutes: float) -> str:
     return f"{h} h {m:02d} min" if h else f"{m} min"
 
 
+def _about_site(summary: str, site_name: str) -> bool:
+    """A guide page about a town also lists nearby places (galleries, hotels). Their hours are
+    not the site's hours, so only a fact that names the site may become a visit note."""
+    return site_name.lower() in summary.lower()
+
+
 def build_stops(inp: GenInput) -> tuple[list[Stop], list[Stop]]:
     site = inp.site
     route, routes = inp.primary, inp.routes
-    facts = [f for f in inp.site_facts if any(t in f.topic.lower() for t in FACT_TOPICS)][:2]
+    facts = [
+        f
+        for f in inp.site_facts
+        if any(t in f.topic.lower() for t in FACT_TOPICS) and _about_site(f.summary, site.name)
+    ][:2]
     visit = Stop(
         order=1,
         title=f"Visit {site.name}",
@@ -53,26 +64,45 @@ def build_stops(inp: GenInput) -> tuple[list[Stop], list[Stop]]:
         ),
         None,
     )  # fmt: skip
-    outbound = [start]
-    if fuel:
-        outbound.append(
+    towns = route_towns(routes.stops, route)
+    along: list[tuple[float, Stop]] = [
+        (
+            t.km_from_start,
             Stop(
                 order=1,
-                title=f"Fuel and rest: {fuel.name}",
+                title=f"Pass through {t.name}",
                 mode=TravelMode.ROAD,
-                duration_minutes=15,
-                notes=f"About {fuel.km_from_start:.0f} km into the drive. Fuel stops are sparse "
-                "in the map data, so fill up when you can.",
+                duration_minutes=0,
+                notes=f"About {t.km_from_start:.0f} km into the {route.distance_km:.0f} km drive.",
+                cited_ids=[rid],
+            ),
+        )
+        for t in towns
+    ]
+    if fuel:
+        along.append(
+            (
+                fuel.km_from_start,
+                Stop(
+                    order=1,
+                    title=f"Fuel and rest: {fuel.name}",
+                    mode=TravelMode.ROAD,
+                    duration_minutes=15,
+                    notes=f"About {fuel.km_from_start:.0f} km into the drive. Fuel stops are "
+                    "sparse in the map data, so fill up when you can.",
+                    cited_ids=[rid],
+                ),
             )
         )
-    outbound.append(visit)
+    outbound = [start, *(s for _, s in sorted(along, key=lambda pair: pair[0])), visit]
+    back_via = f" Via {', '.join(t.name for t in reversed(towns))}." if towns else ""
     back = [
         Stop(
             order=1,
             title=f"Leave {site.name}",
             mode=inp.request.mode or TravelMode.ROAD,
             duration_minutes=round(route.duration_min),
-            notes="Same road in reverse. Start early enough to arrive before dark.",
+            notes="Same road in reverse." + back_via + " Start early enough to arrive before dark.",
             cited_ids=[rid],
         ),
         Stop(order=1, title=f"Arrive {routes.origin.name.split(',')[0]}", duration_minutes=0),

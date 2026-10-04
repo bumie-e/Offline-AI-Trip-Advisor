@@ -5,6 +5,7 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
+from .api import PlaceSummary, Receipt
 from .delta import Delta
 from .itinerary import Advice, Itinerary, TripRequest
 from .pack import Pack
@@ -19,6 +20,8 @@ MODELS: dict[str, type[BaseModel]] = {
     "road_report": RoadReport,
     "site_status_report": SiteStatusReport,
     "advice_rating": AdviceRating,
+    "place_summary": PlaceSummary,
+    "receipt": Receipt,
 }
 
 

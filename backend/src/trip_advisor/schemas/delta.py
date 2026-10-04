@@ -3,7 +3,7 @@ from enum import StrEnum
 
 from pydantic import Field
 
-from .common import Strict
+from .common import Source, Strict
 
 
 class EventType(StrEnum):
@@ -33,6 +33,7 @@ class DisruptionEvent(Strict):
     start: date | None = None
     end: date | None = None
     source_id: str
+    source: Source | None = None  # the story behind the event, so it can be audited
 
 
 class Delta(Strict):

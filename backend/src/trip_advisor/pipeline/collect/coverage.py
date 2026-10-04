@@ -34,6 +34,17 @@ class SiteCoverage(Strict):
     run_errors: list[str] = Field(default_factory=list)  # failures from the collection run
 
 
+def _blocks(gap: str) -> bool:
+    """Only gaps in what the traveller needs block 'sufficient'. The rest stay as warnings."""
+    if gap.startswith("no road-state report"):
+        return "primary corridor" in gap
+    if gap.startswith("stops incomplete on route"):
+        return gap.startswith("stops incomplete on route primary")
+    # A source that failed (serp, news, notices, guides) only matters if it left a blocking
+    # gap above; the evidence itself is checked separately.
+    return not (" failed" in gap)
+
+
 def assess(
     site_id: str,
     routes: SiteRoutes | None,
@@ -78,7 +89,7 @@ def assess(
                 f"no road-state report in the last 3 months for {tag} {ev.corridor!r}{weaker}"
             )
 
-    blocking = [g for g in gaps if not g.startswith("no road-state report") or "primary" in g]
+    blocking = [g for g in gaps if _blocks(g)]
     return SiteCoverage(
         site_id=site_id,
         routes=n_routes,

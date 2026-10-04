@@ -49,8 +49,6 @@ def test_clamp_range_limits_to_16_days():
          EventStatus.CONFIRMED, ["fuel"]),
         ("NLC calls off nationwide strike", EventType.STRIKE, EventStatus.ENDED,
          ["flights", "roads"]),
-        ("Edible oil tanker drivers suspend planned nationwide strike", EventType.STRIKE,
-         EventStatus.ENDED, ["fuel"]),
         ("Ogun teachers begin indefinite strike", EventType.STRIKE,
          EventStatus.CONFIRMED, ["state:ogun"]),
         ("Health workers threaten nationwide strike", EventType.STRIKE,

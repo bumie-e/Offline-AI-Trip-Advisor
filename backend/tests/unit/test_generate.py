@@ -4,7 +4,7 @@ import pytest
 
 from trip_advisor.pipeline.collect.models import Place, RouteOption, SiteRoutes
 from trip_advisor.pipeline.collect.models import Stop as MapStop
-from trip_advisor.pipeline.generate.evidence import GenInput
+from trip_advisor.pipeline.generate.evidence import GenInput, route_id
 from trip_advisor.pipeline.generate.rules import assess
 from trip_advisor.pipeline.generate.run import generate_itinerary, merge
 from trip_advisor.pipeline.generate.writer import StopNote, WriterOutput
@@ -120,7 +120,7 @@ def test_advice_never_uses_safe_unsafe_language():
 
 def test_skeleton_has_outbound_fuel_visit_and_return():
     facts = SiteFact(
-        id="fact-1", summary="Entry fee is reported at N2,500.", source=SRC,
+        id="fact-1", summary="Entry to Olumo Rock is reported at N2,500.", source=SRC,
         confidence=Confidence.MEDIUM, last_verified=date(2026, 10, 1), topic="entry_fee",
     )  # fmt: skip
     it = generate_itinerary(inp([note(), facts], [rain(0.1)]), now=NOW)
@@ -151,7 +151,13 @@ def written(verdict, severity, cited, text="Reports suggest rain may slow the dr
     return WriterOutput(
         verdict=verdict,
         verdict_reasons=[Advice(changed=True, severity=severity, advice=text, cited_ids=cited)],
-        stop_notes=[StopNote(order=1, note="Leave before 7am.")],
+        stop_notes=[
+            StopNote(
+                order=1,
+                note="Leave before 7am.",
+                cited_ids=[route_id("olumo-rock", routes().routes[0])],
+            )
+        ],
     )
 
 
@@ -223,3 +229,29 @@ def test_anthropic_writer_parses_tool_output_and_does_not_force_tool_choice():
     assert out and out.verdict == Verdict.GO_WITH_CHANGES
     assert seen["tool_choice"] == {"type": "auto"}  # newer models reject a forced tool
     assert "weather-2026-10-14" in seen["messages"][0]["content"]
+
+
+def test_wording_violation_from_model_is_recorded_and_rule_text_used():
+    out = written(Verdict.NOT_ADVISED, Severity.HIGH, ["weather-2026-10-14"], "The road is unsafe.")
+    seen = []
+    it = generate_itinerary(inp([note()], [rain(0.9)]), FakeWriter(out), now=NOW, violations=seen)
+    assert "unsafe" not in " ".join(r.advice for r in it.verdict_reasons).lower()
+    assert [v.kind for v in seen] == ["wording"] and seen[0].where == "reason 1"
+
+
+def test_model_stop_note_with_unsourced_number_is_dropped_but_itinerary_kept():
+    out = written(Verdict.NOT_ADVISED, Severity.HIGH, ["weather-2026-10-14"])
+    out.stop_notes = [StopNote(order=1, note="There is a 99% chance of rain.")]
+    seen = []
+    it = generate_itinerary(inp([note()], [rain(0.9)]), FakeWriter(out), now=NOW, violations=seen)
+    assert "99%" not in it.stops[0].notes
+    assert seen[0].where == "stop 1"
+
+
+def test_valid_stop_note_with_citation_is_kept():
+    out = written(Verdict.NOT_ADVISED, Severity.HIGH, ["weather-2026-10-14"])
+    out.stop_notes = [
+        StopNote(order=1, note="Rain is 90% likely.", cited_ids=["weather-2026-10-14"])
+    ]
+    it = generate_itinerary(inp([note()], [rain(0.9)]), FakeWriter(out), now=NOW)
+    assert "weather-2026-10-14" in it.stops[0].cited_ids and "90%" in it.stops[0].notes

@@ -365,6 +365,23 @@ def test_coverage_flags_missing_alternative_and_stops():
     assert {"no alternative road found", "no fuel stop on the primary route"} <= set(cov.gaps)
 
 
+def test_failures_on_alternatives_and_sources_warn_but_do_not_block():
+    ev = select_latest([doc("a", date(2026, 9, 1), "Abeokuta road repair")], CORRIDOR, TODAY)
+    errors = [
+        "stops incomplete on route via-ife: Overpass query 3 failed",
+        "bright data serp failed for 'q'",
+    ]
+    cov = coverage.assess("s", make_routes(2, 3, 1), [], [ev], {CORRIDOR.name}, TODAY, errors)
+    assert cov.sufficient and set(errors) <= set(cov.gaps)
+
+
+def test_incomplete_stops_on_the_primary_route_do_block():
+    ev = select_latest([doc("a", date(2026, 9, 1), "Abeokuta road repair")], CORRIDOR, TODAY)
+    errors = ["stops incomplete on route primary: Overpass query 4 failed"]
+    cov = coverage.assess("s", make_routes(2, 3, 1), [], [ev], {CORRIDOR.name}, TODAY, errors)
+    assert not cov.sufficient
+
+
 def test_coverage_with_no_routes():
     assert "no route found" in assess(None, fresh=True).gaps
 

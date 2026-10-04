@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,7 +15,8 @@ class Settings(BaseSettings):
     generation_model: str = "claude-sonnet-5-5"  # itinerary writer
     weather_api_key: str = ""
     elevenlabs_api_key: str = ""
-    database_url: str = "sqlite:///./data/app.db"
+    database_url: str = ""  # Supabase Postgres pooler URL; reports are disabled while empty
+    data_dir: Path = Path(__file__).resolve().parents[2] / "data"  # packs, deltas, sites
 
 
 settings = Settings()

@@ -29,12 +29,13 @@ the source when you cite a dated record.
 - `alternatives` are short actions (leave earlier, other dates, an alternative route from the \
 evidence). Do not suggest a mode of travel the evidence does not cover.
 - `stop_notes`: optional one-sentence practical notes for a stop by its order number, drawn only \
-from the evidence."""
+from the evidence. Every note must list the `cited_ids` it rests on; a note with none is dropped."""
 
 
 class StopNote(Strict):
     order: int = Field(ge=1)
     note: str = Field(max_length=300)
+    cited_ids: list[str] = Field(default_factory=list)  # required for any figure in the note
 
 
 class WriterOutput(Strict):

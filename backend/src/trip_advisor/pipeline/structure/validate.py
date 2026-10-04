@@ -42,8 +42,30 @@ def normalize_route(name: str) -> str:
     return re.sub(r"(^|[\s-])([a-z])", lambda m: m.group(1) + m.group(2).upper(), name)
 
 
+FUZZY_COVERAGE = 0.9  # share of the quote's words that must appear in the source
+FUZZY_MIN_WORDS = 6
+
+
+def _words(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", text.lower())
+
+
 def quote_in_source(quote: str, text: str) -> bool:
-    return _squash(quote) in _squash(text)
+    """Exact match after tidying, else nearly every word of the quote is in the source.
+
+    Collected text is often a truncated snippet with mangled dashes and "..." joins, and a model
+    legitimately repairs those when quoting. An invented claim brings words the source lacks.
+    """
+    if _squash(quote) in _squash(text):
+        return True
+    words, source = _words(quote), set(_words(text))
+    if len(words) < FUZZY_MIN_WORDS:
+        return False
+    # A source cut mid-word ("Expressw") still supports the full word.
+    present = sum(
+        w in source or any(w.startswith(t) and len(t) >= 4 for t in source) for w in words
+    )
+    return present / len(words) >= FUZZY_COVERAGE
 
 
 def _amounts_in(quote: str) -> set[int]:

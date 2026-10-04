@@ -170,13 +170,73 @@ def generate(
         writer = AnthropicWriter(settings.llm_api_key, settings.generation_model)
     elif not no_llm:
         typer.echo("note: LLM_API_KEY not set, using rules and templates only", err=True)
-    itinerary = generate_itinerary(inp, writer)
+    violations: list = []  # type: ignore[type-arg]
+    itinerary = generate_itinerary(inp, writer, violations=violations)
     from trip_advisor.pipeline.collect.store import save
 
     path = save(itinerary, ITINERARIES_DIR / f"{site}.json")
     typer.echo(f"{site}: {itinerary.verdict} ({len(itinerary.verdict_reasons)} reasons) -> {path}")
+    for v in violations:
+        typer.echo(f"  guardrail: {v.where}: {v.kind} ({v.detail})", err=True)
     for reason in itinerary.verdict_reasons:
         typer.echo(f"  [{reason.severity}] {reason.advice}")
+
+
+@app.command()
+def build_pack(site: str = typer.Argument("all", help="Site id, or 'all'")) -> None:
+    """Build the versioned offline pack (and slim routes) from structured records."""
+    from trip_advisor.pack.builder import build_pack as build
+    from trip_advisor.pack.builder import write_pack
+    from trip_advisor.pipeline.collect import store
+    from trip_advisor.pipeline.collect.models import SiteRoutes
+    from trip_advisor.pipeline.structure.models import StructuredSite
+    from trip_advisor.sites import list_sites
+
+    failed = False
+    for site_id in list_sites() if site == "all" else [site]:
+        structured_file = Path("data/structured") / site_id / "structured.json"
+        if not structured_file.exists():
+            typer.echo(
+                f"{site_id}: no structured records, run `structure {site_id}` first", err=True
+            )
+            failed = True
+            continue
+        pack, report = build(StructuredSite.model_validate_json(structured_file.read_text()))
+        routes_file = store.site_dir(site_id) / "routes.json"
+        routes = (
+            SiteRoutes.model_validate_json(routes_file.read_text())
+            if routes_file.exists()
+            else None
+        )
+        write_pack(pack, routes)
+        typer.echo(
+            f"{site_id}: pack {report.version}, {report.size_bytes / 1000:.1f} KB, "
+            f"{report.kept} records (dropped {report.dropped_stale} stale, "
+            f"{report.dropped_for_size} for size)"
+        )
+    if failed:
+        raise typer.Exit(1)
+
+
+@app.command()
+def purge_reports(
+    days: int = typer.Option(365, help="Delete reports received before this many days ago"),
+) -> None:
+    """Delete old reports and ratings (data retention)."""
+    from datetime import UTC, datetime
+
+    from sqlalchemy.orm import Session
+
+    from trip_advisor.db.session import DatabaseNotConfigured, get_engine
+    from trip_advisor.services.reports import purge_older_than
+
+    try:
+        with Session(get_engine()) as session:
+            removed = purge_older_than(session, days, now=datetime.now(UTC))
+    except DatabaseNotConfigured as exc:
+        typer.echo(f"{exc}", err=True)
+        raise typer.Exit(1) from exc
+    typer.echo(f"removed {removed} rows older than {days} days")
 
 
 @app.command()

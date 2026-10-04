@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 
+from trip_advisor.guardrails.catalog import Catalog, Fact
 from trip_advisor.pipeline.collect.models import RouteOption, SiteRoutes
 from trip_advisor.schemas.delta import Delta
 from trip_advisor.schemas.itinerary import TripRequest
@@ -55,6 +56,30 @@ class GenInput:
             ids |= {route_id(self.site.id, r) for r in self.routes.routes}
         return ids
 
+    def catalog(self) -> Catalog:
+        """The same IDs as `known_ids`, with descriptions and ages for the guardrails."""
+        cat = Catalog()
+        for r in self.records:
+            cat.add(Fact(r.id, r.type, r.summary, r.source.publisher, r.source.published))
+        for w in self.delta.weather:
+            text = f"Rain chance {w.rain_probability:.0%} on {w.date:%d %b} in {w.area}"
+            cat.add(Fact(weather_id(w.date), "weather", text, "Open-Meteo forecast",
+                         self.delta.generated_at.date()))  # fmt: skip
+        for e in self.delta.events:
+            text = f"{e.type} ({e.status}) affecting {', '.join(e.affects)}"
+            src = e.source
+            cat.add(
+                Fact(
+                    e.source_id, "event", text,
+                    src.publisher if src else "News reports", src.published if src else None,
+                )
+            )  # fmt: skip
+        for rt in self.routes.routes if self.routes else []:
+            text = f"{rt.label}: {rt.distance_km:.0f} km, about {rt.duration_min:.0f} min"
+            cat.add(Fact(route_id(self.site.id, rt), "route", text, "OpenStreetMap routing",
+                         self.routes.collected_at.date()))  # type: ignore[union-attr]  # fmt: skip
+        return cat
+
     def render(self) -> str:
         """The evidence block shown to the model. IDs in [brackets] are the only citable ones."""
         lines = [
@@ -90,7 +115,8 @@ class GenInput:
         lines += ["", "Disruption news:"]
         for e in self.delta.events:
             span = f" {e.start or '?'} to {e.end or '?'}" if e.start or e.end else ", dates unknown"
+            by = f" Source: {e.source.publisher}, {e.source.published}." if e.source else ""
             lines.append(
-                f"- [{e.source_id}] {e.type} ({e.status}) affecting {', '.join(e.affects)}{span}"
+                f"- [{e.source_id}] {e.type} ({e.status}) affecting {', '.join(e.affects)}{span}.{by}"
             )
         return "\n".join(lines)

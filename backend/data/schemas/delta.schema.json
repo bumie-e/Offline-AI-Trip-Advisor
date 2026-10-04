@@ -45,6 +45,17 @@
         "source_id": {
           "title": "Source Id",
           "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Source"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
@@ -75,6 +86,41 @@
       ],
       "title": "EventType",
       "type": "string"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "publisher": {
+          "title": "Publisher",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published"
+        }
+      },
+      "required": [
+        "publisher",
+        "url"
+      ],
+      "title": "Source",
+      "type": "object"
     },
     "WeatherEntry": {
       "additionalProperties": false,

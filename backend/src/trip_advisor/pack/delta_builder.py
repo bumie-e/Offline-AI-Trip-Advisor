@@ -7,7 +7,8 @@ import httpx
 
 from trip_advisor.pipeline.collect import news, store
 from trip_advisor.pipeline.collect.http import Fetcher
-from trip_advisor.pipeline.collect.models import RawDocument
+from trip_advisor.pipeline.collect.models import RawDocument, SiteRoutes
+from trip_advisor.pipeline.collect.towns import route_towns
 from trip_advisor.pipeline.context.events import LOCAL_QUERIES, NATIONAL_QUERIES, build_events
 from trip_advisor.pipeline.context.weather import fetch_weather
 from trip_advisor.schemas.delta import Delta
@@ -22,10 +23,35 @@ class DeltaTooLarge(RuntimeError):
     pass
 
 
+def trip_places(site: SiteConfig, raw_dir: Path = store.RAW_DIR) -> list[str]:
+    """Places where a flood or heavy rain would affect this trip: the destination city and site,
+    then the towns the primary route passes through. Not the whole state."""
+    places = [site.city, site.name]
+    routes_file = store.site_dir(site.id, raw_dir) / "routes.json"
+    if routes_file.exists():
+        routes = SiteRoutes.model_validate_json(routes_file.read_text())
+        primary = next((r for r in routes.routes if r.id == "primary"), None)
+        if primary:
+            places += [t.name for t in route_towns(routes.stops, primary)]
+    return list(dict.fromkeys(places))
+
+
 def collect_event_docs(
-    site: SiteConfig, fetcher: Fetcher, now: datetime, errors: list[str]
+    site: SiteConfig,
+    fetcher: Fetcher,
+    now: datetime,
+    errors: list[str],
+    places: list[str] | None = None,
 ) -> list[RawDocument]:
-    queries = [*NATIONAL_QUERIES, *(q.format(place=site.city) for q in LOCAL_QUERIES)]
+    places = places if places is not None else [site.city]
+    queries = [
+        *NATIONAL_QUERIES,
+        *(
+            q.format(place=p)
+            for p in dict.fromkeys([site.city, *places[2:]])
+            for q in LOCAL_QUERIES
+        ),
+    ]
     docs: list[RawDocument] = []
     for q in queries:
         try:
@@ -69,10 +95,11 @@ def build_delta(
     else:
         errors.append("weather skipped: destination coordinates are not pinned")
 
-    docs = collect_event_docs(site, fetcher, now, errors)
+    places = trip_places(site)
+    docs = collect_event_docs(site, fetcher, now, errors, places)
     events = build_events(
         docs,
-        place_terms=[site.city, site.name, site.state],
+        place_terms=places,
         area=site.city,
         today=today,
         state=site.state,

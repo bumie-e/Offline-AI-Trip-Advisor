@@ -9,25 +9,47 @@ from trip_advisor.schemas.pack import CostNote, PackRecord, RoadNote, SiteFact
 
 from .models import Flag, FlagKind, Reason, Rejected
 
-SIMILARITY = 0.6
+SIMILARITY = 0.5
+_FILLER = {
+    "the", "a", "an", "of", "on", "in", "at", "to", "for", "and", "or", "is", "are", "was", "has",
+    "have", "been", "by", "with", "from", "that", "this", "it", "as", "be", "its", "their",
+    "report", "reports", "reported", "suggest", "suggests", "indicate", "indicates", "caused",
+    "causing", "road", "roads", "expressway", "highway", "state", "news", "according",
+}  # fmt: skip
 
 
-def _key(r: PackRecord) -> tuple[str, str]:
+def _subject(r: PackRecord) -> str:
     if isinstance(r, RoadNote):
-        return r.type, r.route.lower()
+        return r.route
     if isinstance(r, SiteFact):
-        return r.type, r.topic.lower()
+        return r.topic
     if isinstance(r, CostNote):
-        return r.type, r.item.lower()
-    return r.type, ""
+        return r.item
+    return ""
+
+
+def _key(r: PackRecord) -> str:
+    return r.type
 
 
 def _tokens(text: str) -> set[str]:
-    return set(re.findall(r"[a-z0-9]+", text.lower()))
+    out = set()
+    for t in re.findall(r"[a-z0-9]+", text.lower()):
+        if t not in _FILLER:
+            out.add("construct" if t.startswith(("construct", "reconstruct")) else t)
+    return out
 
 
-def similar(a: str, b: str) -> bool:
-    ta, tb = _tokens(a), _tokens(b)
+def similar(a: PackRecord, b: PackRecord) -> bool:
+    """Same kind of record and the same event: summaries overlap once the road's own name,
+    the topic and filler words are set aside, so differently-worded reports of one event merge."""
+    if _key(a) != _key(b):
+        return False
+    sa, sb = _tokens(_subject(a)), _tokens(_subject(b))
+    if sa and sb and not (sa & sb):
+        return False  # different roads (or topics) are different records
+    subject = sa | sb
+    ta, tb = _tokens(a.summary) - subject, _tokens(b.summary) - subject
     return bool(ta and tb) and len(ta & tb) / len(ta | tb) >= SIMILARITY
 
 
@@ -44,9 +66,7 @@ def dedupe(records: list[PackRecord]) -> tuple[list[PackRecord], list[Rejected]]
     kept: list[PackRecord] = []
     dropped: list[Rejected] = []
     for rec in ordered:
-        twin = next(
-            (k for k in kept if _key(k) == _key(rec) and similar(k.summary, rec.summary)), None
-        )
+        twin = next((k for k in kept if similar(k, rec)), None)
         if twin:
             dropped.append(
                 Rejected(doc_id=rec.id, reason=Reason.DUPLICATE, detail=f"duplicate of {twin.id}")
