@@ -1,10 +1,17 @@
 """Generate an itinerary: skeleton from routes, rules as a floor, model for the prose."""
 
-from dataclasses import replace
+import logging
+from dataclasses import dataclass, replace
 from datetime import UTC, date, datetime
 from pathlib import Path
 
-from trip_advisor.guardrails.checks import Violation, ViolationKind, guard_advice, guard_note
+from trip_advisor.guardrails.checks import (
+    Violation,
+    ViolationKind,
+    check_text,
+    guard_advice,
+    guard_note,
+)
 from trip_advisor.pipeline.collect import store as raw_store
 from trip_advisor.pipeline.collect.models import SiteRoutes
 from trip_advisor.schemas.delta import Delta
@@ -15,9 +22,11 @@ from trip_advisor.sites import SiteConfig
 from .evidence import GenInput
 from .rules import SEVERITY_ORDER, Assessment, assess, max_severity, more_cautious
 from .skeleton import build_stops
+from .summary import template_summary
 from .writer import ItineraryWriter, StopNote, WriterOutput
 
 ITINERARIES_DIR = Path("data/itineraries")
+log = logging.getLogger(__name__)
 
 
 def _outline(outbound: list[Stop], back: list[Stop]) -> str:
@@ -48,15 +57,23 @@ def _rank(severity: Severity) -> int:
     return SEVERITY_ORDER.index(severity)
 
 
+@dataclass
+class Merged:
+    reasons: list[Advice]
+    notes: list[StopNote]
+    summary: str  # empty when the model's summary cannot be used
+    model_text_used: bool  # False when the rule text replaced the model's reasons
+
+
 def merge(
     inp: GenInput,
     findings: Assessment,
     written: WriterOutput | None,
     violations: list[Violation] | None = None,
-) -> tuple[list[Advice], list[StopNote]]:
-    """Guard the model's reasons and notes, then use them only if they do not under-warn."""
+) -> Merged:
+    """Guard the model's reasons, notes and summary; use them only if they do not under-warn."""
     if written is None:
-        return findings.advice, []
+        return Merged(findings.advice, [], "", False)
     seen = violations if violations is not None else []
     catalog = inp.catalog()
     reasons: list[Advice] = []
@@ -81,8 +98,13 @@ def merge(
         or not reasons
         or _rank(max_severity(reasons)) < _rank(max_severity(findings.advice))
     ):
-        return findings.advice, notes  # the model under-warned: keep the rule text
-    return reasons, notes
+        return Merged(findings.advice, notes, "", False)
+    # The summary may only lean on what the reasons cite, so its figures are checked against that.
+    cited = sorted({i for r in reasons for i in r.cited_ids})
+    summary = written.summary.strip()
+    found = check_text(summary, cited, catalog) if summary else []
+    seen += [replace(v, where="summary") for v in found]
+    return Merged(reasons, notes, "" if found else summary, True)
 
 
 def generate_itinerary(
@@ -92,22 +114,41 @@ def generate_itinerary(
     now: datetime | None = None,
     violations: list[Violation] | None = None,
 ) -> Itinerary:
+    return generate_with_meta(inp, writer, now=now, violations=violations)[0]
+
+
+def generate_with_meta(
+    inp: GenInput,
+    writer: ItineraryWriter | None = None,
+    *,
+    now: datetime | None = None,
+    violations: list[Violation] | None = None,
+) -> tuple[Itinerary, bool]:
+    """The itinerary, and whether the model's text made it into it."""
     findings = assess(inp)
     outbound, back = build_stops(inp)
-    written = writer.write(inp, findings, _outline(outbound, back)) if writer else None
-    reasons, notes = merge(inp, findings, written, violations)
+    written = None
+    if writer:
+        try:
+            written = writer.write(inp, findings, _outline(outbound, back))
+        except Exception as exc:  # noqa: BLE001 - a model outage must not break the trip plan
+            log.warning("itinerary writer failed, using rule text: %s", exc)
+    merged = merge(inp, findings, written, violations)
     verdict = findings.verdict
-    if written is not None:
+    if written is not None and merged.model_text_used:
         verdict = more_cautious(verdict, written.verdict)
-    return Itinerary(
+    summary = merged.summary or template_summary(inp, verdict, merged.reasons)
+    itinerary = Itinerary(
         site_id=inp.site.id,
         generated_at=now or datetime.now(UTC),
         request=inp.request,
         verdict=verdict,
-        verdict_reasons=reasons,
-        stops=_apply_notes(outbound, notes),
+        summary=summary,
+        verdict_reasons=merged.reasons,
+        stops=_apply_notes(outbound, merged.notes),
         return_leg=back,
     )
+    return itinerary, merged.model_text_used
 
 
 def load_input(

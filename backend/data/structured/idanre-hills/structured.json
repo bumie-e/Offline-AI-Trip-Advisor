@@ -1,0 +1,130 @@
+{
+  "site_id": "idanre-hills",
+  "structured_on": "2026-10-04",
+  "records": [
+    {
+      "id": "road-note-idanre-hills-66d8126f7b",
+      "summary": "Reports suggest a downpour triggered gridlock and stranding of motorists on the Lagos-Ore-Benin Expressway.",
+      "source": {
+        "publisher": "The Nation Newspaper",
+        "url": "https://thenationonlineng.net/houses-cars-shops-roads-submerged-as-flood-ravages-ondo-communities/",
+        "published": "2026-07-31"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ore-Benin Expressway",
+      "rain_sensitivity": "high"
+    },
+    {
+      "id": "road-note-idanre-hills-4598dedc4c",
+      "summary": "Reports suggest that torrential rainfall submerged a section of the Lagos-Ore-Benin Expressway, stranding travellers for hours.",
+      "source": {
+        "publisher": "The Guardian Nigeria News",
+        "url": "https://guardian.ng/news/nigeria/metro/travellers-stranded-as-floods-cut-off-lagos-benin-expressway/",
+        "published": "2026-07-31"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ore-Benin Expressway",
+      "rain_sensitivity": "high"
+    },
+    {
+      "id": "road-note-idanre-hills-dcc5bb951e",
+      "summary": "Reports suggest torrential rain caused flooding that cut off a section of the Lagos-Ore-Benin Expressway in Ondo State.",
+      "source": {
+        "publisher": "Tribune Online",
+        "url": "https://tribuneonlineng.com/flood-hits-ondo-paralyses-traffic-on-lagos-ore-benin-expressway/",
+        "published": "2026-07-30"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ore-Benin Expressway",
+      "rain_sensitivity": "high"
+    },
+    {
+      "id": "road-note-idanre-hills-447217bbf1",
+      "summary": "Reports suggest that a section of the Lagos–Ore–Benin Expressway in Odigbo Local Government Area was submerged following torrential rainfall in Ondo State.",
+      "source": {
+        "publisher": "Daily Trust",
+        "url": "https://dailytrust.com/flood-submerges-highway-in-ondo/",
+        "published": "2026-07-30"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ore-Benin Expressway",
+      "rain_sensitivity": "high"
+    },
+    {
+      "id": "road-note-idanre-hills-926d579afd",
+      "summary": "Reports suggest flooding on the Lagos-Ore-Benin expressway has disrupted traffic flow.",
+      "source": {
+        "publisher": "tribuneonlineng.com",
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQdC1ZNEZ0ZF9RN3YyUW9WREJlYWllMUdnS1ZmU2s2MEZBbDJoOXg1U3dHbnU5amFxdEpibks4TEFmdWlfR25ZWHNiZ0RMMktDYmwzVkpLemJkd2hXdGtqNURxdHp0YlFIbFhIWlpiR29PUDk2MkJnRUhDOVo4ajBzNHhGcDlYdW9ySVJfd1lESlloUEhueEtB0gGcAUFVX3lxTE1JZVowLU51SERmWXNOck1DeE5tMjFtRmlteHVpWHJJY1NxVmRDYVBpN1RhTjdXRlVpTF9vOTMxOUFPQTRIODZxNTZKcXZTQURZVG41QlVCbVhodWJfUWgweHZfemlEQlNTZVNyZFpHZzRBckpCUXNka2x6b2c1MHB3bmxuODJkUU5Uc2VUS1lRRGluNXRaZGdXdmpENQ?oc=5",
+        "published": "2026-07-30"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ore-Benin Expressway",
+      "rain_sensitivity": "high"
+    }
+  ],
+  "flags": [
+    {
+      "record_id": "road-note-idanre-hills-66d8126f7b",
+      "kind": "headline_only",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-dcc5bb951e",
+      "kind": "headline_only",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-447217bbf1",
+      "kind": "headline_only",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-926d579afd",
+      "kind": "headline_only",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-4598dedc4c",
+      "kind": "headline_only",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-66d8126f7b",
+      "kind": "low_confidence",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-4598dedc4c",
+      "kind": "low_confidence",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-dcc5bb951e",
+      "kind": "low_confidence",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-447217bbf1",
+      "kind": "low_confidence",
+      "detail": ""
+    },
+    {
+      "record_id": "road-note-idanre-hills-926d579afd",
+      "kind": "low_confidence",
+      "detail": ""
+    }
+  ],
+  "rejected": [],
+  "docs_processed": 17
+}

@@ -23,11 +23,20 @@ class DeltaTooLarge(RuntimeError):
     pass
 
 
-def trip_places(site: SiteConfig, raw_dir: Path = store.RAW_DIR) -> list[str]:
+PACKS_DIR = Path("data/packs")
+
+
+def trip_places(
+    site: SiteConfig, raw_dir: Path = store.RAW_DIR, packs_dir: Path = PACKS_DIR
+) -> list[str]:
     """Places where a flood or heavy rain would affect this trip: the destination city and site,
     then the towns the primary route passes through. Not the whole state."""
     places = [site.city, site.name]
+    # Raw collection output stays on the machine that collected it. The pack's slim copy travels
+    # with the deploy, so a scheduled job on a fresh checkout can still find the route towns.
     routes_file = store.site_dir(site.id, raw_dir) / "routes.json"
+    if not routes_file.exists():
+        routes_file = packs_dir / site.id / "routes.json"
     if routes_file.exists():
         routes = SiteRoutes.model_validate_json(routes_file.read_text())
         primary = next((r for r in routes.routes if r.id == "primary"), None)

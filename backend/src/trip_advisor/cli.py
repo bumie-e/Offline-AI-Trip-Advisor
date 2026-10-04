@@ -7,6 +7,7 @@ if TYPE_CHECKING:
     from trip_advisor.pipeline.collect.brightdata import BrightData
     from trip_advisor.pipeline.collect.http import Fetcher
     from trip_advisor.pipeline.collect.run import CollectResult
+    from trip_advisor.schemas.delta import Delta
 
 app = typer.Typer(help="Trip advisor backend commands.")
 
@@ -100,10 +101,42 @@ def structure(site: str = typer.Argument("all", help="Site id, or 'all'")) -> No
         typer.echo(f"  hand-check sample: data/structured/{site_id}/review.md")
 
 
+def _publish_delta(site_id: str, result: "Delta") -> bool:
+    """Store the delta in the database. False when it could not be stored."""
+    from datetime import UTC, datetime
+
+    from sqlalchemy.exc import SQLAlchemyError
+    from sqlalchemy.orm import Session
+
+    from trip_advisor.db.session import DatabaseNotConfigured, get_engine
+    from trip_advisor.services.deltas import publish_delta
+
+    if not result.weather:
+        # Publishing only moves forward, so an empty delta would replace a good one.
+        typer.echo(
+            "  not published: no weather data, so it must not replace a good delta", err=True
+        )
+        return False
+    try:
+        with Session(get_engine()) as session:
+            stored = publish_delta(session, site_id, result, now=datetime.now(UTC))
+    except DatabaseNotConfigured:
+        typer.echo("  not published: DATABASE_URL is not set", err=True)
+        return False
+    except SQLAlchemyError as exc:  # the class name only: messages can carry the connection string
+        typer.echo(f"  not published: database error ({type(exc).__name__})", err=True)
+        return False
+    typer.echo("  published" if stored else "  already up to date: a newer delta is stored")
+    return True
+
+
 @app.command()
 def delta(
     site: str = typer.Argument("all", help="Site id, or 'all'"),
     days: int = typer.Option(14, help="Forecast window starting today (the API allows 16)"),
+    publish: bool = typer.Option(
+        False, help="Also store it in the database, so the live API serves it without a redeploy"
+    ),
 ) -> None:
     """Build the weather + disruption delta for a site and write it to data/deltas/."""
     from datetime import UTC, datetime, timedelta
@@ -126,6 +159,8 @@ def delta(
         for err in errors:
             typer.echo(f"  gap: {err}", err=True)
         failed = failed or (not result.weather and not result.events)
+        if publish and not _publish_delta(site_id, result):
+            failed = True
     if failed:
         raise typer.Exit(1)
 
@@ -228,15 +263,17 @@ def purge_reports(
     from sqlalchemy.orm import Session
 
     from trip_advisor.db.session import DatabaseNotConfigured, get_engine
+    from trip_advisor.services.ratelimit import purge_old as purge_old_limits
     from trip_advisor.services.reports import purge_older_than
 
     try:
         with Session(get_engine()) as session:
-            removed = purge_older_than(session, days, now=datetime.now(UTC))
+            now = datetime.now(UTC)
+            removed = purge_older_than(session, days, now=now) + purge_old_limits(session, now=now)
     except DatabaseNotConfigured as exc:
         typer.echo(f"{exc}", err=True)
         raise typer.Exit(1) from exc
-    typer.echo(f"removed {removed} rows older than {days} days")
+    typer.echo(f"removed {removed} rows (reports older than {days} days, old rate-limit counters)")
 
 
 @app.command()

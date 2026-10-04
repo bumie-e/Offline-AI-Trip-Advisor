@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-10-04T08:03:59.333548Z",
+  "weather": [
+    {
+      "date": "2026-10-04",
+      "area": "Abeokuta",
+      "rain_probability": 1.0
+    },
+    {
+      "date": "2026-10-05",
+      "area": "Abeokuta",
+      "rain_probability": 0.67
+    },
+    {
+      "date": "2026-10-06",
+      "area": "Abeokuta",
+      "rain_probability": 0.82
+    },
+    {
+      "date": "2026-10-07",
+      "area": "Abeokuta",
+      "rain_probability": 0.97
+    },
+    {
+      "date": "2026-10-08",
+      "area": "Abeokuta",
+      "rain_probability": 0.85
+    },
+    {
+      "date": "2026-10-09",
+      "area": "Abeokuta",
+      "rain_probability": 0.78
+    },
+    {
+      "date": "2026-10-10",
+      "area": "Abeokuta",
+      "rain_probability": 0.78
+    },
+    {
+      "date": "2026-10-11",
+      "area": "Abeokuta",
+      "rain_probability": 0.78
+    },
+    {
+      "date": "2026-10-12",
+      "area": "Abeokuta",
+      "rain_probability": 0.78
+    },
+    {
+      "date": "2026-10-13",
+      "area": "Abeokuta",
+      "rain_probability": 0.98
+    },
+    {
+      "date": "2026-10-14",
+      "area": "Abeokuta",
+      "rain_probability": 0.86
+    },
+    {
+      "date": "2026-10-15",
+      "area": "Abeokuta",
+      "rain_probability": 0.9
+    },
+    {
+      "date": "2026-10-16",
+      "area": "Abeokuta",
+      "rain_probability": 0.88
+    },
+    {
+      "date": "2026-10-17",
+      "area": "Abeokuta",
+      "rain_probability": 0.92
+    },
+    {
+      "date": "2026-10-18",
+      "area": "Abeokuta",
+      "rain_probability": 0.61
+    }
+  ],
+  "events": [
+    {
+      "type": "strike",
+      "status": "confirmed",
+      "affects": [
+        "flights",
+        "roads"
+      ],
+      "start": null,
+      "end": null,
+      "source_id": "news-3026450ac3dc8122",
+      "source": {
+        "publisher": "tgnews.com.ng",
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQLVNxMHpDMUZObktzVlFTcE81NWg0MTdjaFo5N1VCc01OaGx6NEg2UV85RzczY09wQ212S0ZBM2FRbldBTzNTbFZEM0FsZ01SOW1jd2YxZ2ZMTnU3eExneFRrU2dxZXgwNm9lak9rSzhwd1NDbkJMRU5va3ZsSWg4T214WVNJT2R0aVJIZHNiS1BWQVdsN1pTVTFYaURqdw?oc=5",
+        "published": "2026-10-03"
+      }
+    },
+    {
+      "type": "strike",
+      "status": "threatened",
+      "affects": [
+        "flights"
+      ],
+      "start": null,
+      "end": null,
+      "source_id": "news-9ca3e31704b5ad36",
+      "source": {
+        "publisher": "Premium Times Nigeria",
+        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOWGdJazYyRGUxOG9tTjdaaHVKOE5mUDN3VUN4NklPeFZlYVJ4TDk2dTZxQ2NWejh6Wjlsal9kdnpoWWQ3NEFDSC1rbkQtd3VRWTZKaWRFSnBodllfYzE0SzllUU5RZjFLbTZKY0wwWm83b0dOWkxKcElrNDZHOTdLZW1hYjZ4dnpGZUFsanctdmpjTml6VmtldzNmMjZCczVQOFVTVlRfRzJDZTRXSmJ6SmtzbE9TMnhfSklvUzZ4R0prcGNJMzdOQXhqTU5vOXlB?oc=5",
+        "published": "2026-09-29"
+      }
+    }
+  ]
+}

@@ -29,6 +29,22 @@ def db_session() -> Iterator[Session]:
         ) from exc
 
 
+def optional_db_session() -> Iterator[Session | None]:
+    """A session when the database is configured, else None. For reads that have a file fallback."""
+    try:
+        yield from _get_session()
+    except DatabaseNotConfigured:
+        yield None
+
+
+def model_name() -> str:
+    return settings.generation_model
+
+
+def daily_cap() -> int:
+    return settings.model_calls_per_day
+
+
 def writer() -> ItineraryWriter | None:
     """The model writer, only when a key is configured. Requests opt in with `?ai=true`."""
     if not settings.llm_api_key:

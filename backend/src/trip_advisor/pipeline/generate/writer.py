@@ -22,6 +22,9 @@ Rules:
 - Cite with `cited_ids`, using ONLY IDs shown in [brackets] in the evidence. Never invent an ID.
 - Wording is advisory: "reports suggest", "may", "consider". Never say a road, place or trip is \
 safe or unsafe, and never promise conditions.
+- `summary`: two or three sentences giving the overall picture for this trip: the verdict, the \
+main reasons (weather forecast, news, road reports) and what the traveller should do. It must agree \
+with your reasons, add no new facts, and cite nothing that your reasons do not.
 - Every rule finding must be reflected, at no lower severity than the rule check gave it.
 - Severity: none, elevated, high. Verdict: go, go_with_changes, not_advised.
 - Each reason is one or two short sentences a tired traveller can read quickly. Mention the age of \
@@ -40,6 +43,7 @@ class StopNote(Strict):
 
 class WriterOutput(Strict):
     verdict: Verdict
+    summary: str = Field(default="", max_length=600)
     verdict_reasons: list[Advice]
     stop_notes: list[StopNote] = Field(default_factory=list)
 
@@ -66,7 +70,8 @@ class AnthropicWriter:
     def __init__(self, api_key: str, model: str = DEFAULT_MODEL, max_tokens: int = 3000) -> None:
         import anthropic
 
-        self._client = anthropic.Anthropic(api_key=api_key)
+        # A web request has a hard time limit, so fail fast and fall back to the rule text.
+        self._client = anthropic.Anthropic(api_key=api_key, timeout=40.0, max_retries=1)
         self.model = model
         self.max_tokens = max_tokens
 

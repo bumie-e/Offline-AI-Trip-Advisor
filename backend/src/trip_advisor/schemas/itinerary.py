@@ -62,6 +62,7 @@ class Itinerary(Strict):
     generated_at: datetime
     request: TripRequest
     verdict: Verdict
+    summary: str = ""  # the overall picture in two or three sentences
     verdict_reasons: list[Advice]
     stops: list[Stop]
     return_leg: list[Stop] = Field(default_factory=list)

@@ -178,7 +178,7 @@ def test_model_cannot_relax_the_verdict():
 def test_model_citing_unknown_id_falls_back_to_rule_text():
     out = written(Verdict.NOT_ADVISED, Severity.HIGH, ["road-note-999"])
     i = inp([note()], [rain(0.9)])
-    reasons, _ = merge(i, assess(i), out)
+    reasons = merge(i, assess(i), out).reasons
     assert reasons == assess(i).advice
 
 

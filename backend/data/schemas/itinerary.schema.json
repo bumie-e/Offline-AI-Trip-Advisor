@@ -216,6 +216,11 @@
     "verdict": {
       "$ref": "#/$defs/Verdict"
     },
+    "summary": {
+      "default": "",
+      "title": "Summary",
+      "type": "string"
+    },
     "verdict_reasons": {
       "items": {
         "$ref": "#/$defs/Advice"

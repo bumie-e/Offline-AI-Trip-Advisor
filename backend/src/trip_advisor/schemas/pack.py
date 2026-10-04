@@ -4,6 +4,8 @@ from typing import Annotated, Literal
 from pydantic import Field
 
 from .common import Confidence, Sensitivity, Source, Strict
+from .delta import Delta
+from .itinerary import Itinerary
 
 
 class _Record(Strict):
@@ -53,3 +55,16 @@ class Pack(Strict):
     version: str
     generated_at: datetime
     records: list[PackRecord]
+
+
+class TripPack(Strict):
+    """What a traveller downloads for a planned trip: the pack plus the advice already written.
+
+    The itinerary was generated from the pack, the weather and the news in `delta`. The device
+    keeps all three so it can compare a later delta against the one the advice was based on.
+    """
+
+    pack: Pack
+    delta: Delta  # the weather and news the advice was based on
+    itinerary: Itinerary  # verdict, summary, reasons and stops
+    advice_source: Literal["model", "rules"]  # who wrote the advice text

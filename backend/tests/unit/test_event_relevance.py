@@ -77,12 +77,12 @@ def test_trip_places_are_the_destination_and_route_towns_not_the_state(tmp_path)
         id="olumo-rock", name="Olumo Rock", city="Abeokuta", state="Ogun",
         origin=Endpoint(query="a"), destination=Endpoint(query="b"), corridors=[],
     )  # fmt: skip
-    assert trip_places(site, tmp_path) == ["Abeokuta", "Olumo Rock"]  # no routes saved yet
+    assert trip_places(site, tmp_path, tmp_path) == ["Abeokuta", "Olumo Rock"]  # nothing saved
 
     r = routes()
     r.stops[:] = [stop("Sagamu", 54, "city", "primary"), stop("Total", 60, "fuel", "primary")]
     store.save(r, tmp_path / "olumo-rock" / "routes.json")
-    places = trip_places(site, tmp_path)
+    places = trip_places(site, tmp_path, tmp_path)
     assert places == ["Abeokuta", "Olumo Rock", "Sagamu"] and "Ogun" not in places
 
 
@@ -121,7 +121,9 @@ def test_uncited_stop_note_is_dropped_and_reported():
 
     i = inp(weather=[rain(0.9)])
     seen: list = []
-    _, notes = merge(i, assess(i), written_with(StopNote(order=1, note="Leave before 7am.")), seen)
+    notes = merge(
+        i, assess(i), written_with(StopNote(order=1, note="Leave before 7am.")), seen
+    ).notes
     assert notes == []
     assert any(v.kind == ViolationKind.UNCITED and v.where == "stop 1" for v in seen)
 
@@ -130,14 +132,14 @@ def test_cited_stop_note_is_kept():
     i = inp()
     rid = route_id("olumo-rock", routes().routes[0])
     note = StopNote(order=1, note="Leave before 7am.", cited_ids=[rid])
-    _, notes = merge(i, assess(i), written_with(note), [])
+    notes = merge(i, assess(i), written_with(note), []).notes
     assert notes == [note]
 
 
 def test_stop_note_citing_an_unknown_id_is_dropped():
     note = StopNote(order=1, note="Leave before 7am.", cited_ids=["made-up-id"])
     seen: list = []
-    _, notes = merge(inp(), assess(inp()), written_with(note), seen)
+    notes = merge(inp(), assess(inp()), written_with(note), seen).notes
     assert notes == [] and any(v.kind == ViolationKind.UNKNOWN_ID for v in seen)
 
 

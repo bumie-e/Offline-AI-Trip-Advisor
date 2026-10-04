@@ -2,10 +2,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from trip_advisor.api.deps import data_dir, db_session, now
+from trip_advisor.api.limits import enforce_rate_limit
 from trip_advisor.schemas.api import Receipt
 from trip_advisor.schemas.reports import AdviceRating, RoadReport, SiteStatusReport
 from trip_advisor.services import reports as svc
@@ -35,6 +36,7 @@ def _route_ids(site_id: str, base: Path) -> set[str] | None:
 
 @router.post("/road", response_model=Receipt)
 def road_reports(
+    request: Request,
     reports: Annotated[list[RoadReport], Batch],
     db: Session = Depends(db_session),
     base: Path = Depends(data_dir),
@@ -42,6 +44,7 @@ def road_reports(
 ) -> Receipt:
     """Sync queued road reports. Safe to retry: reports already stored come back as duplicates."""
     _check_sites({r.site_id for r in reports}, base)
+    enforce_rate_limit(db, request, len(reports), at)
     result = Receipt()
     for site_id in {r.site_id for r in reports}:
         part = svc.save_road_reports(
@@ -58,21 +61,25 @@ def road_reports(
 
 @router.post("/site-status", response_model=Receipt)
 def site_reports(
+    request: Request,
     reports: Annotated[list[SiteStatusReport], Batch],
     db: Session = Depends(db_session),
     base: Path = Depends(data_dir),
     at: datetime = Depends(now),
 ) -> Receipt:
     _check_sites({r.site_id for r in reports}, base)
+    enforce_rate_limit(db, request, len(reports), at)
     return svc.save_site_reports(db, reports, now=at)
 
 
 @router.post("/ratings", response_model=Receipt)
 def ratings(
+    request: Request,
     items: Annotated[list[AdviceRating], Batch],
     db: Session = Depends(db_session),
     base: Path = Depends(data_dir),
     at: datetime = Depends(now),
 ) -> Receipt:
     _check_sites({r.site_id for r in items}, base)
+    enforce_rate_limit(db, request, len(items), at)
     return svc.save_ratings(db, items, now=at)

@@ -8,11 +8,12 @@ from pydantic import BaseModel
 from .api import PlaceSummary, Receipt
 from .delta import Delta
 from .itinerary import Advice, Itinerary, TripRequest
-from .pack import Pack
+from .pack import Pack, TripPack
 from .reports import AdviceRating, RoadReport, SiteStatusReport
 
 MODELS: dict[str, type[BaseModel]] = {
     "pack": Pack,
+    "trip_pack": TripPack,
     "delta": Delta,
     "advice": Advice,
     "trip_request": TripRequest,

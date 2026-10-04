@@ -3,7 +3,7 @@
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import Boolean, DateTime, Float, String, Uuid
+from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text, Uuid
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -46,3 +46,35 @@ class AdviceRatingRow(_Row, Base):
     rated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     helpful: Mapped[bool] = mapped_column(Boolean)
     comment: Mapped[str] = mapped_column(String(500), default="")
+
+
+class PublishedDeltaRow(Base):
+    """The newest weather and news delta per site, so a scheduled job can refresh it without a
+    redeploy. The API serves this when it is newer than the delta bundled with the deploy."""
+
+    __tablename__ = "published_deltas"
+    site_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    generated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    payload: Mapped[str] = mapped_column(Text)  # the Delta as JSON
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class RateLimitRow(Base):
+    """Request counts per hour for report endpoints. The key is a salted hash of the client
+    address that changes daily, never the address itself, and rows are purged after two days."""
+
+    __tablename__ = "rate_limits"
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    window_start: Mapped[datetime] = mapped_column(DateTime(timezone=True), primary_key=True)
+    count: Mapped[int] = mapped_column(Integer)
+
+
+class ItineraryCacheRow(Base):
+    """Model-written itineraries, keyed by everything that shaped them. Holds no personal data
+    beyond the trip request itself (dates, group size), and is what makes repeats free."""
+
+    __tablename__ = "itinerary_cache"
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    site_id: Mapped[str] = mapped_column(String(64), index=True)
+    payload: Mapped[str] = mapped_column(Text)  # Itinerary JSON
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now, index=True)

@@ -1,0 +1,413 @@
+{
+  "site_id": "idanre-hills",
+  "origin": {
+    "name": "Murtala Muhammed Airport",
+    "lat": 6.5848212,
+    "lon": 3.3329165,
+    "matched": "pinned"
+  },
+  "destination": {
+    "name": "Idanre Hill",
+    "lat": 7.0997748,
+    "lon": 5.0825825,
+    "matched": "pinned"
+  },
+  "routes": [
+    {
+      "id": "primary",
+      "kind": "primary",
+      "label": "Murtala Muhammed Airport to Idanre Hills",
+      "distance_km": 268.1,
+      "duration_min": 226.0,
+      "roads": [
+        "Obafemi Awolowo Way",
+        "E1 Lagos-Ibadan Expressway",
+        "A121-1 Abeokuta-Sagamu Expressway",
+        "A121-1 Benin-Sagamu Expressway",
+        "F209",
+        "F209 Ore - Ondo"
+      ],
+      "geometry": []
+    },
+    {
+      "id": "via-ife",
+      "kind": "variant",
+      "label": "Lagos to Idanre via Ibadan and Ife",
+      "distance_km": 293.8,
+      "duration_min": 247.0,
+      "roads": [
+        "Obafemi Awolowo Way",
+        "E1 Lagos-Ibadan Expressway",
+        "A1",
+        "A122 Ile-Ife Expressway",
+        "F207 Ile-Ife Expressway",
+        "F207",
+        "F209"
+      ],
+      "geometry": []
+    }
+  ],
+  "stops": [
+    {
+      "name": "Lagos State University Teaching Hospital",
+      "kind": "hospital",
+      "lat": 6.5895386,
+      "lon": 3.3422014,
+      "km_from_start": 1.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Conoil",
+      "kind": "fuel",
+      "lat": 6.592416,
+      "lon": 3.3432511,
+      "km_from_start": 1.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ikeja",
+      "kind": "city",
+      "lat": 6.601627,
+      "lon": 3.3515981,
+      "km_from_start": 2.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "Mobil Fuel Station",
+      "kind": "fuel",
+      "lat": 6.6053322,
+      "lon": 3.3466414,
+      "km_from_start": 2.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "IP",
+      "kind": "fuel",
+      "lat": 6.6210255,
+      "lon": 3.3550873,
+      "km_from_start": 4.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Nigeria Police Force Divisional Headquarters",
+      "kind": "police",
+      "lat": 6.6195507,
+      "lon": 3.3610061,
+      "km_from_start": 5.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Capital",
+      "kind": "fuel",
+      "lat": 6.6327466,
+      "lon": 3.3662493,
+      "km_from_start": 6.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "Fatgbems",
+      "kind": "fuel",
+      "lat": 6.6353876,
+      "lon": 3.3665532,
+      "km_from_start": 7.1,
+      "route_id": "primary"
+    },
+    {
+      "name": "Oando",
+      "kind": "fuel",
+      "lat": 6.6380372,
+      "lon": 3.3697833,
+      "km_from_start": 7.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Police Station",
+      "kind": "police",
+      "lat": 6.6888042,
+      "lon": 3.4142252,
+      "km_from_start": 15.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ibafo",
+      "kind": "town",
+      "lat": 6.7424415,
+      "lon": 3.421874,
+      "km_from_start": 21.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Mowe",
+      "kind": "town",
+      "lat": 6.7777634,
+      "lon": 3.420896,
+      "km_from_start": 25.4,
+      "route_id": "primary"
+    },
+    {
+      "name": "Total Filling Station",
+      "kind": "fuel",
+      "lat": 6.8569724,
+      "lon": 3.6298814,
+      "km_from_start": 53.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Sagamu",
+      "kind": "city",
+      "lat": 6.8477165,
+      "lon": 3.6440551,
+      "km_from_start": 54.4,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ilishan",
+      "kind": "town",
+      "lat": 6.8945601,
+      "lon": 3.7126126,
+      "km_from_start": 63.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Eriwe",
+      "kind": "town",
+      "lat": 6.7754071,
+      "lon": 3.8827658,
+      "km_from_start": 85.6,
+      "route_id": "primary"
+    },
+    {
+      "name": "Debasco",
+      "kind": "town",
+      "lat": 6.7888586,
+      "lon": 3.8913303,
+      "km_from_start": 86.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Atiba",
+      "kind": "town",
+      "lat": 6.7908639,
+      "lon": 3.8926263,
+      "km_from_start": 86.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Egbe",
+      "kind": "town",
+      "lat": 6.7952956,
+      "lon": 3.8948932,
+      "km_from_start": 86.1,
+      "route_id": "primary"
+    },
+    {
+      "name": "Adefisan",
+      "kind": "town",
+      "lat": 6.8060158,
+      "lon": 3.9041254,
+      "km_from_start": 86.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "Imepe",
+      "kind": "town",
+      "lat": 6.8131459,
+      "lon": 3.9137324,
+      "km_from_start": 87.9,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ijebu-Ode",
+      "kind": "city",
+      "lat": 6.8140077,
+      "lon": 3.9151668,
+      "km_from_start": 88.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ogbere",
+      "kind": "town",
+      "lat": 6.739288,
+      "lon": 4.1610127,
+      "km_from_start": 116.2,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ore",
+      "kind": "town",
+      "lat": 6.7456475,
+      "lon": 4.8774753,
+      "km_from_start": 197.2,
+      "route_id": "primary"
+    },
+    {
+      "name": "Lagos State University Teaching Hospital",
+      "kind": "hospital",
+      "lat": 6.5895386,
+      "lon": 3.3422014,
+      "km_from_start": 1.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Conoil",
+      "kind": "fuel",
+      "lat": 6.592416,
+      "lon": 3.3432511,
+      "km_from_start": 1.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ikeja",
+      "kind": "city",
+      "lat": 6.601627,
+      "lon": 3.3515981,
+      "km_from_start": 2.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Mobil Fuel Station",
+      "kind": "fuel",
+      "lat": 6.6053322,
+      "lon": 3.3466414,
+      "km_from_start": 2.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "IP",
+      "kind": "fuel",
+      "lat": 6.6210255,
+      "lon": 3.3550873,
+      "km_from_start": 4.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Nigeria Police Force Divisional Headquarters",
+      "kind": "police",
+      "lat": 6.6195507,
+      "lon": 3.3610061,
+      "km_from_start": 5.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Capital",
+      "kind": "fuel",
+      "lat": 6.6327466,
+      "lon": 3.3662493,
+      "km_from_start": 6.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Fatgbems",
+      "kind": "fuel",
+      "lat": 6.6353876,
+      "lon": 3.3665532,
+      "km_from_start": 7.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Oando",
+      "kind": "fuel",
+      "lat": 6.6380372,
+      "lon": 3.3697833,
+      "km_from_start": 7.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Police Station",
+      "kind": "police",
+      "lat": 6.6888042,
+      "lon": 3.4142252,
+      "km_from_start": 15.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ibafo",
+      "kind": "town",
+      "lat": 6.7424415,
+      "lon": 3.421874,
+      "km_from_start": 21.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Mowe",
+      "kind": "town",
+      "lat": 6.7777634,
+      "lon": 3.420896,
+      "km_from_start": 25.4,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ishara",
+      "kind": "town",
+      "lat": 6.9923203,
+      "lon": 3.6808622,
+      "km_from_start": 65.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ìbàdàn",
+      "kind": "city",
+      "lat": 7.3783681,
+      "lon": 3.8972331,
+      "km_from_start": 115.7,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ikire",
+      "kind": "town",
+      "lat": 7.35,
+      "lon": 4.183333,
+      "km_from_start": 148.2,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ipetumodu",
+      "kind": "town",
+      "lat": 7.5206301,
+      "lon": 4.4446015,
+      "km_from_start": 184.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ifẹ̀",
+      "kind": "city",
+      "lat": 7.482824,
+      "lon": 4.5604451,
+      "km_from_start": 196.6,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Aiyepe",
+      "kind": "town",
+      "lat": 7.263102,
+      "lon": 4.635569,
+      "km_from_start": 224.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ifetedo",
+      "kind": "town",
+      "lat": 7.1837162,
+      "lon": 4.6993777,
+      "km_from_start": 236.6,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Okeigbo",
+      "kind": "town",
+      "lat": 7.166573,
+      "lon": 4.7239402,
+      "km_from_start": 239.7,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ondo",
+      "kind": "town",
+      "lat": 7.1,
+      "lon": 4.833333,
+      "km_from_start": 254.5,
+      "route_id": "via-ife"
+    }
+  ],
+  "collected_at": "2026-10-04T06:37:54.444923Z"
+}

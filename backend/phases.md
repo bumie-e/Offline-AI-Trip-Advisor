@@ -18,12 +18,12 @@ Backend only. Tick items as they are done. Each phase should leave something run
 Sites: Olumo Rock, Osun-Osogbo Sacred Grove, Idanre Hills (all from Lagos airport). Run `uv run trip-advisor collect all`; re-evaluate saved data with `uv run trip-advisor rescore all`.
 - [x] Source review: OSM (Nominatim, OSRM, Overpass), Wikivoyage, Google News RSS, FMINO notices. GDELT rate-limits us, FRSC has no API.
 - [x] Routes, alternatives and stops from OSM; coordinates pinned in `data/sites/*.toml`
-- [x] Road-state evidence limited to the last 3 months; newest real road condition wins, traffic-only items never selected
+- [x] Road-state evidence limited to the last 3 months; newest real road condition wins. Closures, repairs, floods, potholes and road blockages (including protests) count; plain gridlock and opinion pieces are kept as secondary evidence but never selected
 - [x] Coverage report per site (routes, alternatives, towns, fuel, fresh evidence per corridor)
 - [x] Bright Data client (SERP + Web Unlocker) with request budget, tested against mocks
-- [ ] Create Bright Data zones, set names in `.env`, run live and check the real SERP response fields
+- [x] Bright Data SERP zone (`serp_api1`) created and set in `.env`; live runs done for Idanre Hills (13 of 40 requests) and an earlier all-site run (19 of 20). Real response fields checked and saved as a test fixture; empty replies are retried once. The Web Unlocker zone is not available on this account, so pages are not fetched and evidence stays headline-plus-snippet
 - [ ] Check terms of use for each source before relying on it
-- [ ] Better road-state evidence: Olumo Rock's primary corridor and Idanre's Akure-Idanre road have no usable report in the last 3 months
+- [ ] Better road-state evidence: Olumo Rock's primary corridor now has a report only because a student protest blocking the road counts (68 days old, no road-condition report); Idanre's Akure-Idanre road has none in the last 3 months
 - [ ] Better alternatives: Osun-Osogbo's alternative is nearly the same road as the primary
 - Known limits: fuel stops are sparse in OSM; evidence is headline-level until Bright Data fetches full text
 
@@ -31,7 +31,9 @@ Sites: Olumo Rock, Osun-Osogbo Sacred Grove, Idanre Hills (all from Lagos airpor
 - [x] LLM extraction prompt: text to records with source, date, confidence
 - [x] Validate output against schemas, reject malformed records
 - [x] Deduplicate and flag stale or low-confidence items
-- [x] Run live and hand-check a sample: done for Osun-Osogbo (10 records read against source text, 4 rejections reviewed); Olumo Rock and Idanre Hills run but not hand-checked. Remaining weakness: near-duplicate road notes, and most road notes are headline-only (low confidence) until the Bright Data unlocker zone is set
+- [x] Route names normalised (ASCII hyphens, spacing, Title Case, no "(Kara Bridge)" suffix) so one road has one name and duplicates collapse. Checked on Olumo Rock's saved data: 6 spellings became 3, and the two protest reports became one note. Olumo Rock's file has not been re-run with it
+- [x] Idanre Hills re-run after the Bright Data SERP collection: 17 documents gave 5 road notes (all the same 30-31 July flood on the Lagos-Ore-Benin Expressway, from five outlets), all low confidence and headline-only
+- [x] Run live and hand-check a sample: done for Osun-Osogbo (10 records read against source text, 4 rejections reviewed); Olumo Rock and Idanre Hills run but not hand-checked. Remaining weakness: five outlets reporting one event stay as five notes, and most road notes are headline-only (low confidence) without a Web Unlocker zone
 
 ## Phase 4: Context (weather and news)
 - [x] Choose weather API: Open-Meteo (free, no key, daily rain probability up to 16 days)
@@ -60,11 +62,15 @@ Sites: Olumo Rock, Osun-Osogbo Sacred Grove, Idanre Hills (all from Lagos airpor
 ## Phase 7: Pack builder and API
 - [x] Pack builder (versioned by content hash, 100 KB cap, stale road notes left out): `uv run trip-advisor build-pack all`; delta served from the last `delta` snapshot
 - [x] Routes: `GET /places`, `POST /itinerary` (stored pack + delta, rules only unless `?ai=true`), `GET /pack/{site}` (ETag = version, 304 when unchanged), `GET /delta/{site}`
+- [x] Model on the API, and the download carries its advice: `POST /pack/{site}` returns a `TripPack` (pack + the delta the advice used + itinerary with model-written summary and advice + `advice_source`); `POST /itinerary` uses the model by default (`?ai=false` for rules only). Guardrails check the summary too. Cost controls: result cache, 200 model calls/day cap, 10/hour per connection, rule text on any failure. Live on Vercel (60 s function limit; first call 13-18 s)
 - [x] Reports endpoint: `POST /reports/road|site-status|ratings`, batches of up to 50, idempotent by client UUID, bad items rejected individually
-- [x] DB models and migrations for reports: SQLAlchemy + Alembic for Supabase Postgres (pooler-safe engine, row-level security on). Migration tested on a throwaway database only
-- [ ] Create the Supabase project, set `DATABASE_URL`, run `uv run alembic upgrade head`, and test a real insert (never run against Postgres yet)
-- [ ] Redeploy to Vercel with `DATABASE_URL` set as an environment variable
-- [ ] Delta stays a snapshot: refresh by running `delta all`, `build-pack all` and redeploying (a scheduled job would automate it). No auth or rate limit on the report endpoints yet
+- [x] DB models and migrations for reports: SQLAlchemy + Alembic for Supabase Postgres (pooler-safe engine, row-level security on). Migrations 0001-0002 applied to Supabase; real inserts, retries, redaction and RLS checked end to end
+- [x] Redeployed to Vercel with `DATABASE_URL` set as a sensitive environment variable; all endpoints checked live
+- [x] Delta refresh without a redeploy (built and tested, not live yet): `uv run trip-advisor delta all --publish` stores the delta in table `published_deltas`. `GET /delta/{site}` serves the newer of the stored and the bundled delta, and falls back to the bundle if the database or the table is unavailable. A delta with no weather is never published, so a failed run cannot replace a good one. Scheduled daily (05:00 UTC) by `.github/workflows/refresh-delta.yml`
+- [x] Rate limit on the report endpoints: 300 items per hour per connection (`REPORT_ITEMS_PER_HOUR`), shared by the three endpoints, answered with 429 and `Retry-After`. Counts live in table `rate_limits` under a salted hash of the address that changes daily, so no address is stored; old counters go with `purge-reports`. Fails open: if the counter cannot be updated, reports still go through
+- [x] Tests never touch the real database (`tests/conftest.py` blanks `DATABASE_URL`). Two existing API tests had been connecting to the production Supabase database
+- [ ] Go live: apply migration 0003 to Supabase (`uv run alembic upgrade head`), set `RATE_LIMIT_SECRET` and `DATABASE_URL` in Vercel, add the `DATABASE_URL` secret in GitHub, redeploy, then run the workflow once by hand and check `GET /delta/{site}`. Migration 0003 is tested on SQLite only; its row-level-security statements have not run on Postgres
+- [ ] Known limits: the pack still changes only with a redeploy; Google News may throttle GitHub's addresses, so a scheduled delta could have fewer events than one built locally; the route towns for flood events come from `data/packs/<site>/routes.json`, which is not committed, so a scheduled run only finds them if the packs are committed; there is no auth on report endpoints (anonymous by design)
 - [x] Minimal personal-data handling: no identity or IP stored, coordinates rounded to about 1 km, phone numbers/emails/links removed from notes, 365-day purge (`purge-reports`), trip requests never stored
 
 ## Phase 8: Update (refresh and reconcile)
