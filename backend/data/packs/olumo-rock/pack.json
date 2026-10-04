@@ -1,0 +1,409 @@
+{
+  "site_id": "olumo-rock",
+  "version": "2026.10.04+f5a27d61",
+  "generated_at": "2026-10-04T08:05:46.930027Z",
+  "records": [
+    {
+      "id": "site-fact-olumo-rock-39676d54a8",
+      "summary": "Olumo Rock is open Monday to Saturday from 9AM to 7PM, and Sunday from noon to 4PM.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Abeokuta",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "opening hours"
+    },
+    {
+      "id": "site-fact-olumo-rock-f8da9a2eaa",
+      "summary": "Olumo Rock charges a small admission fee that includes a tour guide service.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Abeokuta",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "entry fee and facilities"
+    },
+    {
+      "id": "site-fact-olumo-rock-c210234223",
+      "summary": "Olumo Rock is a large granite dome offering views of the entire city and surroundings, including Sts. Peter and Paul Cathedral and the mosque of Abeokuta.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Abeokuta",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "description and views"
+    },
+    {
+      "id": "site-fact-olumo-rock-16c46598bd",
+      "summary": "Reports suggest the Egba peoples used Olumo Rock as shelter in its crooks and crannies to hide from slave hunters and other hostile people.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Abeokuta",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "historical significance"
+    },
+    {
+      "id": "road-note-olumo-rock-872c3bf3de",
+      "summary": "The Kara Bridge along the Lagos-Ibadan Expressway is undergoing repairs, causing significant traffic congestion in the Lagos metropolis.",
+      "source": {
+        "publisher": "Federal Ministry of Information and National Orientation",
+        "url": "https://fmino.gov.ng/kara-bridge-repairs-lagos-commuters-trapped-in-traffic-nightmare-as-gridlock-spreads-across-lagos/",
+        "published": "2026-09-16"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway (Kara Bridge)",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-66ac55fd4e",
+      "summary": "Ongoing bridge repairs are causing severe traffic congestion on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "Punch Newspapers",
+        "url": "https://punchng.com/endless-repairs-endless-anguish-on-lagos-ibadan-expressway/",
+        "published": "2026-09-20"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-ac2ffbc7ba",
+      "summary": "Reports suggest that repairs on the Lagos-Ibadan Expressway are causing traffic congestion for commuters.",
+      "source": {
+        "publisher": "Channels Television",
+        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxORklha05ta1pLemsxeHFTQzEwZjBGc2dTN1Q2cVBwejI4TjhSUVUwVGV1UllvREIxOGVnblJZaVVKRmc0QkNQWDdsMDZoUFNHejZmcVJDd0pNQUp2ajhyRTRJaklrMFJqY05XOFA1R2JUelM0OC1BNUFnbTBRaFptdTdEOFhaOUdEbHd1X1FtRHc4My1Xcm5tc05kZ2swUUJ2TFhXTEtzRjZINmcxSjIxWV9rbTF1aVNO?oc=5",
+        "published": "2026-09-16"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-6b087bc4b3",
+      "summary": "Reports suggest the Lagos-Ibadan Expressway is experiencing severe gridlock affecting commuters and motorists.",
+      "source": {
+        "publisher": "Channels Television",
+        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNT1lYUDVKU05zbWFuOWoyWEhhWHBrTUxUeEdNSVBoZURJZy1BMVNtb0RLaVNhRHIyQ1o4S1J2eEVNdEU3Q2hfS21wSG5mQ1dDaFF6cGxUU1pZbUpoU3lEUGNub2NyOWdLR1A4dnJCVUw2VjdIeE9tSE14MF8tbklnVjJMSnBHSXNRcHY3U2sxNDNWMnE0N1IyZFZTTFV2NUhreVBtZk1PcHFNN3Fja1hYODVoQzNQZjBG?oc=5",
+        "published": "2026-09-16"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-4000cdf5a1",
+      "summary": "Reports suggest severe traffic gridlock on the Lagos-Ibadan Expressway extended a typical 30-minute journey to over four hours.",
+      "source": {
+        "publisher": "Punch Newspapers",
+        "url": "https://punchng.com/the-long-road-home-how-30-minute-journey-became-midnight-ordeal/",
+        "published": "2026-09-13"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-291cabc70a",
+      "summary": "Reports suggest repair work on the Kara Bridge along the Lagos-Ibadan Expressway has completed its first phase.",
+      "source": {
+        "publisher": "The Guardian Nigeria News",
+        "url": "https://guardian.ng/news/nigeria/metro/lagos-ibadan-expressway-relief-as-first-phase-of-kara-bridge-repairs-completed/",
+        "published": "2026-09-13"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-e97433d0d0",
+      "summary": "Reports indicate severe traffic gridlock on the Lagos-Ibadan Expressway causing commuters and motorists to spend extended periods in traffic.",
+      "source": {
+        "publisher": "tribuneonlineng.com",
+        "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9RaGx4UDJjZW9zNUZVdldhWnV1bGYxR1Z2cXowMjdCeGdiWWJTQi1vZ2lZdjl4LS1TZVZtb0t6ZG5PdnhzTG5WRzdXZ3JSaknSAbIBQVVfeXFMTk1wV3RUdzBIa056TEZ1dzlzU2g1TzRpNjRtX0F4OXhwNGRtMjRtcFVDXzZsUHF6aXlIV21qMERiZTBNNndhN0JHU0ZOc0tPeHlQTk83Vmt5TEFDWWljZ3MzRVV5NUI0QVpPOUpKaG0xUTF5QmNXNEpCS3g1T0d1X3l0cDJqZkxpLUJlRGxXVDhzZld0WFhXanYtOUVNNVFmd05lZHJDWE5VeTlKQlB6Z3Ftdw?oc=5",
+        "published": "2026-09-11"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-43760e159e",
+      "summary": "Reports suggest bridge repairs caused significant traffic congestion on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "Punch Newspapers",
+        "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQTjZ2VkF2dEJ4TXpvU3RqZGJtaTZ2eDdVZldUc2o1R2lyNkNzUFpvYXpKdEM5NnFjejRvNnJJRy0tejVBTEpVakVFd1JYdUV3d0FaTzZ5N2hua2I1WGpIT2dnTGZnZ3d6bWR5U2RXeldjeUZmekljNUVjVVVudlBidUEzOUp5bVp1cGd6bkhrcVQ?oc=5",
+        "published": "2026-09-10"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-3e7b8ad264",
+      "summary": "Reports suggest repairs to Kara Bridge are causing gridlock on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "Channels Television",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOOVp1VXhpYm9fZmJrTEdETUFJTWRwYnMyV1VFM0FWMDdWeWZ0WnU2WVhZTGdmelFWWVJDeEhKa2pDM21zc3h4R0psQmFKSE5jU1l6aG9mX3hmRmFZcXkzNHFSZTE0Z1FtRG41ZUhLbUpUMEl6c3pBOV82Y3pfYVM0Tkc5bzdsUDJxYVlKWkNMUXZ5ZFczbFFfWVRMdmJhd3ZDa005N0xULUktamM?oc=5",
+        "published": "2026-09-09"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-8b119933c2",
+      "summary": "Reports suggest gridlock occurred on the Lagos-Ibadan expressway during repair work on Kara Bridge by the federal government.",
+      "source": {
+        "publisher": "Tribune Online",
+        "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1jaGxMNE9za3VmNUdZMmN5ZWkwRkpyOVRKOHN6WnJqMnhUMjBVbkZDam1WSkZtU1NreHltWHV4SGUtWG5OOVVJREx1NEFXeTjSAaMBQVVfeXFMT19KM092cVUzZS1RclMzRGY1MldCTTRlZGM0RVJvWUs1eFBHSjBQLVg4dWljR1ZrWm9rZDVUYll2YTdrRzlHSk9KRG1adTZuY01BRFl0dk9LZXZlelJkdEZiTUlvT09SNElXcmNhSnRDYnpRV0laY0M1UmxnejFBaGlkRF92aEdOOWRaOVlFNU1kT1ZVM0lGOFE4Skg1RlVfSE1KOA?oc=5",
+        "published": "2026-09-09"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-2aa86b6d94",
+      "summary": "Reports suggest the Federal Government has begun repairs to expansion joints on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "TVC News",
+        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNeUJXSnlTYXpRUDN3Qmp6Z0p3UVlLMW1sS3ZqTGdLMnhwMDNLbnhBRnNNemVpX2lfQjFDckhaLTItZ1VSdFVSRW5CQXFvV25iZ2M0a3VSZkxHQkh4Z0pxUXRmdG1qRGc0bVVtTkhhVktVaElmSG1ZYnlPRFpvbzlqMktWb3ozWGl1YzVIanBjYTZ5dw?oc=5",
+        "published": "2026-09-08"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-8783e6a794",
+      "summary": "Reports suggest there is gridlock on the Lagos-Ibadan Expressway related to bridge repair work.",
+      "source": {
+        "publisher": "Daily Trust",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSnFUX2V0Uml0dTZHdWFYT05yQWo1V1ZWSnZXNjAyOXExLTlnSDQtMkxSU2Y1bnA2eTNTLWhiNkZhc1kxZEtoOE02OEFfMndKbnk1NFVDdVJ3X0Vwdy12Y1VYMzRJZzhRWE50MnlvMUxJTXZ1cEtZcEVWOGRuSEFkbGd3R2c?oc=5",
+        "published": "2026-09-08"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-74e4aaba53",
+      "summary": "Reports suggest gridlock conditions on the Lagos-Ibadan Expressway have worsened coinciding with the start of repairs at Kara Bridge.",
+      "source": {
+        "publisher": "TVC News",
+        "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNZ01mRWdBV1pVN2x6SXRZNlN0cWxMWTdraTd5MHE0emNHbnVQNW5sRjBIN05WVjZUUnQtZXdaRlhCLXRXWDlQSUlMVV9kRkVfRE9qck9Jam1kazZMZnQtOXQ1U2FoYk5vRGZXQjNiMzNrdkk5Z2dsN2xWVTh1MDd2cUtPV3J3REJzYWxMZUdJMVNGbXUxSDg2ZQ?oc=5",
+        "published": "2026-09-08"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-13e5d51e99",
+      "summary": "Reports suggest gridlock has extended to the Sagamu interchange on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "The Guardian Nigeria News",
+        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPNDY2eHByMXFFM09QTWkyUDNfeUpBUjliRU9xcWRzX0xpeW5oN1FpNk9sbE1kUURTV1lleUlXcGNCeXZjNVo1Z1E3aEtteTZRX2tWUmpjWGVXem04d25RUTN6a2hmZjJzeko1blo5cWJzQTNqZTlzUTRBUG9FamZLSlR2bjZ5RjJWOXEzYzlvTVNtZw?oc=5",
+        "published": "2026-08-25"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-692f3f13a3",
+      "summary": "A trailer crash caused gridlock on the expressway, forcing motorists to use alternative bush paths.",
+      "source": {
+        "publisher": "Punch Newspapers",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPOENvbUVSQll3UjBINzR5Y3FWZUNGdGwwbXN0SlAwdkpZMUZ5UUNpZXdFSGFibkpka1FZNE4wZXM5X3BnZ1QxZWxNZW9UclFLVlROUWRRMV9nVFBYc3JNOGpiWXd6aXZ3X2dWcnVwYWhYTkh3T3pxVlFtYVNmanQ2Q1ZONUpUOER1RWVHeEQ0QXRSMWFWSlI2NkFJMHd2NS1ucm5MV0kya2hRVWJu?oc=5",
+        "published": "2026-08-25"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-72901a5a55",
+      "summary": "Reports indicate students blocked the Lagos–Abeokuta Expressway, causing gridlock.",
+      "source": {
+        "publisher": "Daily Trust",
+        "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOdTFJYW1YWjYyWGg4S0c2M2xTdFpFY2ExOG9qVTJ0MFJ4SU54Uk53OHdwREZ5WXVUS1g3TGFvUG5pNXhMSmV2VEFpY1F0d2JIQUZ6QWFoaGtWaTFOQUx1OHd6TUJYc0tkcEJRM09USmUxb0o5QkdjZTdhd05vdEwyQmJXYm1ZMG1iZ0czT3hVZXpOOS1HLUpfYmZiR19GaXdWQmc?oc=5",
+        "published": "2026-07-28"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos–Abeokuta Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-c3cdcfcadb",
+      "summary": "Students blocked the Lagos-Abeokuta Expressway in protest, causing gridlock.",
+      "source": {
+        "publisher": "Daily Trust",
+        "url": "https://dailytrust.com/gridlock-as-students-block-lagos-abeokuta-expressway-over-colleagues-killing/",
+        "published": "2026-07-28"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Abeokuta Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-4af9ccae9b",
+      "summary": "The Federal Government has resumed repairs on the Lagos-Ibadan Expressway, which may cause traffic congestion.",
+      "source": {
+        "publisher": "Punch Newspapers",
+        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQTmNJb29QTjBjX2F1bm5EWC1RS2RuYnY2OFFUXzdDSkpJQlRucm1reEtsVXdLRXZabUN1bXFqZDVMV3VxVk1YRE92NnhmY3VkaXpMOWxnNDVadElLVmhvMzFkT2ZCWDJyNjJROF9adnNDQ3ZkUXZHX0FydjZkR2VFTDlpVTJsMmNYVURLTDBLeElnZw?oc=5",
+        "published": "2026-07-27"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-aa02b4e13f",
+      "summary": "Reports suggest that repairs to the Kara-Berger Bridge will cause traffic disruption on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "TVC News",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPNEUtTi1Va2VlMlBsSl94TmNHMmpCRzRDZ1htVlVKblFRRGtwZTM5alpzRnZlYmdyM0dIa0ZlWW56SENLeXVJdldKR3pTUDctRzNsQVRkUnA2Z0hfc2FGWDRkeGZUYWIzeS1PYlVBXzRMNEstMVhUS2J6V25ueUhKYkM3NGdQN0NGdENVLWFVTDFxem9jdTJxTnhkSTE?oc=5",
+        "published": "2026-07-26"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-579d0da887",
+      "summary": "Multiple crashes and gridlock reported on the Lagos-Ibadan route, with casualties and stranded travelers.",
+      "source": {
+        "publisher": "Tell News Magazine",
+        "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOOU9XelhvR29fb2F5aktqeFUycy00TWFXTllTU0dFMjM2eWZlbUZlV2tuRVFKeW1OX3lQblZ0dFlJckwxcjZQeGtNejA4Ri1wWkFOeDlKWlo1UjhoajFGS1RGdlZIMC1vbE5LMzBqWmM3MVdBcWU4bzE4YnZ3bzYxZQ?oc=5",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-58eb09ad6c",
+      "summary": "Multiple road accidents at Kara bridge have caused heavy traffic gridlock on the Lagos-Ibadan expressway.",
+      "source": {
+        "publisher": "TheCable",
+        "url": "https://www.thecable.ng/one-dead-as-multiple-accidents-worsen-gridlock-on-lagos-ibadan-expressway/",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-0214373dec",
+      "summary": "The Federal Road Safety Corps (FRSC) diverted traffic due to gridlock on the expressway.",
+      "source": {
+        "publisher": "Blueprint Newspapers",
+        "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPbTVGbmZQN2N1d3AzbkdHV0pLX3JVTXpEZEpsbWJRWXZlN251ZFN3NUZXY255WmdpdV9TNm0tMndGZVBSaFJoMWlMM2dxLU1Pa3RoR0xwVWdfT0FyMnItS0tDNlE2WUtjNzFCSS1GcUhMaHRYajdkUm1xMUEzZ1hNUUN6UmFudWFwa2R5WEE0aW9WZjI0RHc2R0x2MHkwclR1OGc?oc=5",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "medium"
+    },
+    {
+      "id": "road-note-olumo-rock-9da28da143",
+      "summary": "Multiple accidents have caused gridlock on the Kara bridge section of the Lagos-Ibadan expressway, prompting authorities to advise use of alternative routes.",
+      "source": {
+        "publisher": "PM News Nigeria",
+        "url": "https://pmnewsnigeria.com/2026/07/24/frsc-issues-advisory-as-multiple-crashes-trigger-gridlock-on-lagos-ibadan-expressway/",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-olumo-rock-99e48f559d",
+      "summary": "Reports suggest that sections of the Lagos-Ibadan Expressway have experienced deterioration, prompting approval for reconstruction with reinforced concrete pavement.",
+      "source": {
+        "publisher": "TheCable",
+        "url": "https://www.thecable.ng/tinubu-approves-reconstruction-of-lagos-ibadan-expressway-with-reinforced-concrete/",
+        "published": "2026-07-17"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "medium"
+    },
+    {
+      "id": "road-note-olumo-rock-35f61c8dc5",
+      "summary": "Reports suggest heavy traffic has caused significant congestion on both carriageways of the Lagos-Ibadan Expressway, affecting travel to the site.",
+      "source": {
+        "publisher": "Western Post",
+        "url": "https://www.westernpost.ng/heavy-gridlock-stalls-traffic-on-lagos-ibadan-expressway/",
+        "published": "2026-07-09"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    }
+  ]
+}

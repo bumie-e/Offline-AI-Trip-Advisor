@@ -1,0 +1,683 @@
+{
+  "site_id": "osun-osogbo",
+  "origin": {
+    "name": "Murtala Muhammed Airport",
+    "lat": 6.5848212,
+    "lon": 3.3329165,
+    "matched": "pinned"
+  },
+  "destination": {
+    "name": "Osun-Osogbo Sacred Grove",
+    "lat": 7.7551115,
+    "lon": 4.5506394,
+    "matched": "pinned"
+  },
+  "routes": [
+    {
+      "id": "primary",
+      "kind": "primary",
+      "label": "Murtala Muhammed Airport to Osun-Osogbo Sacred Grove",
+      "distance_km": 217.7,
+      "duration_min": 164.0,
+      "roads": [
+        "Obafemi Awolowo Way",
+        "E1 Lagos-Ibadan Expressway",
+        "A122 Ile-Ife Expressway",
+        "F118-1",
+        "F205 Gbongan - Osogbo Road"
+      ],
+      "geometry": []
+    },
+    {
+      "id": "via-ife",
+      "kind": "variant",
+      "label": "Lagos to Osogbo via Ile-Ife",
+      "distance_km": 247.7,
+      "duration_min": 193.0,
+      "roads": [
+        "Obafemi Awolowo Way",
+        "E1 Lagos-Ibadan Expressway",
+        "A122 Ile-Ife Expressway",
+        "F207 Ile-Ife Expressway",
+        "F205",
+        "F205 Gbongan - Osogbo Road"
+      ],
+      "geometry": []
+    }
+  ],
+  "stops": [
+    {
+      "name": "Lagos State University Teaching Hospital",
+      "kind": "hospital",
+      "lat": 6.5895386,
+      "lon": 3.3422014,
+      "km_from_start": 1.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Conoil",
+      "kind": "fuel",
+      "lat": 6.592416,
+      "lon": 3.3432511,
+      "km_from_start": 1.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ikeja",
+      "kind": "city",
+      "lat": 6.601627,
+      "lon": 3.3515981,
+      "km_from_start": 2.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "Mobil Fuel Station",
+      "kind": "fuel",
+      "lat": 6.6053322,
+      "lon": 3.3466414,
+      "km_from_start": 2.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "IP",
+      "kind": "fuel",
+      "lat": 6.6210255,
+      "lon": 3.3550873,
+      "km_from_start": 4.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Nigeria Police Force Divisional Headquarters",
+      "kind": "police",
+      "lat": 6.6195507,
+      "lon": 3.3610061,
+      "km_from_start": 5.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Capital",
+      "kind": "fuel",
+      "lat": 6.6327466,
+      "lon": 3.3662493,
+      "km_from_start": 6.8,
+      "route_id": "primary"
+    },
+    {
+      "name": "Fatgbems",
+      "kind": "fuel",
+      "lat": 6.6353876,
+      "lon": 3.3665532,
+      "km_from_start": 7.1,
+      "route_id": "primary"
+    },
+    {
+      "name": "Oando",
+      "kind": "fuel",
+      "lat": 6.6380372,
+      "lon": 3.3697833,
+      "km_from_start": 7.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Police Station",
+      "kind": "police",
+      "lat": 6.6888042,
+      "lon": 3.4142252,
+      "km_from_start": 15.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ibafo",
+      "kind": "town",
+      "lat": 6.7424415,
+      "lon": 3.421874,
+      "km_from_start": 21.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Mowe",
+      "kind": "town",
+      "lat": 6.7777634,
+      "lon": 3.420896,
+      "km_from_start": 25.4,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ishara",
+      "kind": "town",
+      "lat": 6.9923203,
+      "lon": 3.6808622,
+      "km_from_start": 65.1,
+      "route_id": "primary"
+    },
+    {
+      "name": "Gbemisola Memorial hospital, Boluwaji Area, Ibadan",
+      "kind": "hospital",
+      "lat": 7.337547,
+      "lon": 3.905348,
+      "km_from_start": 113.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Boluwaji Police Station",
+      "kind": "police",
+      "lat": 7.3413192,
+      "lon": 3.9070098,
+      "km_from_start": 113.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Kicks Filling Station",
+      "kind": "fuel",
+      "lat": 7.3421277,
+      "lon": 3.9066775,
+      "km_from_start": 113.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Boluwaji Health Centre",
+      "kind": "hospital",
+      "lat": 7.3433938,
+      "lon": 3.9057641,
+      "km_from_start": 113.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "New Day Hospital, Challenge, express road, Ibadan",
+      "kind": "hospital",
+      "lat": 7.34517,
+      "lon": 3.912745,
+      "km_from_start": 114.1,
+      "route_id": "primary"
+    },
+    {
+      "name": "Anetosh Global Ltd. Filling Station",
+      "kind": "fuel",
+      "lat": 7.3560054,
+      "lon": 3.9189468,
+      "km_from_start": 115.6,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ayekale Community Maternity Centre, Agugu",
+      "kind": "hospital",
+      "lat": 7.377527,
+      "lon": 3.92783,
+      "km_from_start": 118.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "WELFARE HOSPITAL",
+      "kind": "hospital",
+      "lat": 7.3920288,
+      "lon": 3.9643115,
+      "km_from_start": 123.9,
+      "route_id": "primary"
+    },
+    {
+      "name": "Ikire",
+      "kind": "town",
+      "lat": 7.35,
+      "lon": 4.183333,
+      "km_from_start": 147.7,
+      "route_id": "primary"
+    },
+    {
+      "name": "AGIL Petroleum",
+      "kind": "fuel",
+      "lat": 7.7136596,
+      "lon": 4.4890601,
+      "km_from_start": 202.7,
+      "route_id": "primary"
+    },
+    {
+      "name": "Shadow Petroleum",
+      "kind": "fuel",
+      "lat": 7.7167912,
+      "lon": 4.4934772,
+      "km_from_start": 203.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "AJETUNMOBI Petroleum",
+      "kind": "fuel",
+      "lat": 7.7186459,
+      "lon": 4.4963543,
+      "km_from_start": 203.6,
+      "route_id": "primary"
+    },
+    {
+      "name": "Dayus Ventures",
+      "kind": "fuel",
+      "lat": 7.7184959,
+      "lon": 4.4955855,
+      "km_from_start": 203.6,
+      "route_id": "primary"
+    },
+    {
+      "name": "ODES petroleum",
+      "kind": "fuel",
+      "lat": 7.7189268,
+      "lon": 4.496681,
+      "km_from_start": 203.7,
+      "route_id": "primary"
+    },
+    {
+      "name": "Nigerian Police Zonal Headquater",
+      "kind": "police",
+      "lat": 7.7255405,
+      "lon": 4.5058545,
+      "km_from_start": 204.9,
+      "route_id": "primary"
+    },
+    {
+      "name": "Billion Oil",
+      "kind": "fuel",
+      "lat": 7.7247398,
+      "lon": 4.505675,
+      "km_from_start": 204.9,
+      "route_id": "primary"
+    },
+    {
+      "name": "Nigeria Police Zone 11",
+      "kind": "police",
+      "lat": 7.7254436,
+      "lon": 4.5057218,
+      "km_from_start": 204.9,
+      "route_id": "primary"
+    },
+    {
+      "name": "Nigeria Police Force",
+      "kind": "police",
+      "lat": 7.7518865,
+      "lon": 4.5209658,
+      "km_from_start": 208.4,
+      "route_id": "primary"
+    },
+    {
+      "name": "ConOil Station",
+      "kind": "fuel",
+      "lat": 7.7519407,
+      "lon": 4.5214691,
+      "km_from_start": 208.5,
+      "route_id": "primary"
+    },
+    {
+      "name": "Directorate of State Security",
+      "kind": "police",
+      "lat": 7.7541211,
+      "lon": 4.526037,
+      "km_from_start": 209.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Nigerian Immigration Service",
+      "kind": "police",
+      "lat": 7.753228,
+      "lon": 4.527101,
+      "km_from_start": 209.0,
+      "route_id": "primary"
+    },
+    {
+      "name": "Total Petrol Station",
+      "kind": "fuel",
+      "lat": 7.7557202,
+      "lon": 4.5262244,
+      "km_from_start": 209.1,
+      "route_id": "primary"
+    },
+    {
+      "name": "Federal Road Safety Corp",
+      "kind": "police",
+      "lat": 7.7565205,
+      "lon": 4.5270519,
+      "km_from_start": 209.3,
+      "route_id": "primary"
+    },
+    {
+      "name": "Lagos State University Teaching Hospital",
+      "kind": "hospital",
+      "lat": 6.5895386,
+      "lon": 3.3422014,
+      "km_from_start": 1.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Conoil",
+      "kind": "fuel",
+      "lat": 6.592416,
+      "lon": 3.3432511,
+      "km_from_start": 1.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ikeja",
+      "kind": "city",
+      "lat": 6.601627,
+      "lon": 3.3515981,
+      "km_from_start": 2.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Mobil Fuel Station",
+      "kind": "fuel",
+      "lat": 6.6053322,
+      "lon": 3.3466414,
+      "km_from_start": 2.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "IP",
+      "kind": "fuel",
+      "lat": 6.6210255,
+      "lon": 3.3550873,
+      "km_from_start": 4.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Nigeria Police Force Divisional Headquarters",
+      "kind": "police",
+      "lat": 6.6195507,
+      "lon": 3.3610061,
+      "km_from_start": 5.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Capital",
+      "kind": "fuel",
+      "lat": 6.6327466,
+      "lon": 3.3662493,
+      "km_from_start": 6.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Fatgbems",
+      "kind": "fuel",
+      "lat": 6.6353876,
+      "lon": 3.3665532,
+      "km_from_start": 7.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Oando",
+      "kind": "fuel",
+      "lat": 6.6380372,
+      "lon": 3.3697833,
+      "km_from_start": 7.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Police Station",
+      "kind": "police",
+      "lat": 6.6888042,
+      "lon": 3.4142252,
+      "km_from_start": 15.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ibafo",
+      "kind": "town",
+      "lat": 6.7424415,
+      "lon": 3.421874,
+      "km_from_start": 21.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Mowe",
+      "kind": "town",
+      "lat": 6.7777634,
+      "lon": 3.420896,
+      "km_from_start": 25.4,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ishara",
+      "kind": "town",
+      "lat": 6.9923203,
+      "lon": 3.6808622,
+      "km_from_start": 65.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Gbemisola Memorial hospital, Boluwaji Area, Ibadan",
+      "kind": "hospital",
+      "lat": 7.337547,
+      "lon": 3.905348,
+      "km_from_start": 113.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Boluwaji Police Station",
+      "kind": "police",
+      "lat": 7.3413192,
+      "lon": 3.9070098,
+      "km_from_start": 113.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Kicks Filling Station",
+      "kind": "fuel",
+      "lat": 7.3421277,
+      "lon": 3.9066775,
+      "km_from_start": 113.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Boluwaji Health Centre",
+      "kind": "hospital",
+      "lat": 7.3433938,
+      "lon": 3.9057641,
+      "km_from_start": 113.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "New Day Hospital, Challenge, express road, Ibadan",
+      "kind": "hospital",
+      "lat": 7.34517,
+      "lon": 3.912745,
+      "km_from_start": 114.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Anetosh Global Ltd. Filling Station",
+      "kind": "fuel",
+      "lat": 7.3560054,
+      "lon": 3.9189468,
+      "km_from_start": 115.6,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ayekale Community Maternity Centre, Agugu",
+      "kind": "hospital",
+      "lat": 7.377527,
+      "lon": 3.92783,
+      "km_from_start": 118.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "WELFARE HOSPITAL",
+      "kind": "hospital",
+      "lat": 7.3920288,
+      "lon": 3.9643115,
+      "km_from_start": 123.9,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ikire",
+      "kind": "town",
+      "lat": 7.35,
+      "lon": 4.183333,
+      "km_from_start": 147.7,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ipetumodu",
+      "kind": "town",
+      "lat": 7.5206301,
+      "lon": 4.4446015,
+      "km_from_start": 183.6,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Ifẹ̀",
+      "kind": "city",
+      "lat": 7.482824,
+      "lon": 4.5604451,
+      "km_from_start": 196.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Obafemi Awolowo University Service Station",
+      "kind": "fuel",
+      "lat": 7.4982977,
+      "lon": 4.5237432,
+      "km_from_start": 200.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "AGIL Petroleum",
+      "kind": "fuel",
+      "lat": 7.7136596,
+      "lon": 4.4890601,
+      "km_from_start": 230.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Shadow Petroleum",
+      "kind": "fuel",
+      "lat": 7.7167912,
+      "lon": 4.4934772,
+      "km_from_start": 231.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Dayus Ventures",
+      "kind": "fuel",
+      "lat": 7.7184959,
+      "lon": 4.4955855,
+      "km_from_start": 231.4,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "AJETUNMOBI Petroleum",
+      "kind": "fuel",
+      "lat": 7.7186459,
+      "lon": 4.4963543,
+      "km_from_start": 231.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "ODES petroleum",
+      "kind": "fuel",
+      "lat": 7.7189268,
+      "lon": 4.496681,
+      "km_from_start": 231.5,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Billion Oil",
+      "kind": "fuel",
+      "lat": 7.7247398,
+      "lon": 4.505675,
+      "km_from_start": 232.7,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Nigerian Police Zonal Headquater",
+      "kind": "police",
+      "lat": 7.7255405,
+      "lon": 4.5058545,
+      "km_from_start": 232.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Nigeria Police Zone 11",
+      "kind": "police",
+      "lat": 7.7254436,
+      "lon": 4.5057218,
+      "km_from_start": 232.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "ConOil Station",
+      "kind": "fuel",
+      "lat": 7.7519407,
+      "lon": 4.5214691,
+      "km_from_start": 236.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Nigeria Police Force",
+      "kind": "police",
+      "lat": 7.7518865,
+      "lon": 4.5209658,
+      "km_from_start": 236.3,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Directorate of State Security",
+      "kind": "police",
+      "lat": 7.7541211,
+      "lon": 4.526037,
+      "km_from_start": 236.9,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Nigerian Immigration Service",
+      "kind": "police",
+      "lat": 7.753228,
+      "lon": 4.527101,
+      "km_from_start": 236.9,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Total Petrol Station",
+      "kind": "fuel",
+      "lat": 7.7557202,
+      "lon": 4.5262244,
+      "km_from_start": 237.0,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Federal Road Safety Corp",
+      "kind": "police",
+      "lat": 7.7565205,
+      "lon": 4.5270519,
+      "km_from_start": 237.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "ADOLAKS Marketing Ltd",
+      "kind": "fuel",
+      "lat": 7.7661295,
+      "lon": 4.5368915,
+      "km_from_start": 238.6,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Òṣogbo",
+      "kind": "city",
+      "lat": 7.7791666,
+      "lon": 4.5538891,
+      "km_from_start": 239.8,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Our Lady of Fatima Hospital",
+      "kind": "hospital",
+      "lat": 7.7693131,
+      "lon": 4.5488489,
+      "km_from_start": 240.1,
+      "route_id": "via-ife"
+    },
+    {
+      "name": "Osun State Hospital Management, Asubiaro",
+      "kind": "hospital",
+      "lat": 7.7638522,
+      "lon": 4.5456778,
+      "km_from_start": 240.2,
+      "route_id": "via-ife"
+    }
+  ],
+  "collected_at": "2026-10-04T05:44:43.970263Z"
+}

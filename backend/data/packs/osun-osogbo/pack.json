@@ -1,0 +1,297 @@
+{
+  "site_id": "osun-osogbo",
+  "version": "2026.10.04+86a016b4",
+  "generated_at": "2026-10-04T08:05:47.167013Z",
+  "records": [
+    {
+      "id": "site-fact-osun-osogbo-f4fd7ddbca",
+      "summary": "Genesis Art Gallery is open from 8 AM to 5 PM.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Osogbo",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "Opening hours"
+    },
+    {
+      "id": "site-fact-osun-osogbo-9643fc88c6",
+      "summary": "El-Carvers Arts Gallery is open from 8 AM to 6 PM.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Osogbo",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "Opening hours"
+    },
+    {
+      "id": "site-fact-osun-osogbo-d0255cc083",
+      "summary": "Osun-Osogbo Sacred Grove is a sacred forest along the Osun River just outside the city, dedicated to the river goddess and designated as a UNESCO World Heritage Site.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Osogbo",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "What to see"
+    },
+    {
+      "id": "site-fact-osun-osogbo-f3c26a6a4b",
+      "summary": "The Osun-Osogbo festival is an annual two-week-long celebration held in August at the sacred grove that attracts thousands of worshippers, spectators and tourists.",
+      "source": {
+        "publisher": "Wikivoyage",
+        "url": "https://en.wikivoyage.org/wiki/Osogbo",
+        "published": null
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "site_fact",
+      "topic": "Festival"
+    },
+    {
+      "id": "road-note-osun-osogbo-698bd0ef79",
+      "summary": "Construction of the Osogbo-Akoda-Gbangan road has been officially flagged off by the Federal Government.",
+      "source": {
+        "publisher": "Federal Ministry of Information and National Orientation",
+        "url": "https://fmino.gov.ng/we-are-not-just-turning-soil-we-are-turning-a-page-of-opportunities-and-restoring-confidence-president-tinubu/",
+        "published": "2026-08-07"
+      },
+      "confidence": "high",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo-Akoda-Gbangan",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-6de92512df",
+      "summary": "Ongoing repairs to Kara Bridge are causing significant traffic congestion across the Lagos-Ogun corridor.",
+      "source": {
+        "publisher": "Federal Ministry of Information and National Orientation",
+        "url": "https://fmino.gov.ng/kara-bridge-repairs-lagos-commuters-trapped-in-traffic-nightmare-as-gridlock-spreads-across-lagos/",
+        "published": "2026-09-16"
+      },
+      "confidence": "medium",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-6d275557d4",
+      "summary": "News reports suggest flooding affected streets in Osogbo following heavy rain and overflow of the Osun River.",
+      "source": {
+        "publisher": "tribuneonlineng.com",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQQm1yQ2owNVNDRF9hTlo5WHV1NEgteUZaM2pwUlpWZXVvb2VTdkFMLUNlcWJrZ1lqYXVHVWNIZzRYQVlrTTRDQ3oxSkRORVVBTVRxTEtpX0Q4TlpSb082OFV4N3Rvckw4eEFRYkE0b0hMTWdkT2ctQ183OW5UUnM3TTY1UjJhTmV2bEEzcGRhZVNPWk9RaE1VU1FYQXR3UDBfMU5ZbE94NUdXUy1z0gGyAUFVX3lxTE16M2JIbWlGYV9TYm5ONFdkMFpwdTV4bXc2SDBVTkh1OW1qUGRkS21mZjFSbjQxb1cwbmdrdnRLQnFHV3Vhd1RJcHFrdFVaeVNIa3FfSlhaYzJQcWpFdjYtY0VHdnlfYkx1eVFKSWVVNmFkckFUcVZaTjh6dmRGemRjSEdrZzVfbGthZENXWk9IX0xRS0VpYVZNcGJ4Ty05VFVLN0FiNU5fc1J1MktSdDB5MEE?oc=5",
+        "published": "2026-09-28"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo",
+      "rain_sensitivity": "high"
+    },
+    {
+      "id": "road-note-osun-osogbo-abba4ec365",
+      "summary": "Reports suggest that repairs to Kara Bridge are causing gridlock on the Lagos-Ibadan Expressway.",
+      "source": {
+        "publisher": "Channels Television",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOOVp1VXhpYm9fZmJrTEdETUFJTWRwYnMyV1VFM0FWMDdWeWZ0WnU2WVhZTGdmelFWWVJDeEhKa2pDM21zc3h4R0psQmFKSE5jU1l6aG9mX3hmRmFZcXkzNHFSZTE0Z1FtRG41ZUhLbUpUMEl6c3pBOV82Y3pfYVM0Tkc5bzdsUDJxYVlKWkNMUXZ5ZFczbFFfWVRMdmJhd3ZDa005N0xULUktamM?oc=5",
+        "published": "2026-09-09"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-b15d3c4d49",
+      "summary": "Reports suggest the Lagos-Ibadan Expressway experiences gridlock due to bridge repair work.",
+      "source": {
+        "publisher": "Daily Trust",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSnFUX2V0Uml0dTZHdWFYT05yQWo1V1ZWSnZXNjAyOXExLTlnSDQtMkxSU2Y1bnA2eTNTLWhiNkZhc1kxZEtoOE02OEFfMndKbnk1NFVDdVJ3X0Vwdy12Y1VYMzRJZzhRWE50MnlvMUxJTXZ1cEtZcEVWOGRuSEFkbGd3R2c?oc=5",
+        "published": "2026-09-08"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-99abc03012",
+      "summary": "Reports suggest construction work is ongoing along the Ibadan-Ife-Ilesha federal highway.",
+      "source": {
+        "publisher": "The Guardian Nigeria News",
+        "url": "https://guardian.ng/opinion/columnists/aggressive-roads-infrastructure-shy-on-transparency/",
+        "published": "2026-09-04"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Ibadan-Ife-Ilesha Federal Highway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-7e44b7ed29",
+      "summary": "The Federal Government has flagged off construction work on the Osogbo-Akoda-Gbangan route and the Osogbo-Iwo-Ibadan route in Osun and Oyo states.",
+      "source": {
+        "publisher": "Independent Newspaper Nigeria",
+        "url": "https://independent.ng/fg-flag-off-construction-of-osogbo-akoda-gbangan-and-osogbo-iwo-ibadan-road-in-osun-oyo/",
+        "published": "2026-09-04"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo-Akoda-Gbangan And Osogbo-Iwo-Ibadan",
+      "rain_sensitivity": "medium"
+    },
+    {
+      "id": "road-note-osun-osogbo-22f62b748f",
+      "summary": "Construction was flagged off on the Osogbo-Akoda-Gbangan road in Osun State.",
+      "source": {
+        "publisher": "independent.ng",
+        "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNX3FpenNoZjFOQ0RIUE1tTHRLTC1vUGJOdWZETU9LcndLN09ja3hzdzd6eUpBNDNRalYzTjRNeWhtMkZHckxkaUdnekJiVE83NjlxcEMwRDdHR2pGdUllNG00ZW1PYlU3U255ZWNqMktOb2RQZS1lVkU0amN3Y3hzSXotaU5zdThCSlRGX1kwVTQwV2VlY2k0OGFKejBCem94dXAzVVFXS2JLZDFpVG9kTw?oc=5",
+        "published": "2026-08-11"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo-Akoda-Gbangan",
+      "rain_sensitivity": "medium"
+    },
+    {
+      "id": "road-note-osun-osogbo-7c5129308b",
+      "summary": "Reports indicate concrete construction was flagged off for an 82km road connecting Osogbo, Iwo and Ibadan.",
+      "source": {
+        "publisher": "The Nation Newspaper",
+        "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOSHFPSVU3X2JKT3R5M002eTRfWFBUNjZpa1Y2cnFJUUY0aG9qQlBDSVZnMzFHTm1PWGtRT2llZG8xWV9pb2FuVjl3N051MWZtczNuZFRvcFg2M21IRURuME0wc29DQl84RllzMVJINndpWFBOMUNFSTNwWmplRGdCY2tXVTNOX3dOTTN5UzY1R3VrNDhCVk81bENYR2RRTERxak5YZ0dVQldNb3U5Skdub0hodnJoX1B2NlJUd0tnWdIBxAFBVV95cUxQQ3Iyb1BrVnA0dkdXbnVfQzY3UHUwaldmYVZXTDY4dy1xX0pESHF3eXp6eHpxWFdGVkRLN2FTT05acFVQaXpCVDRqZmpuQTlGV2E1Z3JMZU8zUTExbEtlRXpaOWo1dkNxQmRBbzV4NnBsUUJxb2hFQWVXcUdYMldpM2RiRW1FcXNBMU9WMW1GYVFSZ1pYdDg5R1dNNVBWbEpUOExGUXJrdUxpWjAxSk1PUXRWTWhFcS16bXgxekk0cThLek5C?oc=5",
+        "published": "2026-08-06"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo/Iwo/Ibadan",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-4aaa719c83",
+      "summary": "Construction projects have been initiated on the Osogbo-Iwo-Ibadan and Osogbo-Gbongan road routes.",
+      "source": {
+        "publisher": "Vanguard News",
+        "url": "https://www.vanguardngr.com/2026/08/tinubu-flags-off-osogbo-iwo-ibadan-osogbo-gbongan-road-projects-in-osun/",
+        "published": "2026-08-06"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo-Iwo-Ibadan; Osogbo-Gbongan",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-c28b0fcad5",
+      "summary": "A road construction project aims to upgrade a failed single carriageway section to dual carriageway with rigid pavement.",
+      "source": {
+        "publisher": "Blueprint Newspapers",
+        "url": "https://blueprint.ng/fg-flags-off-construction-of-osogbo-iwo-ibadan-osogbo-akoda-gbongan-roads/",
+        "published": "2026-08-06"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Osogbo-Iwo-Ibadan And Osogbo-Akoda-Gbongan Roads",
+      "rain_sensitivity": "medium"
+    },
+    {
+      "id": "road-note-osun-osogbo-45e905b746",
+      "summary": "Multiple accidents at Kara bridge on the Lagos-Ibadan expressway caused heavy traffic gridlock.",
+      "source": {
+        "publisher": "TheCable",
+        "url": "https://www.thecable.ng/one-dead-as-multiple-accidents-worsen-gridlock-on-lagos-ibadan-expressway/",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-ed76703eba",
+      "summary": "Kara Bridge experienced multiple vehicle crashes resulting in one fatality and prolonged traffic delays, but has now fully reopened.",
+      "source": {
+        "publisher": "Tell News Magazine",
+        "url": "https://www.tell.ng/kara-bridge-reopens-after-deadly-crash-lagos-ibadan-expressway/",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-98da62973f",
+      "summary": "Multiple accidents have caused gridlock on the Kara bridge section of the Lagos-Ibadan expressway, prompting traffic authorities to recommend alternative routes.",
+      "source": {
+        "publisher": "PM News Nigeria",
+        "url": "https://pmnewsnigeria.com/2026/07/24/frsc-issues-advisory-as-multiple-crashes-trigger-gridlock-on-lagos-ibadan-expressway/",
+        "published": "2026-07-24"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Lagos-Ibadan Expressway",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-45b89e0f5a",
+      "summary": "Reports suggest that the Minister of Works issued a stop-work order on the Ibadan-Ife-Ilesa road citing noticeable construction faults.",
+      "source": {
+        "publisher": "Business News Nigeria",
+        "url": "https://businessday.ng/news/article/umahi-works-minister-picks-holes-on-ibadan-ife-ilesa-road-construction-stops-work/",
+        "published": "2026-07-06"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Ibadan-Ife-Ilesa Road",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-4d38bfad97",
+      "summary": "The Ibadan-Ife-Ilesa road construction was halted by the works minister due to concerns about construction quality.",
+      "source": {
+        "publisher": "Business News Nigeria",
+        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQNXYyTEx3ZDJXRXFvbUVrNHZzUEl1X21IRllzYWc4cGIwd0FDYnpSQkpBQmhXSGo4SFdjMVhVdS1qYzk5SmFGT2ZhUjBwLW1ib1h4a2dTLUV3ODdoVFc1RGx5bDR1NUJjVUk1cksxNC00bEhIX2JmQXhoSTFOQjBqeldDRVItWmtzWEFwWGhtYmFENGRlSXpVQjJHNUNDUTMxNDltVXNBYktxUlh3TXU2ZTluMjRoblQwVGc?oc=5",
+        "published": "2026-07-06"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Ibadan-Ife-Ilesa",
+      "rain_sensitivity": "low"
+    },
+    {
+      "id": "road-note-osun-osogbo-5a19ab7932",
+      "summary": "The Ibadan-Ife-Ilesa road reconstruction has been resumed and reports suggest it is at 65 per cent completion.",
+      "source": {
+        "publisher": "The Nation Newspaper",
+        "url": "https://thenationonlineng.net/contractor-resumes-reconstruction-of-ibadan-ife-ilesa-road-hits-65-completion/",
+        "published": "2026-07-05"
+      },
+      "confidence": "low",
+      "last_verified": "2026-10-04",
+      "type": "road_note",
+      "route": "Ibadan-Ife-Ilesa Road",
+      "rain_sensitivity": "low"
+    }
+  ]
+}

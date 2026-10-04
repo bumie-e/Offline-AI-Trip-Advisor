@@ -1,0 +1,7 @@
+{
+  "changed": true,
+  "severity": "elevated",
+  "advice": "Rain is forecast on 14 October and the stored note marks this route as rain-sensitive. Consider leaving a day earlier or taking the train.",
+  "alternatives": ["train", "earlier departure"],
+  "cited_ids": ["road-note-001", "weather-2026-10-14"]
+}

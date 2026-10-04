@@ -1,0 +1,40 @@
+{
+  "news": [
+    {
+      "title": "Three killed in truck, motorcycle crash on Lagos-Abeokuta Expressway",
+      "link": "https://guardian.ng/news/nigeria/metro/three-killed-in-truck-motorcycle-crash-on-lagos-abeokuta-expressway/",
+      "source": "The Guardian Nigeria News",
+      "description": "Three persons died on the spot on Wednesday evening after an articulated truck loaded with turkeys collided with a motorcycle.",
+      "date": "24 Jul 2026",
+      "rank": 1,
+      "global_rank": 1
+    },
+    {
+      "title": "Gridlock as students block Lagos–Abeokuta Expressway over colleague’s killing",
+      "link": "https://dailytrust.com/gridlock-as-students-block-lagos-abeokuta-expressway-over-colleagues-killing/",
+      "source": "Daily Trust",
+      "description": "Aggrieved students of D.S Adegbenro ICT Polytechnic, Itori, Ogun State, have blocked the Lagos–Abeokuta Expressway in protest over the alleged killing of...",
+      "date": "28 Jul 2026",
+      "rank": 2,
+      "global_rank": 2
+    },
+    {
+      "title": "Lagos deploys more traffic officers as truck, Kara Bridge works worsen Lagos-Ibadan gridlock",
+      "link": "https://pmnewsnigeria.com/2026/09/16/lagos-deploys-more-traffic-officers-as-truck-kara-bridge-works-worsen-lagos-ibadan-gridlock/",
+      "source": "PM News Nigeria",
+      "description": "The Lagos State Government has deployed additional traffic officers to ease severe congestion on the Lagos-Ibadan Expressway.",
+      "date": "2 weeks ago",
+      "rank": 9,
+      "global_rank": 9
+    },
+    {
+      "title": "Lagos-Ibadan Expressway Traffic: Lagos begs for patience, deploys more traffic officers",
+      "link": "https://guardian.ng/news/nigeria/metro/lagos-ibadan-expressway-traffic-lagos-begs-for-patience-deploys-more-traffic-officers/",
+      "source": "The Guardian Nigeria News",
+      "description": "Lagos State government has appealed to motorists to exercise patience following severe traffic congestion on the Lagos–Ibadan Expressway.",
+      "date": "2 weeks ago",
+      "rank": 10,
+      "global_rank": 10
+    }
+  ]
+}

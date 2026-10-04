@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "SiteStatus": {
+      "enum": [
+        "open",
+        "limited",
+        "closed"
+      ],
+      "title": "SiteStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "reported_at": {
+      "format": "date-time",
+      "title": "Reported At",
+      "type": "string"
+    },
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "lat": {
+      "anyOf": [
+        {
+          "maximum": 90,
+          "minimum": -90,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Lat"
+    },
+    "lon": {
+      "anyOf": [
+        {
+          "maximum": 180,
+          "minimum": -180,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Lon"
+    },
+    "note": {
+      "default": "",
+      "maxLength": 500,
+      "title": "Note",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/SiteStatus"
+    }
+  },
+  "required": [
+    "id",
+    "reported_at",
+    "site_id",
+    "status"
+  ],
+  "title": "SiteStatusReport",
+  "type": "object"
+}

@@ -1,0 +1,53 @@
+{
+  "$defs": {
+    "Rejection": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "reason"
+      ],
+      "title": "Rejection",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Result of syncing a batch of queued reports. Safe to retry: ids are idempotent.",
+  "properties": {
+    "accepted": {
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "title": "Accepted",
+      "type": "array"
+    },
+    "duplicates": {
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "title": "Duplicates",
+      "type": "array"
+    },
+    "rejected": {
+      "items": {
+        "$ref": "#/$defs/Rejection"
+      },
+      "title": "Rejected",
+      "type": "array"
+    }
+  },
+  "title": "Receipt",
+  "type": "object"
+}

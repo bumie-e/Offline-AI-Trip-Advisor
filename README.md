@@ -119,7 +119,7 @@ Example model output:
 - The model may cite only IDs it was given. Output citing anything else is rejected and replaced by a template sentence.
 - Every advice line shows its sources and their age.
 - Wording is advisory ("reports suggest"), never a safe/unsafe verdict.
-- *Open decision:* an optional rule check beside the model (for example, heavy rain on a rain-sensitive segment forces a flag, and the more cautious result is shown). Not yet decided.
+- A rule check runs beside the model. Heavy rain on a rain-sensitive road forces a flag, an active strike or flight suspension forces a flag, and the more cautious of rules and model is shown. The server applies it when generating the itinerary; the on-device version is still to be decided.
 
 ## Features
 
@@ -150,7 +150,7 @@ Example model output:
 | App shell | Lovable, as a mobile-first PWA with a service worker and IndexedDB | Planned |
 | Audio | ElevenLabs, pre-generated and cached | Planned |
 | On-device model | Small instruction-tuned model, runtime to be chosen after a device test | **TBD** |
-| Weather | Public forecast API | **TBD** |
+| Weather | Open-Meteo forecast API (no key) | Built |
 
 The on-device model is the riskiest part of the build. It should be tested on a real phone early, measuring load time, memory, and speed, with a fallback to rules plus template text if it can't run acceptably.
 
@@ -206,12 +206,167 @@ No impact results are claimed. This is a prototype.
 
 ## Getting started
 
-> To be completed once the code exists.
+The backend lives in `backend/` (Python 3.12+, [uv](https://docs.astral.sh/uv/)). The app (`frontend/`) is not built yet.
 
-1. Clone the repository.
-2. Add your API keys for the data collection and LLM services to a `.env` file (never commit it).
-3. Run the pipeline to generate a pack and a delta for the demo trip.
-4. Serve the app, load it online once, then switch to airplane mode to test offline behavior.
+```bash
+cd backend
+uv sync --extra dev
+cp .env.example .env        # then fill in the keys below (never commit .env)
+```
+
+| Variable | Needed for |
+|---|---|
+| `LLM_API_KEY` | Structuring documents and writing the advice (Anthropic) |
+| `BRIGHT_DATA_API_KEY`, `BRIGHT_DATA_SERP_ZONE` | Dated news search (optional; Google News RSS works without) |
+| `DATABASE_URL` | Reports and the itinerary cache: Supabase, **Connect > Direct > Transaction pooler** (port 6543) |
+| `RATE_LIMIT_SECRET` | Salt for the hashed client key used by rate limits (set in production) |
+
+**Build the data** (each step reads the previous step's output, and each can be re-run on its own):
+
+```bash
+uv run trip-advisor collect all       # routes, stops, guide text, recent road news
+uv run trip-advisor structure all     # LLM turns documents into sourced records
+uv run trip-advisor delta all         # weather forecast + disruption news (a few KB)
+uv run trip-advisor build-pack all    # versioned offline pack in data/packs/
+uv run alembic upgrade head           # create the database tables (needs DATABASE_URL)
+```
+
+**Run the API locally** and open the interactive docs at <http://localhost:8000/docs>:
+
+```bash
+uv run uvicorn trip_advisor.main:app --reload
+```
+
+**Deploy** (Vercel; run from `backend/`, not the repo root):
+
+```bash
+npx vercel login
+npx vercel --prod
+```
+
+Set `DATABASE_URL` and `LLM_API_KEY` as environment variables on the Vercel project first. The deployed API serves the files in `data/packs/`, `data/deltas/` and `data/sites/`, so rebuild and redeploy after refreshing data.
+
+**Checks** (the same ones CI runs): `uv run ruff check . && uv run ruff format --check . && uv run mypy src && uv run pytest -q`
+
+## Using the API
+
+The API is live at **https://offline-ai-trip-advisor.vercel.app** (interactive docs at `/docs`). It needs no key. Replace the base URL with `http://localhost:8000` to use a local copy.
+
+```bash
+BASE=https://offline-ai-trip-advisor.vercel.app
+```
+
+### The flow an app follows
+
+| Step | When | Call |
+|---|---|---|
+| 1. Browse | Online | `GET /places` |
+| 2. Plan and download | Online, ideally Wi-Fi | `POST /pack/{site_id}` |
+| 3. Refresh | Any signal | `GET /delta/{site_id}` |
+| 4. Report | Whenever there is a signal | `POST /reports/road`, `/site-status`, `/ratings` |
+
+### 1. List places
+
+```bash
+curl $BASE/places
+```
+
+Returns each place with its pack version and size, for example `{"id": "olumo-rock", "name": "Olumo Rock", "city": "Abeokuta", "state": "Ogun", "pack_version": "2026.10.04+f5a27d61", ...}`. Current ids: `olumo-rock`, `osun-osogbo`, `idanre-hills`.
+
+### 2. Plan a trip and download the pack
+
+Send the traveller's plan. The response is everything the phone needs to keep:
+
+```bash
+curl -X POST $BASE/pack/olumo-rock -H 'content-type: application/json' -d '{
+  "site_id": "olumo-rock",
+  "start_city": "Lagos",
+  "arrival_airport": "LOS",
+  "start_date": "2026-10-14",
+  "end_date": "2026-10-14",
+  "group_size": 2
+}'
+```
+
+`site_id` in the body must match the one in the URL. Optional fields are `budget_ngn` and `mode` (`road`, `train`, `flight`, `walk`); trips can span at most 14 days.
+
+The response (a `TripPack`) has four parts:
+
+| Field | What it holds |
+|---|---|
+| `pack` | Records for the site: road notes, site facts, costs, each with source, date and confidence |
+| `delta` | The weather forecast and disruption news **the advice was written from** |
+| `itinerary` | `verdict` (`go`, `go_with_changes`, `not_advised`), a `summary`, `verdict_reasons` (each with `severity`, `alternatives` and `cited_ids`), `stops` and `return_leg` |
+| `advice_source` | `model` if the language model wrote the text, `rules` if the rule-based fallback did |
+
+Keep all four on the device. The on-device model compares any later delta against the stored `delta` to decide whether the advice has changed. Every `cited_ids` entry refers to a record in `pack`, a weather day (`weather-YYYY-MM-DD`), a news item in `delta`, or a route.
+
+Notes:
+- The **first call for a trip takes about 10-20 seconds** because the model writes the advice. Show a progress state. The same request is then answered from a cache in about 2 seconds.
+- Add `?ai=false` for the rule-based text only (fast, no model).
+- `POST /itinerary` takes the same body and returns only the `itinerary` part.
+- The request is not stored, apart from the cached itinerary for identical requests.
+
+To check whether a pack changed without downloading the advice again, use `GET /pack/{site_id}`. It returns the plain pack with its version as an `ETag`:
+
+```bash
+curl -i $BASE/pack/olumo-rock                                    # note the ETag
+curl -i -H 'If-None-Match: "2026.10.04+f5a27d61"' $BASE/pack/olumo-rock   # 304 if unchanged
+```
+
+### 3. Refresh the delta
+
+```bash
+curl $BASE/delta/olumo-rock
+```
+
+A few KB. Compare `generated_at` with the delta you hold; if it is newer, hand it to the on-device model together with the stored pack and itinerary. Each event has a `type`, `status` (`threatened`, `confirmed`, `ended`), what it `affects`, and a `source` with publisher, link and date.
+
+### 4. Send queued reports
+
+Reports are written on the device with a UUID and a timestamp, queued while offline, and sent in batches of up to 50 when a signal appears.
+
+```bash
+curl -X POST $BASE/reports/road -H 'content-type: application/json' -d '[{
+  "id": "8c6f1c1e-6a52-4d1c-9a62-0f3f0f6d9a11",
+  "reported_at": "2026-10-14T08:30:00Z",
+  "site_id": "olumo-rock",
+  "route_id": "primary",
+  "condition": "slow",
+  "lat": 6.9,
+  "lon": 3.3,
+  "note": "Slow near the toll gate"
+}]'
+```
+
+| Endpoint | Extra fields | Values |
+|---|---|---|
+| `POST /reports/road` | `route_id`, `condition` | `clear`, `slow`, `difficult`, `impassable` |
+| `POST /reports/site-status` | `status` | `open`, `limited`, `closed` |
+| `POST /reports/ratings` | `helpful`, `comment` (uses `rated_at` instead of `reported_at`) | `true` / `false` |
+
+On road and site-status reports `lat`, `lon` and `note` are optional (ratings have only `helpful` and `comment`). The response says what happened to each item, so the app knows what to remove from its queue:
+
+```json
+{"accepted": ["..."], "duplicates": ["..."], "rejected": [{"id": "...", "reason": "unknown route 'x'"}]}
+```
+
+- Remove `accepted` and `duplicates` from the queue. Retrying is safe: the same `id` is never stored twice.
+- `rejected` items will never be accepted as sent (for example a timestamp in the future or older than 30 days). Drop them.
+- **Privacy:** no user identity or IP address is stored. Coordinates are rounded to about 1 km. Phone numbers, emails and links are removed from notes. Reports are deleted after 365 days.
+
+### Errors and limits
+
+| Status | Meaning | What the app should do |
+|---|---|---|
+| 404 | Unknown place, or no pack built yet | Check `GET /places` |
+| 422 | Invalid body (end before start, trip over 14 days, bad value) | Fix the request |
+| 429 | Too many requests from this connection (`Retry-After` header) | Wait and retry later |
+| 503 | Reports or the database are unavailable | Keep the queue and retry later |
+
+Model-written advice is limited to 10 requests per hour per connection and 200 per day overall. Beyond that, or if the model fails, the API still answers with rule-based text and `advice_source: "rules"`. Report endpoints allow 300 items per hour per connection.
+
+JSON Schemas for every request and response are in `backend/data/schemas/` (regenerate with `uv run trip-advisor export-schemas`).
 
 ## Evaluation plan
 

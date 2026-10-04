@@ -1,0 +1,337 @@
+{
+  "$defs": {
+    "Confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "Contact": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "contact",
+          "default": "contact",
+          "title": "Type",
+          "type": "string"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "phone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Phone"
+        },
+        "is_sample": {
+          "default": true,
+          "title": "Is Sample",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "role",
+        "name"
+      ],
+      "title": "Contact",
+      "type": "object"
+    },
+    "CostNote": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "cost_note",
+          "default": "cost_note",
+          "title": "Type",
+          "type": "string"
+        },
+        "item": {
+          "title": "Item",
+          "type": "string"
+        },
+        "amount_ngn_min": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount Ngn Min"
+        },
+        "amount_ngn_max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount Ngn Max"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "item"
+      ],
+      "title": "CostNote",
+      "type": "object"
+    },
+    "RoadNote": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "road_note",
+          "default": "road_note",
+          "title": "Type",
+          "type": "string"
+        },
+        "route": {
+          "title": "Route",
+          "type": "string"
+        },
+        "rain_sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "route",
+        "rain_sensitivity"
+      ],
+      "title": "RoadNote",
+      "type": "object"
+    },
+    "Sensitivity": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    },
+    "SiteFact": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "site_fact",
+          "default": "site_fact",
+          "title": "Type",
+          "type": "string"
+        },
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "topic"
+      ],
+      "title": "SiteFact",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "publisher": {
+          "title": "Publisher",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published"
+        }
+      },
+      "required": [
+        "publisher",
+        "url"
+      ],
+      "title": "Source",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Downloaded once on Wi-Fi. Changes rarely.",
+  "properties": {
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "contact": "#/$defs/Contact",
+            "cost_note": "#/$defs/CostNote",
+            "road_note": "#/$defs/RoadNote",
+            "site_fact": "#/$defs/SiteFact"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/RoadNote"
+          },
+          {
+            "$ref": "#/$defs/SiteFact"
+          },
+          {
+            "$ref": "#/$defs/CostNote"
+          },
+          {
+            "$ref": "#/$defs/Contact"
+          }
+        ]
+      },
+      "title": "Records",
+      "type": "array"
+    }
+  },
+  "required": [
+    "site_id",
+    "version",
+    "generated_at",
+    "records"
+  ],
+  "title": "Pack",
+  "type": "object"
+}

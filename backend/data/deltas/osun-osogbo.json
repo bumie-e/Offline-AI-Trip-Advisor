@@ -1,0 +1,128 @@
+{
+  "generated_at": "2026-10-04T08:04:15.351927Z",
+  "weather": [
+    {
+      "date": "2026-10-04",
+      "area": "Osogbo",
+      "rain_probability": 0.82
+    },
+    {
+      "date": "2026-10-05",
+      "area": "Osogbo",
+      "rain_probability": 0.86
+    },
+    {
+      "date": "2026-10-06",
+      "area": "Osogbo",
+      "rain_probability": 0.9
+    },
+    {
+      "date": "2026-10-07",
+      "area": "Osogbo",
+      "rain_probability": 0.98
+    },
+    {
+      "date": "2026-10-08",
+      "area": "Osogbo",
+      "rain_probability": 0.93
+    },
+    {
+      "date": "2026-10-09",
+      "area": "Osogbo",
+      "rain_probability": 0.9
+    },
+    {
+      "date": "2026-10-10",
+      "area": "Osogbo",
+      "rain_probability": 0.9
+    },
+    {
+      "date": "2026-10-11",
+      "area": "Osogbo",
+      "rain_probability": 0.65
+    },
+    {
+      "date": "2026-10-12",
+      "area": "Osogbo",
+      "rain_probability": 0.81
+    },
+    {
+      "date": "2026-10-13",
+      "area": "Osogbo",
+      "rain_probability": 0.86
+    },
+    {
+      "date": "2026-10-14",
+      "area": "Osogbo",
+      "rain_probability": 0.9
+    },
+    {
+      "date": "2026-10-15",
+      "area": "Osogbo",
+      "rain_probability": 0.86
+    },
+    {
+      "date": "2026-10-16",
+      "area": "Osogbo",
+      "rain_probability": 0.84
+    },
+    {
+      "date": "2026-10-17",
+      "area": "Osogbo",
+      "rain_probability": 0.88
+    },
+    {
+      "date": "2026-10-18",
+      "area": "Osogbo",
+      "rain_probability": 0.62
+    }
+  ],
+  "events": [
+    {
+      "type": "strike",
+      "status": "confirmed",
+      "affects": [
+        "flights",
+        "roads"
+      ],
+      "start": null,
+      "end": null,
+      "source_id": "news-3026450ac3dc8122",
+      "source": {
+        "publisher": "tgnews.com.ng",
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQLVNxMHpDMUZObktzVlFTcE81NWg0MTdjaFo5N1VCc01OaGx6NEg2UV85RzczY09wQ212S0ZBM2FRbldBTzNTbFZEM0FsZ01SOW1jd2YxZ2ZMTnU3eExneFRrU2dxZXgwNm9lak9rSzhwd1NDbkJMRU5va3ZsSWg4T214WVNJT2R0aVJIZHNiS1BWQVdsN1pTVTFYaURqdw?oc=5",
+        "published": "2026-10-03"
+      }
+    },
+    {
+      "type": "heavy_rain",
+      "status": "threatened",
+      "affects": [
+        "road:osogbo"
+      ],
+      "start": null,
+      "end": null,
+      "source_id": "news-1f431860bacb607a",
+      "source": {
+        "publisher": "The Sun Nigeria",
+        "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOM2FodWFMcjh1WEx5RC0wb3VXSWVnNlJhdGMxSzBZd3M3SnRyemVEZ2F4QnFhMVIwUXVJaTBHZUZtenBsMzJrSnAteVdqZktzZjExa3JVTHZqVDVWdlFHY2dqRmVSdVB2bTBGSjgxTjFqQ1RZc3JfaERVZVVVRzRfYVh0SnpsR0ZpVmdz?oc=5",
+        "published": "2026-10-03"
+      }
+    },
+    {
+      "type": "strike",
+      "status": "threatened",
+      "affects": [
+        "flights"
+      ],
+      "start": null,
+      "end": null,
+      "source_id": "news-9ca3e31704b5ad36",
+      "source": {
+        "publisher": "Premium Times Nigeria",
+        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOWGdJazYyRGUxOG9tTjdaaHVKOE5mUDN3VUN4NklPeFZlYVJ4TDk2dTZxQ2NWejh6Wjlsal9kdnpoWWQ3NEFDSC1rbkQtd3VRWTZKaWRFSnBodllfYzE0SzllUU5RZjFLbTZKY0wwWm83b0dOWkxKcElrNDZHOTdLZW1hYjZ4dnpGZUFsanctdmpjTml6VmtldzNmMjZCczVQOFVTVlRfRzJDZTRXSmJ6SmtzbE9TMnhfSklvUzZ4R0prcGNJMzdOQXhqTU5vOXlB?oc=5",
+        "published": "2026-09-29"
+      }
+    }
+  ]
+}

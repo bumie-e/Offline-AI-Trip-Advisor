@@ -1,0 +1,766 @@
+{
+  "$defs": {
+    "Advice": {
+      "additionalProperties": false,
+      "description": "Structured model output, also produced on-device. Checked by guardrails.",
+      "properties": {
+        "changed": {
+          "title": "Changed",
+          "type": "boolean"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "advice": {
+          "title": "Advice",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "cited_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cited Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "changed",
+        "severity",
+        "advice",
+        "cited_ids"
+      ],
+      "title": "Advice",
+      "type": "object"
+    },
+    "Confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "Contact": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "contact",
+          "default": "contact",
+          "title": "Type",
+          "type": "string"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "phone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Phone"
+        },
+        "is_sample": {
+          "default": true,
+          "title": "Is Sample",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "role",
+        "name"
+      ],
+      "title": "Contact",
+      "type": "object"
+    },
+    "CostNote": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "cost_note",
+          "default": "cost_note",
+          "title": "Type",
+          "type": "string"
+        },
+        "item": {
+          "title": "Item",
+          "type": "string"
+        },
+        "amount_ngn_min": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount Ngn Min"
+        },
+        "amount_ngn_max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount Ngn Max"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "item"
+      ],
+      "title": "CostNote",
+      "type": "object"
+    },
+    "Delta": {
+      "additionalProperties": false,
+      "description": "A few KB of weather and news. Roads are not re-collected here.",
+      "properties": {
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "weather": {
+          "items": {
+            "$ref": "#/$defs/WeatherEntry"
+          },
+          "title": "Weather",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/DisruptionEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "generated_at"
+      ],
+      "title": "Delta",
+      "type": "object"
+    },
+    "DisruptionEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/EventType"
+        },
+        "status": {
+          "$ref": "#/$defs/EventStatus"
+        },
+        "affects": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Affects",
+          "type": "array"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Source"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "type",
+        "status",
+        "affects",
+        "source_id"
+      ],
+      "title": "DisruptionEvent",
+      "type": "object"
+    },
+    "EventStatus": {
+      "enum": [
+        "threatened",
+        "confirmed",
+        "ended"
+      ],
+      "title": "EventStatus",
+      "type": "string"
+    },
+    "EventType": {
+      "enum": [
+        "strike",
+        "flight_suspension",
+        "heavy_rain",
+        "road_closure",
+        "other"
+      ],
+      "title": "EventType",
+      "type": "string"
+    },
+    "Itinerary": {
+      "additionalProperties": false,
+      "properties": {
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "request": {
+          "$ref": "#/$defs/TripRequest"
+        },
+        "verdict": {
+          "$ref": "#/$defs/Verdict"
+        },
+        "summary": {
+          "default": "",
+          "title": "Summary",
+          "type": "string"
+        },
+        "verdict_reasons": {
+          "items": {
+            "$ref": "#/$defs/Advice"
+          },
+          "title": "Verdict Reasons",
+          "type": "array"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/$defs/Stop"
+          },
+          "title": "Stops",
+          "type": "array"
+        },
+        "return_leg": {
+          "items": {
+            "$ref": "#/$defs/Stop"
+          },
+          "title": "Return Leg",
+          "type": "array"
+        }
+      },
+      "required": [
+        "site_id",
+        "generated_at",
+        "request",
+        "verdict",
+        "verdict_reasons",
+        "stops"
+      ],
+      "title": "Itinerary",
+      "type": "object"
+    },
+    "Pack": {
+      "additionalProperties": false,
+      "description": "Downloaded once on Wi-Fi. Changes rarely.",
+      "properties": {
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "records": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "contact": "#/$defs/Contact",
+                "cost_note": "#/$defs/CostNote",
+                "road_note": "#/$defs/RoadNote",
+                "site_fact": "#/$defs/SiteFact"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RoadNote"
+              },
+              {
+                "$ref": "#/$defs/SiteFact"
+              },
+              {
+                "$ref": "#/$defs/CostNote"
+              },
+              {
+                "$ref": "#/$defs/Contact"
+              }
+            ]
+          },
+          "title": "Records",
+          "type": "array"
+        }
+      },
+      "required": [
+        "site_id",
+        "version",
+        "generated_at",
+        "records"
+      ],
+      "title": "Pack",
+      "type": "object"
+    },
+    "RoadNote": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "road_note",
+          "default": "road_note",
+          "title": "Type",
+          "type": "string"
+        },
+        "route": {
+          "title": "Route",
+          "type": "string"
+        },
+        "rain_sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "route",
+        "rain_sensitivity"
+      ],
+      "title": "RoadNote",
+      "type": "object"
+    },
+    "Sensitivity": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    },
+    "Severity": {
+      "enum": [
+        "none",
+        "elevated",
+        "high"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "SiteFact": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "last_verified": {
+          "format": "date",
+          "title": "Last Verified",
+          "type": "string"
+        },
+        "type": {
+          "const": "site_fact",
+          "default": "site_fact",
+          "title": "Type",
+          "type": "string"
+        },
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "source",
+        "confidence",
+        "last_verified",
+        "topic"
+      ],
+      "title": "SiteFact",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "publisher": {
+          "title": "Publisher",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published"
+        }
+      },
+      "required": [
+        "publisher",
+        "url"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Stop": {
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "minimum": 1,
+          "title": "Order",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TravelMode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "duration_minutes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Minutes"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        },
+        "cited_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cited Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "order",
+        "title"
+      ],
+      "title": "Stop",
+      "type": "object"
+    },
+    "TravelMode": {
+      "enum": [
+        "road",
+        "train",
+        "flight",
+        "walk"
+      ],
+      "title": "TravelMode",
+      "type": "string"
+    },
+    "TripRequest": {
+      "additionalProperties": false,
+      "description": "Stage 2, 'Plan my visit'.",
+      "properties": {
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "start_city": {
+          "title": "Start City",
+          "type": "string"
+        },
+        "arrival_airport": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Arrival Airport"
+        },
+        "start_date": {
+          "format": "date",
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "format": "date",
+          "title": "End Date",
+          "type": "string"
+        },
+        "group_size": {
+          "maximum": 50,
+          "minimum": 1,
+          "title": "Group Size",
+          "type": "integer"
+        },
+        "budget_ngn": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Budget Ngn"
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TravelMode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "site_id",
+        "start_city",
+        "start_date",
+        "end_date",
+        "group_size"
+      ],
+      "title": "TripRequest",
+      "type": "object"
+    },
+    "Verdict": {
+      "enum": [
+        "go",
+        "go_with_changes",
+        "not_advised"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "WeatherEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "area": {
+          "title": "Area",
+          "type": "string"
+        },
+        "rain_probability": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Rain Probability",
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "area",
+        "rain_probability"
+      ],
+      "title": "WeatherEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What a traveller downloads for a planned trip: the pack plus the advice already written.\n\nThe itinerary was generated from the pack, the weather and the news in `delta`. The device\nkeeps all three so it can compare a later delta against the one the advice was based on.",
+  "properties": {
+    "pack": {
+      "$ref": "#/$defs/Pack"
+    },
+    "delta": {
+      "$ref": "#/$defs/Delta"
+    },
+    "itinerary": {
+      "$ref": "#/$defs/Itinerary"
+    },
+    "advice_source": {
+      "enum": [
+        "model",
+        "rules"
+      ],
+      "title": "Advice Source",
+      "type": "string"
+    }
+  },
+  "required": [
+    "pack",
+    "delta",
+    "itinerary",
+    "advice_source"
+  ],
+  "title": "TripPack",
+  "type": "object"
+}

@@ -1,0 +1,34 @@
+id = "idanre-hills"
+name = "Idanre Hills"
+city = "Idanre"
+state = "Ondo"
+wikivoyage_pages = ["Akure"]
+
+[origin]
+query = "Murtala Muhammed Airport, Ikeja"
+lat = 6.5848212
+lon = 3.3329165
+
+[destination]
+query = "Idanre Hill, Ondo"
+lat = 7.0997748
+lon = 5.0825825
+
+[[variants]]
+id = "via-ife"
+label = "Lagos to Idanre via Ibadan and Ife"
+via = [
+  { query = "Ibadan, Oyo, Nigeria", lat = 7.3783681, lon = 3.8972331 },
+  { query = "Ile-Ife, Osun, Nigeria", lat = 7.482824, lon = 4.5604451 },
+]
+
+[[corridors]]
+name = "Lagos-Ore-Ondo-Akure road"
+primary = true
+queries = ['"Lagos-Ore-Benin" expressway', '"Ore-Ondo" road', '"Ondo-Akure" road', '"Lagos-Ore" road', 'Ore Ondo Akure expressway']
+match_terms = ["Ore", "Ondo", "Akure"]
+
+[[corridors]]
+name = "Akure-Idanre road"
+queries = ['"Akure-Idanre" road', 'Idanre road']
+match_terms = ["Idanre"]

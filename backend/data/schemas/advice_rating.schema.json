@@ -1,0 +1,37 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "rated_at": {
+      "format": "date-time",
+      "title": "Rated At",
+      "type": "string"
+    },
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "helpful": {
+      "title": "Helpful",
+      "type": "boolean"
+    },
+    "comment": {
+      "default": "",
+      "maxLength": 500,
+      "title": "Comment",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "rated_at",
+    "site_id",
+    "helpful"
+  ],
+  "title": "AdviceRating",
+  "type": "object"
+}

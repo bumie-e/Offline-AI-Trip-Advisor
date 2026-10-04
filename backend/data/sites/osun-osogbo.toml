@@ -1,0 +1,31 @@
+id = "osun-osogbo"
+name = "Osun-Osogbo Sacred Grove"
+city = "Osogbo"
+state = "Osun"
+wikivoyage_pages = ["Osogbo"]
+
+[origin]
+query = "Murtala Muhammed Airport, Ikeja"
+lat = 6.5848212
+lon = 3.3329165
+
+[destination]
+query = "Osun-Osogbo Sacred Grove, Osogbo, Nigeria"
+lat = 7.7551115
+lon = 4.5506394
+
+[[variants]]
+id = "via-ife"
+label = "Lagos to Osogbo via Ile-Ife"
+via = [{ query = "Ile-Ife, Osun, Nigeria", lat = 7.482824, lon = 4.5604451 }]
+
+[[corridors]]
+name = "Lagos-Ibadan Expressway"
+primary = true
+queries = ['"Lagos-Ibadan" expressway']
+match_terms = ["Lagos-Ibadan", "Lagos–Ibadan", "Lagos/Ibadan"]
+
+[[corridors]]
+name = "Ibadan-Ife-Osogbo road"
+queries = ['"Ibadan-Ife" road', '"Ife-Osogbo" road', 'Osogbo road']
+match_terms = ["Osogbo", "Ife", "Ibadan-Ife"]

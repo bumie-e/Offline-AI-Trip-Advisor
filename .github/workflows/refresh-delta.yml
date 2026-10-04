@@ -1,0 +1,32 @@
+name: refresh-delta
+
+# Rebuild the weather and news delta and publish it to the database, so the live API serves
+# fresh data without a redeploy. Needs the repository secret DATABASE_URL (the Supabase pooler
+# URL) and the migration that creates `published_deltas` to be applied first.
+on:
+  schedule:
+    - cron: "0 5 * * *" # every day, 05:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-delta
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv python install 3.12
+      - run: uv sync
+      - name: Build and publish deltas
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: uv run trip-advisor delta all --publish
