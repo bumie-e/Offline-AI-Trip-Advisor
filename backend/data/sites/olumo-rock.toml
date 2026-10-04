@@ -1,21 +1,36 @@
-# Per-site config. Adding a site means adding a file like this, not code.
-[site]
 id = "olumo-rock"
 name = "Olumo Rock"
 city = "Abeokuta"
 state = "Ogun"
+wikivoyage_pages = ["Abeokuta"]
 
-[site.location]
-# Fill in verified coordinates.
-lat = 0.0
-lon = 0.0
+[origin]
+query = "Murtala Muhammed Airport, Ikeja"
+lat = 6.5848212
+lon = 3.3329165
 
-[[routes]]
-id = "lagos-abeokuta-road"
-label = "Lagos to Abeokuta, by road"
-mode = "road"
-rain_sensitivity = "medium"   # to be verified against sources
+[destination]
+query = "Olumo Rock, Abeokuta, Nigeria"
+lat = 7.1671952
+lon = 3.3425848
 
-[sources]
-# Add URLs only after checking each source's terms of use.
-urls = []
+[[variants]]
+id = "via-sagamu"
+label = "Lagos to Abeokuta via Sagamu"
+via = [{ query = "Sagamu, Ogun, Nigeria", lat = 6.8477165, lon = 3.6440551 }]
+
+[[variants]]
+id = "via-ibadan"
+label = "Lagos to Abeokuta via Ibadan"
+via = [{ query = "Ibadan, Oyo, Nigeria", lat = 7.3783681, lon = 3.8972331 }]
+
+[[corridors]]
+name = "Lagos-Abeokuta Expressway"
+primary = true
+queries = ['"Lagos-Abeokuta" expressway', '"Lagos-Ota-Abeokuta" road']
+match_terms = ["Abeokuta"]
+
+[[corridors]]
+name = "Lagos-Ibadan Expressway"
+queries = ['"Lagos-Ibadan" expressway']
+match_terms = ["Lagos-Ibadan", "Lagos–Ibadan", "Lagos/Ibadan"]

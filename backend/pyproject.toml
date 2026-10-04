@@ -13,6 +13,7 @@ dependencies = [
   "alembic",
   "anthropic",
   "typer",
+  "trafilatura>=2.3.0",
 ]
 
 [project.optional-dependencies]
